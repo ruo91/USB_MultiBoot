@@ -1,0 +1,15 @@
+From: http://www.knoppix.net/forum/viewtopic.php?p=117323
+
+
+LABEL KNOPPIX 
+  MENU LABEL Launch Knoppix 5.11a 
+  KERNEL /knoppix.511/linux ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 nomce quiet bootfrom=/dev/sda1/knoppix.511/*.iso config=scan home=scan ramdisk=32768 noprompt noaudio 
+  APPEND initrd=/knoppix.511/mini511a.gz 
+  TEXT HELP 
+  Runs Knoppix 5.11a from ISO 
+  ENDTEXT
+
+
+The key to my problem seems to be that Syslinux can't find the minirt.gz file it it has a LFN. 
+Using the original minirt_511a.gz didn't work (regardless of location), 
+but renaming it to mini511a.gz worked fine (again regardless of location). 

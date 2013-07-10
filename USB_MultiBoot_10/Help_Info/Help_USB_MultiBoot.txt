@@ -1,0 +1,1127 @@
+
+=========================================================================================================  
+
+Introduction:
+
+
+***** USB_MultiBoot.cmd - Install XP from USB *****  06 June 2008
+
+
+Unpack USB_MultiBoot.zip to your Harddisk in a simple Path without SPACES.
+
+Major Changes and Support:
+
+- Basic Use Involves only Selecting XP Source Folder and USB-Drive Target
+  to make USB-Stick which can be used for Install of XP on Mobile PC like e.g. ASUS Eee subnotebook
+
+- USB_MultiBoot.cmd is Vista Compatible, but requires User Account Control OFF.  
+  The bootmgr BootSector made by PeToUSB is Detected and 
+  Converted to NTLDR Bootsector ( No need anymore to use BootSect.exe separately )
+  XP as OS is Preferred for Speed of FileCopy to USB ( 10 min instead of 30 minutes for Vista OS )
+
+- Advanced Users can make USB-MultiBoot SuperStick or Harddisk,
+  when selecting Multi_boot.ini and MULTI_CONTENT Source offering a large variety of
+  handy computer tools available via boot.ini GRUB4DOS or SYSLINUX Menu
+
+- Siginet's RyanVM Integrator or nLite can be used to Integrate Windows UpdatePacks in the XP-Source. 
+  http://integrator.siginetsoftware.com/index.php?download   and     http://www.nliteos.com/
+  The Complete XP-Source is Copied to XP LocalSource Folder $WIN_NT$.~LS on USB-Drive
+  Take care that your XPSOURCE Folder is located on your Harddisk in a simple Path without SPACES.
+
+- Supports the use of BTS DriverPacks located in OEM Folder on USB-Drive - http://driverpacks.net/DriverPacks/ 
+  For Install of XP on a modern system with SATA Drives it is needed to use DPsBase.exe 
+  for Integrating in your XPSOURCE BTS DriverPack Massstorage with TXT Mode Enabled.
+  In that case a lot of Extra RAID SCSI and SATA Drivers (about 120 extra) are Integrated which appear in the 
+  XP Setup BootFolder $WIN_NT$.~BT on USB-Drive and can prevent a lot of XP Install Boot Problems.
+  First use RyanVM Integrator and than use DPsBase to Improve your XP-Source.
+  The program supplies a Customised presetup.cmd and changes the winnt.sif file for use of DriverPacks.
+
+- For USB-Harddisk use Menu Option 0) to Change USB-stick in USB-Harddisk. 
+  Because that makes that rdummy.sys is used and this is essential for using USB-Harddisk.
+  rdummy.sys makes Fixed USB-Harddisk seen in XP Setup as Removable Device.
+
+- boot.ini and winnt.sif Files and $OEM$Folder are User Selectable, 
+  Handy for Windows 2003 and Non Standard Installs and for making MultiBoot USB-Drive
+  Use the supplied winnt.sif file, which is copied to file Current_winnt.sif in Folder w_sif
+  For Unattended Install use the build in Edit UserData Setup to give ProductKey and TimeZone.
+  Use for Preparing USB-Drive Only winnt.sif file without an [Unattended] Section and with MsDosInitiated="1"
+  The Current_winnt.sif File is adjusted for this and copied by USB_MultiBoot.cmd to $WIN_NT$.~BT folder on USB-Drive.
+
+- OEM or nLite winnt.sif File is detected in XPSOURCE and Auto Changed for Install of XP from USB.
+  In that case All Setup Parameters come from XPSOURCE and therefore Empty $OEM$_X Folder is Selected.
+  For UNATTENDED XP Install use the build in Edit UserData Setup to Change the 8 required parameters.
+  Give ProductKey and TimeZone used in Current_winnt.sif Copy of your winnt.sif
+
+- Change $OEM$ folder to your needs, which is copied to $WIN_NT$.~LS folder on USB-Drive
+  CMDLINES.TXT is used for making UserAccounts and install of Registry Tweaks at T-12
+  Info see: http://unattended.msfn.org/unattended.xp/
+  ren_fold.cmd was changed such that $OEM$\$1 and $OEM$\$$ folders are copied
+  as usual to systemdrive (usually C:\) and systemroot (usually C:\WINDOWS) respectively.
+  For anything else you want to copy from USB-Drive, you can add similar lines to ren_fold.cmd,
+  which is executed at T-9 by the Section SetupParams of winnt.sif file
+  Or Use CMDLINES.TXT and useraccounts.cmd in the $OEM$ Folder for Extra Copy Commands. 
+
+- Supports also USB-Drives having FAT32 or NTFS Format, thus overcoming the 2 GB limit of FAT Format.  
+  NTFS Format allows larger DriveSize and is very useful for Install of XP from USB-Harddisk.
+  Besides NTFS Format is handy for Install of Vista from USB via GRUB4DOS chainload of bootmgr
+  FAT32 is extremely slow in Windows XP FileCopy during TXT Mode (has anyone an idea why ?),
+  whereas NTFS Format of USB-Drive makes everything go faster than with FAT Format.
+  
+  In the Format Menu one can Select:
+  P) PeToUSB - FAT Format - Max 2 GB
+     Install of XP from USB in 30 minutes - Buffalo FireStix 2 GB
+     FAT Format Supports Direct Booting with MS-DOS using MULTI_CONTENT
+     Do NOT Select here FileCopy of BartPE
+
+  H) HP USB Disk Storage Format Tool V2.0.6 - NTFS Format - use X_CONTENT
+     Install of XP from USB in 16 minutes - Corsair Flash Voyager 4 GB USB-stick
+
+  N) No Format - Use USB-Harddisk with FAT or NTFS Format by Windows XP
+
+  Use MULTI_CONTENT Folder only with FAT Format USB-Drive 
+  for Support of Direct Booting with MS-DOS from boot.ini Menu 
+  Use X_CONTENT Source Folder for making NTFS or FAT Format USB-Drive
+  with Support of Booting from DOS Floppy Images via GRUB4DOS Menu
+
+  HP Format Tool Enables to make large USB-sticks with NTFS Format which are very useful,
+  but is missing the option of PeToUSB to Install BartPE on USB-Drive.
+  The program was changed such that BartPE can be added now for all Format Options to USB-Drive 
+  by Selecting BartPE Source Folder with option 5) of the Main Menu. 
+  So don't use PeToUSB for Install of BartPE anymore, but only use PeToUSB to make FAT Format USB-Drive.
+  Using Cancel in BartPE Source Folder Selection,  Disables the Install of BartPE on USB-Drive.
+  FileCopy to USB-Drive begins with USB Content Source Folder, followed by the XP Setup Source Folder
+  and finally the BartPE Source Folder is copied when a valid path was given with option 5)
+
+- FAT32 and NTFS do not support Direct Booting into MS-DOS FREEDOS and Windows PE 2.0
+  Unsupported Boot Options are automatcally removed from the Menu's.
+  GRUB4DOS via boot.ini is in any FileSystem very powerful, especially using chainload of BootLoaders.
+  But GRUB4DOS also allows to Boot from MS-DOS or FREEDOS Floppy Images and to Boot from Linux. 
+  http://grub4dos.jot.com/WikiHome
+  http://grub4dos.sourceforge.net/wiki/index.php/Grub4dos_tutorial
+
+- BootSector Files are made with dsfo / dsfi from the once with mkbt.exe copied BootSector, 
+  instead of Install, Copy and Reset of BootSectors using mkbt.exe for making each BootSector File.
+  MakeBS3.cmd of jaclaz is used for making NTFS BootSector Files, 
+  where SETUPLDR.BIN was Renamed to XPSTP according to the 5-letter limit requirement.
+
+- Windows XP Recovery Console from USB is supported by launching it via GRUB4DOS Menu.
+  Booting Direct with XP Recovery Console has conflict by unwanted launching XP Setup.
+  The program CMDCONS_Folder.cmd can be used separately,
+  which makes Recovery Console folder cmdcons by parsing DOSNET.INF File.
+
+- Overflow Control has been added by measuring DiskSize, FreeSize, XP-Source and 
+  Multi_Content Source Folders using ASP Drive Object and Visual Basic Scripting.
+  SEE: http://www.w3schools.com/asp/asp_ref_drive.asp
+  http://www.robvanderwoude.com/index.html
+
+- Excluding LANG and WIN98X Folders from Copy to USB can be Selected, 
+  which reduces the XP-Source on USB-Drive by 135 MB
+  Reduction of the XP WINDOWS Folder can be achieved with nLite
+  but do NOT select Operating System Options-->Manual Install and Upgrade for removal.
+
+  XPSOURCE Space Saving Tips see: http://unattended.msfn.org/unattended.xp/view/web/57/
+  You can Safely Remove the XPSOURCE folders:
+      WIN9XMIG, WIN9XUPG and WINNTUPG - This will free up 37.6 MB
+      LANG - 99 MB and cmpnents - 22.6 MB ( Needed for MCE / Tablet PC only )
+
+- The Folder usb_cfg_extra provides scripts for BartPE Menu http://www.nu2.nu/pebuilder/
+  For the Automatic Install of Programs after Install of XP from USB
+  we can use a script for the very handy Windows Post-Install Wizard (WPI) http://wpiw.net/
+
+- In WPI script there is the option to run SFC /purgecache which deletes the dll cache and
+  which is a very simple way to reduce the WINDOWS Folder Size by 360 MB  
+  The Result is a XP WINDOWS Folder Size on Harddisk of only 785 MB inclusive all Updates.
+
+- Supports Portable WinTools which run direct from GO-Menu button in a VISTA or XP environment
+  http://www.dirk-loss.de/win-tools.htm
+  http://users.pandora.be/Robvdb/USBMemStick.htm
+
+- Direct Booting with MS-DOS from USB-stick with boot.ini Menu is prepared as follows:
+  You only have to add from Win98 MS-DOS BootFloppy the files IO.SYS and MSDOS.SYS to 
+  the MULTI_CONTENT Folder and file COMMAND.COM to the folder DOS of the MULTI_CONTENT Folder.
+  These Hidden System Files are only visible in Windows Explorer after adjusting Tools > Folder Options
+
+  Run USB_MultiBoot.cmd and choose FAT Format with PeToUSB (max 2GB stick) and
+  Select Multi_boot.ini as boot.ini (option B ) and MULTI_CONTENT as Source (option 2) in the Main Menu.
+  The supplied config.sys of the MULTI_CONTENT folder regulates that for MS-DOS 
+  the COMMAND.COM is found in the DOS folder so that confusion with FREEDOS is prevented.
+
+- Direct Booting with FREEDOS from USB was Removed since there were too few cases successful.
+
+- More Help with Bookmarks is available in the Help_Info Folder in USB_MultiBoot.zip
+
+- Use of MultiBoot.cmd and everything in this Guide is COMPLETELY at your own risk.
+
+- Display and Edit of the 8 required parameters for Unattended Setup is build in
+  where the Selected winnt.sif  file is first savely copied to the Current_winnt.sif file
+  The Current_winnt.sif File is adjusted for Install from USB and then
+  copied by USB_MultiBoot.cmd to $WIN_NT$.~BT folder on USB-Drive.
+  For Unattended Install the file useraccounts.cmd with UserName is made 
+  in the temporary $OEM$ Folder and then copied to USB-stick.
+  Semi-Unattended Install shows Windows Welcome Screens before first Logon,
+  so that User Names can be given Manually.
+  
+  For the Option Edit UserData for XP Setup we have:
+
+  A. Unattended Install - UserName = YourName 
+     in winnt.sif file - unattendswitch="Yes" - UserName is used Automatically
+     useraccounts.cmd with UserName is created in $OEM$ Folder copied to USB-drive
+
+  B. Semi-Unattended Install - UserName = None
+     in winnt.sif file - unattendswitch="No" - UserNames are given Manually at Windows Welcome Screens
+     useraccounts.cmd in copied $OEM$ folder is Renamed to Inactive txt file
+
+  C. Undefined Install - UserName = Unknown
+     No Changes are made in winnt.sif file or $OEM$ folder
+     This is useful when Setup Parameters were defined externally e.g. by nLite
+
+  In all cases Selecting Cancel keeps winnt.sif file and $OEM$ folder Unchanged
+
+- For each XP Source the Program Supports now to launch Unattended or Attended Setup.
+  Therefore a second SetupLoader XATSP for Attended Setup is made ,
+  where winnt.sif is Patched  as winat.sif using gsar.exe
+  So the extra Setup Option does not take extra space from the USB-stick.
+  In the Attended Install all Setup Parameters are given Manually during the GUI Mode of Setup Windows XP.
+  Attended Install is always available as Extra Option in the boot.ini Menu. 
+
+- Multiple XP Install from USB is now Supported (max 9 sources)
+  http://www.msfn.org/board/SOLVED-Install-Multiple-XP-from-USB-t114543.html
+  Run USB_MultiBoot.cmd again using New XP Source and Empty XX_CONTENT Source Folder
+
+- Multiple PE (BartPE and UBCD4Win) from USB is supported using Multi-Partition USB-Drives.
+  INSTALL_DUMMY.cmd was made for dummydisk, which you will find in the makebt Folder.
+  When dummy.sys is Installed in your OS, 
+  then you can make Multiple Partition USB-sticks with NTFS format,
+  allowing to combine BartPE and UBCD4WIN or different Vista Versions x86 and x64
+  http://www.msfn.org/board/Multiple-PE-from-USB-t115156.html&st=11
+  http://www.911cd.net/forums//index.php?showtopic=20089&st=24
+  Run USB_MultiBoot.cmd again using New BartPE Source and 
+  using Empty XX_CONTENT Source Folder and No Copy of XP Source.
+
+- Install of Vista from USB is now supported and launched via GRUB4DOS Menu
+  http://www.msfn.org/board/vista-t114092.html&st=6
+  http://www.msfn.org/board/Install-Vista-from-USB-t111506.html&st=2
+  For Vista Install from USB, Remove on first Restart your USB-stick.
+ 
+
+=========================================================================================================  
+
+A. ***** Most Frequently Encountered User ERRORS *****
+
+   1. Premature Unplugging USB-Drive
+
+      In this case boot.ini on Harddisk was not properly corrected by binifix4.cmd 
+      which has to occur at First Logon of Windows XP.
+      binifix4 changes boot.ini on Harddisk, such that Default rdisk(1) is replaced by rdisk(0)
+
+      ***** NEVER UNPLUG USB-Drive ***** Until After First Logon of Windows XP
+      
+      Without binifix.cmd the boot.ini on our Harddisk 0 is still referring to booting from Harddisk 1
+      which is our USB-stck or no disk, where in any case no WINDOWS folder is found.
+      The result is ERROR: Unable to start Windows with ERROR Messages:
+      a. WINDOWS\system32\hal.dll file missing ( USB-Drive again plugged in )
+      b. Disk Config Problem ( USB-Drive Unplugged )
+      c. <Windows root>\system32\ntoskrnl.exe file missing (for Win2003)
+         For Windows 2003 one has to adjust Manually boot.ini in Advance as described in Section C,
+         in makebt\boot.ini change foldername WINDOWS in WIN2003
+
+
+   2. ERROR Message for GUI Mode Setup of WINDOWS XP:  WINDOWS\system32\hal.dll file missing 
+
+      This occurs when Reboot for the GUI Mode of XP Setup occurs 
+      from Drive which does not contain WINDOWS Folder. 
+
+      C-drive is not seen as a Harddisk Drive, when Booting Windows XP Setup from USB-Drive
+      but C-drive is no disk at all (Optical Drive, Cardreader) or C-drive is USB-Drive
+      When in TXT Mode Setup you have to indicate which drive will be used for Install of Windows XP,
+      look very carefully at Drive Letters and Identify to which Disk they belong.
+      
+      Select always the partition C: of your Computer Harddisk as the partition 
+      on which you are going to Install Windows XP, and then Select Quick Format with NTFS FileSystem.
+      For NON Standard Installs see Section C
+      
+      If the C-drive is not visible as belonging to your Harddisk, then ***** STOP *****
+      There are three possible sources for this Problem to occur:
+
+      a. New Harddisk without partitions
+         In this case use Option C of Windows XP Setup to make partitions in Unused Space
+         where e.g. 3 Partitions would get Unwanted Drive Letters e.g. I, J, K 
+         for Computer with 2 Optical Drives + Cardreader ( 4 drives ) having Drive Letters C D E F G H 
+         Then STOP Setup by SWITCHING OFF your Computer
+         and Reboot again from USB-Drive in TXT Mode Setup of Windows XP 
+         Then you will observe that the 3 new partitions on your Harddisk have now Drive Letters C D E
+         and everything is now OK and you can Continue with Install of Windows XP
+       
+         For a brand new harddisk Reboot the computer after creating partitions with TXT mode Setup.
+         So in this case one boots twice in the TXT-mode Setup, 
+         so that after the reboot drive letters get their correct value.
+
+         When Booting from USB-Drive, than Direct after Deleting and Creating New partitions, 
+         you have to Switch OFF your Computer and Boot from USB-Drive again and 
+         run 1. TXT Mode Setup again so that DriveLetters get their correct value.
+
+      b. The Presence of Additional USB-Harddisks
+         First Remove ALL Other USB-Drives before Booting Into TXT Mode Setup of Windows XP
+         In this way your Computer Harddisk in Setup gets DriveLetter C 
+
+      c. Mixed Config of SATA / PATA Harddisks
+         In this case you have to change the computer SATA / PATA configuration (unplugging) such that 
+         the C-drive is recognised as belonging to the Harddisk on which you want to Install XP
+         If during TEXT MODE your usb Drive is listed first when SETUP searches for disks , 
+         above SATA/SCSI disks, disable in BIOS IDE channels including the ones with CDROM/DVD attached 
+         or disconnect them, this should fix the order. 
+         Do not continue install if USB-Drive is listed first, this will corrupt files and MBR on it.
+
+
+   3. Unable to Boot From USB-Drive
+
+      For Windows XP Setup from bootable USB-Drive it is necessary to enter BIOS Setup by pressing [Del]
+      and change Boot settings more permanent so that Harddisk is used as first Boot device type
+      and USB-Drive is seen as first Harddisk. In this case everything works very well.
+      In Windows Setup from USB-Drive it is essential that also after Restart for the GUI-mode of Setup, 
+      booting occurs again from USB-Drive and that USB-Drive remains to be seen as first harddisk = rdisk(0).
+      After Setup has completed, binifix4.cmd will make 
+      the necessary correction in boot.ini on computer harrddisk by changing rdisk(1) in rdisk(0).
+
+      Don't Select USB-Drive as Boot Device from a BIOS Boot Menu by Pressing F8 F11 or F12
+      This is not a permanent Change of Boot Sequence 
+      and the Reboot from USB-Drive for the GUI Mode of Windows XP Setup does not occur.
+
+      In the case of problems with booting from USB-Drive, it is advisable to do a BOOTTEST
+      to determine if your computer is able to boot from your USB-Drive.
+      If not successful, you have to use a different Computer / USB-Drive combination.
+
+      First Format to Make Bootable USB-Drive with NTLDR Bootsector Using:
+      PeToUSB.exe with Settings: Enable Disk Format with LBA FAT16X
+      OR Use Existing USB-stick with NTLDR Bootsector and Multi BOOT.INI Menu 
+
+      For AUTOSTART: COPY PeToUSB.exe in your MultiBoot folder
+      http://gocoding.com/page.php?al=petousb
+
+      BOOTTEST:
+      When you format it copy on USB Drive ONLY ntdetect.com, NTLDR from your XP source, 
+      and create BOOT.INI in USB Drive root:
+
+BOOTTEST BOOT.INI CODE:
+
+[Boot Loader]
+Timeout=10
+Default=multi(0)disk(0)rdisk(1)partition(1)\WINDOWS
+[Operating Systems]
+multi(0)disk(0)rdisk(1)partition(1)\WINDOWS="TEST" /FASTDETECT 
+multi(0)disk(0)rdisk(1)partition(2)\WINDOWS="TEST 1" /FASTDETECT
+
+     Start the PC and if you see the menu, your USB-Drive is ready- format it again and use MultiBoot.cmd
+     PEtoUSB has an option for LBA, use it first, if doesn't boot use without that option.
+
+  4.  BSOD Error: SESSION3_INTIALIZATION_FAILED, Error 0x0000006F
+      Problems due to use of NLite for Reducing XP Source - Do NOT Remove Manual Installation
+     - In Nlite do NOT select Operating System Options-->Manual Install and Upgrade for removal
+
+  5. $OEM\$1 and $OEM\$$ Folders were NOT copied, but
+     ren_fold.cmd was changed such that $OEM\$1 and $OEM\$$ folders are copied
+     as usual to systemdrive (usually C:\) and systemroot (usually C:\WINDOWS) respectively.
+     For anything else you want to copy from USB-Drive, you can add similar lines to ren_fold.cmd,
+     which is executed at T-9 by the Section SetupParams of winnt.sif file
+
+Insert Added to ren_fold.cmd on 22 feb 2008
+
+IF EXIST %usbdrive%\$WIN_NT$.~LS\$OEM$\$1\nul (
+  xcopy %usbdrive%\$WIN_NT$.~LS\$OEM$\$1\*.* "%systemdrive%\" /i /k /e /r /y /h 
+)
+
+IF EXIST %usbdrive%\$WIN_NT$.~LS\$OEM$\$$\nul (
+  xcopy %usbdrive%\$WIN_NT$.~LS\$OEM$\$$\*.* %systemroot% /i /k /e /r /y /h 
+)
+
+     NLite does not make an $OEM$ folder for Registry Tweaks and UserAccounts.
+     NLite makes in i386 folder the file NLITE.IN_  with Registry Tweaks and UserAccounts Info.
+
+  6. Install From USB-Harddisk Requires to Change Option 0) in the Menu Screen: USB-Harddisk instead of USB-stick
+     Because that makes that rdummy.sys is used and this is essential for using USB-Harddisk.
+     rdummy.sys makes Fixed USB-Harddisk seen in XP Setup as Removable Device.
+     FOR USB-Harddisk make 1900 MB partition at beginning of the USB-Harddisk
+     Use FAT Format and Set Active OR use PeToUSB to Format such partition
+     Without Set Active you will get DISK BOOT FAILURE
+
+     USB-Harddisk will get during XP Setup DriveLetter D: and migrate.inf cannot change that.
+     After First Logon there is only 1 USB-Harddisk partition visible as Removable Drive.
+     After XP Setup and Reboot for second Logon than 
+     all partitions of USB-Harddisk will become visible as Fixed Local Drives
+     and the highest partition number of USB-Harddisk will get DriveLetter D:
+     This reversal and use of DriveLetters might be unwanted and consequently
+     the use of USB-stick for XP Setup is Preferred 
+
+  7. BSOD 0x0000007B during text mode of Setup.
+     On some motherboards USB booting is tricky, common example are many Dell systems. 
+
+     You may try the modified ntdetect.com as mentioned here Or use File Hex_NTDETECT_COM.txt
+     http://www.msfn.org/board/0x0000007B-Blue-Screen-Error-Text-Setup-t112630.html&st=3 
+     Copy and paste all in Tiny Hexer (freeware), select HEX TEXT, 
+     save as ntdetect.com and put it in USB stick root, filesize must become 47,596 bytes.
+
+     Enabling AHCI in a system BIOS will cause a 0x7B Blue Screen of Death STOP error (INACCESSIBLE_BOOT_DEVICE)
+     on installations of Windows XP where AHCI/RAID drivers for that system's chipset are not installed.
+     AHCI enables hot-plugging of SATA drives and requires for XP special drivers. Vista is AHCI compatible.
+     http://en.wikipedia.org/wiki/Advanced_Host_Controller_Interface
+     Solution: Before Install Change your SATA BIOS Setting from AHCI into IDE Controller or Compatibility
+
+     For Install of XP on a modern system with SATA Drives
+     it is needed to use DPsBase.exe http://driverpacks.net/DriverPacks/
+     for Integrating in your XPSOURCE BTS DriverPack Massstorage with TXT Mode Enabled.
+     In that case a lot of Extra RAID SCSI and SATA Drivers (about 120 extra) are Integrated which appear in the 
+     $WIN_NT$.~BT XP BootFolder and can prevent a lot of XP Install Boot Problems
+
+     From jaclaz: http://www.911cd.net/forums//index.php?showtopic=21364&st=5
+     If it's a BLUE Screen Of Death, possibly a 0x0000007b error, it is NOT related to CHS/LBA, 
+     a "BLACK" screen with messages like "Non system disk..." or "invalid bootsector...." can be CHS/LBA related, 
+     but if it's a BSOD, it happens AFTER the initial booting phase, when system files (drivers) are being loaded.
+
+
+  8. "Insert Windows XP Professional SP2 CD" Error during the TXT-Mode Setup
+     Setup is looking for a CD which occurs when MsDosInitiated="0"
+     The Correct value for Setup from USB-Drive is MsDosInitiated="1"
+     Check your winnt.sif file in $WIN_NT$.~BT folder.
+     Solution: Use the winnt.sif file supplied with USB_MultiBoot.zip
+     For Unattended Install give your key in productkey="XXXXX-XXXXX-XXXXX-XXXXX-XXXXX" and remove leading ; 
+     Remove Any Floppy Disk / CD / DVD 
+      A:\winnt.sif file with MsDosInitiated="0" might ask Unwanted for Install from CD
+
+  9. It should work just fine with Install Win XP x64 as long as you are not installing from USB hard disk, 
+     where rdummy.sys is used. That driver is not compiled for x64, 
+     if there is any programmer, willing to rewrite the code for us please don't hesitate to do so 
+
+
+=========================================================================================================  
+
+
+B. ***** Description of USB_MultiBoot.cmd Program *****
+
+   Program  USB_MultiBoot.cmd  Prepares Windows XP Setup LocalSource for Copy to Bootable USB-Drive.
+   Also Updating Existing USB-Drive having NTLDR Bootsector and Multi BOOT.INI Menu is possible.   
+   The Bootable USB-Drive is used for Install of Windows XP on Computer Harddisk.
+   Forum Install XP From USB:
+   http://www.msfn.org/board/Install-XP-USB-f157.html&s=9683f094b6e67b3104db0a19925fe5b0
+
+   Guide for MultiBoot USB-stick with boot.ini Menu
+   http://www.911cd.net/forums//index.php?showtopic=20089
+
+   The First Working usb_prep.cmd Program was made by ilko_t based on the Procedure 
+   he has developed with help of jaclaz, porear, cdob and wimb and described in 
+   http://www.msfn.org/board/boot_install_USB_key_t61384.html&st=199
+   MakeBS.cmd and binifix4.cmd used by USB_MultiBoot.cmd were made by jaclaz to 
+   Create the USB-Drive BootSector File and for Fixing boot.ini on Harddisk
+   
+   Adding MultiBoot Support, improving and testing of the USB_MultiBoot.cmd Program was done by wimb
+   The code for making Windows XP Setup Bootfolder $WIN_NT$.~BT by Parsing DOSNET.INF was made by wimb
+   In this way launching winnt32.exe /noreboot .... was avoided, which would otherwise
+   delete LocalSource folder $WIN_NT$.~LS in ROOT of ANY Drive, e.g. existing on USB-Harddisk or USB-stick.
+
+   A very important step in the development of the XP Setup from USB-Drive Procedure
+   was given by cdob for the WriteProtect of the USB-Drive with migrate.inf during TXT Mode of Setup
+   Without the WriteProtect $WIN_NT$.~LS Folder and partly $WIN_NT$.~BT Folder will be Removed
+   during XP Setup, so that the USB-Drive would be Usable Once.
+   But Fortunately this Problem was solved and the USB-Drive can be used many times for XP Setup.
+
+   For GUI Mode of Setup at T-1 the same problem of Delete of Setup Folders was solved by ilko_t
+   by temporary renaming $WIN_NT$.~BT $WIN_NT$.~LS and txtsetup.sif using ren_fold.cmd at T-9 and
+   undoing this action with undoren.cmd with a GUIRunOnce at Windows First Logon.
+
+   rdummy.sys of Anton Bassov makes Fixed USB-Harddisk seen in XP Setup as Removable Device
+   so that Install of XP from USB-Harddisks is possible as well thanks to ilko_t
+
+   Principles of Install XP from USB, ilko_t in http://www.911cd.net/forums//index.php?showtopic=20089&st=21
+
+   The principles- Windows Setup determines the type of the installation media- for CD/DVD use I368, 
+   for hard disk type- use $win_nt$.~bt for boot portion and Text mode Setup itself and ~ls for the source.
+   $win_nt$.~bt and ~ls are hardcoded in setupldr.bin and setupdd.sys. 
+   Hex editing that gives you another possible boot and source. 
+   "SetupSourcePath=..." in txtsetup.sif is ignored when installing from HD media.
+   This must be launched from Setupldr.bin. 
+   Have a different versions of the latter, hexedited in order to start the different sources.
+   Setupldr.bin can be chainloaded directly from grub4dos GRLDR, or from a bootsector, loaded by NTLDR. 
+   Having a few bootsectors, calling setupXP1.bin, setup2k31.bin and so on gives you the ability 
+   to launch the different setupldr.bin's from NTLDR.
+
+   Whether you'd like to use NTLDR and different bootsectors or grub4dos/GRLDR is your choice.
+
+
+
+   ************* Use of VBScript with cscript.exe and wscript.echo ******************************
+
+   VBScript was used for making GUI enhancements for the USB_MultiBoot.cmd Batch Program.
+   Using these scripts can be simply removed by Renaming folder u_script in no_script.
+   I don't know, but may be this is needed for Windows 2000.
+
+   When a .vbs script file is executed by cscript.exe from a Command Window,
+   then the wscript.echo of VBScript is send as output of cscript to that Command Window 
+   instead of giving for the wscript.echo a GUI pop-up.
+
+   When a .vbs script is executed by doubleclick then a wscript.echo statement 
+   is giving as you can try just only a GUI pop-up message with the echo of the return value
+   e.g. displaying the return value of a VBScipt Function.
+
+   The return value of the VBScript Function given as output of cscript to the Command Window,
+   can be evaluated by using the FOR /F command according to: 
+
+      FOR /F "tokens=*" %%A IN ('CSCRIPT.EXE //NoLogo u_script\FolderSel.vbs') DO SET src_ok=%%A
+
+   This mechanism enables the possibility to use GUI enhancements in a CMD Batch Program.  
+
+   Rob van der Woude gives very valuable information on this subject.
+   SEE: http://www.robvanderwoude.com/usermessages.html
+   And a lot of handy Windows Script Host Examples, among which BrFolder.vbs implemented as FolderSel.vbs
+   http://www.robvanderwoude.com/wshexamples_b.html#B
+
+   MsgBox References: 
+   http://www.w3schools.com/vbscript/func_msgbox.asp
+   http://msdn2.microsoft.com/en-us/library/sfw6660x.aspx
+
+   For Info on Batch Programs
+   http://www.ss64.com/index.html
+   http://www.robvanderwoude.com/batchfiles.html
+   http://www.microsoft.com/resources/documentation/windows/xp/all/proddocs/en-us/batch.mspx?mfr=true
+
+   Drive Info via ASP Drive Object - FreeSpace   TotalSize   Ready  and FileSystem
+   http://www.w3schools.com/asp/asp_ref_drive.asp
+
+
+:: ==========================================================================================================================
+:: ====================================== USB_MultiBoot.cmd =================================================================
+:: ==========================================================================================================================
+
+     Start Program USB_MultiBoot.cmd - The Flow of the Program is Shown below:
+
+   
+     Program - USB_MultiBoot_10.cmd  -  06 June 2008 - Date = %DATE% %TIME:~0,8%
+   
+     Prepares MultiBoot USB-Drive provided with Windows XP Setup LocalSource 
+     Supports Booting: MS-DOS  FREEDOS  BartPE  WinPE 2.0 and Setup Windows XP
+     GRUB4DOS Menu with DOS FLOPPY IMAGES + Linux + Vista Setup and SYSLINUX Menu
+   
+     *** BEFORE YOU START: ***  Use USB-stick with High Read/Write Speed
+     For Vista OS SET User Account Control OFF - XP OS is Preferred for Speed 3x
+     FOR USB-Harddisk make 1900 MB partition at beginning of the USB-Harddisk
+     Use FAT Format and Set Active OR use PeToUSB to Format such partition
+     OR make USB-Harddisk with NTFS Format and NTLDR BootSector using Windows XP 
+     Multi-Partition an USB-stick after using INSTALL_DUMMY.cmd for dummydisk
+   
+     HELP SEE: http://www.msfn.org/board/install-XP-USB-t111406.html 
+     Use RyanVM Integrator or nLite to Integrate UpdatePacks in your XPSOURCE 
+     Integrate in your XPSOURCE BTS DriverPack Massstorage with TXT Mode Enabled
+     Using DPsBase.exe in 1 minute from http://driverpacks.net/DriverPacks/
+   
+     OEM or nLite winnt.sif File is Auto Changed for Install of XP from USB
+     For UNATTENDED XP Install use the build in Auto Edit UserData Setup
+     Give ProductKey and TimeZone used in Current_winnt.sif Copy of your winnt.sif
+     Remove all other Removable Drives, like USB Backup Harddisks and Memory Cards
+     
+
+    ============================================================================= 
+
+    Format Menu:
+
+    Format USB-Drive with FAT or NTFS - FAT32 is very SLOW for Install of XP
+
+      P) PeToUSB - FAT Format - Max 2 GB
+
+         To Format USB-Drive  : Enable Disk Format with LBA FAT16X
+         Do NOT Select here FileCopy of BartPE
+         FAT Format Supports Direct Booting with MS-DOS using MULTI_CONTENT
+         Install of XP from USB in 30 minutes - Buffalo FireStix 2 GB
+
+     H) HP USB Disk Storage Format Tool V2.0.6 - NTFS Format - use X_CONTENT
+
+         NTFS Format Supports DOS Boot Floppy Images via GRUB4DOS Menu
+         Install of XP from USB in 16 minutes - Corsair Flash Voyager 4 GB
+
+         Do NOT use HP Tool for USB-Harddisks having more than 1 Partition
+         WARNING -  HP Tool Formats whole Disk - Second Partition is Lost
+
+
+      N) No Format - Use USB-Harddisk with FAT or NTFS Format by Windows XP
+         Use Existing Bootable USB-Drive with NTLDR Bootsector
+
+    Adding BartPE to USB-Drive is Possible via Next Menu
+
+    ============================================================================= 
+
+    Main Menu:
+
+    Select XP Setup Source and USB-Drive Target, Then 3 = Make MultiBoot USB-Drive
+
+       0) Change Drive Type, USB-stick OR USB-Harddisk, currently [%usb_type%]
+
+       1) Give XP Setup Source Path = [%xpsource%]
+
+       2) Give USB-Drive Target, currently [%usbdrive%]        X) Copy LANG / WIN98X [%lang_w98%]
+  
+       3) Make MultiBoot and Copy Sources to USB-Drive     F) LogFile [%logtype%] 
+  
+       C) Add USB Content Source,  now [%usbconfg%]
+       P) Add BartPE Source, currently [%bartpe_dir%]
+       V) Add Vista Setup,   currently [%vista_dir%]
+  
+       B - Select boot.ini  = [!btini!]
+  
+       W - Select winnt.sif = [!wtsif!]
+  
+       M - Select $OEM$ Folder = [%oemd_dir%]
+  
+       E - Edit UserData Setup = [%xpsetup%]    UserName = [!usernm!]
+  
+       Q) Quit    R) Recovery Console [%rec_con%]      S) SYSLINUX Menu [%syslin%]
+                                     
+
+   ============================================================================= 
+    
+   The Program Flow is Recorded in a Simple usb_prep.log file.
+   In the Extended logfile All FileCopy Details are Recorded.
+
+	***** WARNING Existing Folder $WIN_NT$.~LS on USB-Drive Detected   *****
+ 
+
+   Msg_DiskSize.vbs  Msg_FreeSpace.vbs  FolderSize_U.vbs are Used to determine Overflow
+
+:: ==========================================================================================================================
+:: ================= PART 1 - Preparing usb_temp Temporary Folder usb_xpbt  =================================================
+:: ==========================================================================================================================
+
+   Running PeToUSB.exe from Vista results in a bootmgr type BootSector for the USB-Drive
+   It is necessary to Change in this case the BootSector to NTLDR style Using BootSect.exe with:
+   makebt\BootSect.exe /nt52 %usbdrive% /force
+
+   ============================================================================= 
+      NOT NTLDR Type - Vista BOOTMGR Bootsector is Converted to NTLDR BootSector
+   =============================================================================
+
+   Only NTLDR type Bootsectors can be Used for Booting with boot.ini Menu and NTLDR
+
+   *** Make Temporary Folder usb_xpbt with Custom XP Setup BootFiles ***
+
+   Parse DOSNET.INF for making Windows XP Setup Bootfolder $WIN_NT$.~BT in usb_xpbt
+ 
+   Copying Custom files and XP Root files to Temporary Folder usb_xpbt ...
+   binifix4.cmd   migrate.inf    winnt.sif      boot.ini   ren_fold.cmd   undoren.cmd
+   txtsetup.sif   bootfont.bin   ntdetect.com   ntldr      setupldr.bin as xpstp
+
+   Adding lines to TXTSETUP.SIF ....
+   Extra SourceDisksFiles: ren_fold.cmd  undoren.cmd  binifix4.cmd
+
+   Adding rdummy.sy_ to make Fixed USB-Harddisk seen in XP Setup as Removable Device
+   
+   Adding lines to WINNT.SIF ....
+   Extra SetupParams: ren_fold.cmd
+   Extra GuiRunOnce: undoren.cmd  binifix4.cmd
+   For USB-Harddisk Only:  Extra GuiRunOnce: sc config rdummy start= disabled
+
+   $OEM$\CMDLINES.TXT is used for making UserAccounts and install of Registry Tweaks at T-12
+   Info see: http://unattended.msfn.org/unattended.xp/   Reference
+
+   Adding $OEM$ folder with UserAccounts and Registry Tweaks if present ....
+
+   INFO http://driverpacks.net/DriverPacks/overview.php
+
+   Adding Custom presetup.cmd for BTS DriverPacks ....
+   presetup.cmd could give Windows ERROR Alert: No Disk due to Cardreader, Use 4x Continue XP Setup
+   presetup.cmd was changed to limit the range for Finding Drives with OEM TAGFILE
+   presetup.cmd was changed to Delete setupold.exe , necessary for Repair Install Windows XP option
+
+:: ==========================================================================================================================
+:: ======== PART 2 - Backup Bootsector Files, Copy USB Content Source to USB-Drive, Make BootSector Files ===================
+:: ==========================================================================================================================
+
+   USB-Drive - 50 = %u_mb% MB   Existing Folder $WIN_NT$.~LS = !u_LS_folder! MB
+   USB-Drive FREE = !u_free! MB + 50 MB Reserved 
+   Content Source = !u_con! MB   Windows XP Source Folders    = !u_xpfolder! MB
+   BartPE  Source = !u_bart! MB   Vista Source = !u_vista! MB
+
+   ============================================================================= 
+   *** USB-Drive Free Size TOO SMALL for USB Content + XP Source - WARNING  ***
+   ============================================================================= 
+
+   Copy XP Source To USB-Drive - about 15 minutes ?
+  
+   Yes = Copy XP + Extra Sources To USB-Drive
+   No  = Only Copy Extra Sources To USB-Drive
+   Cancel = STOP - End Program
+
+   Making Backups on USB-Drive and Preparing for FileCopy ....
+
+   Copy Files to USB-Drive Start - Date = %DATE% %TIME:~0,8%
+
+   USB Content Source Folder           Copy to USB-Drive is Running ....
+   Please Wait about 5 minutes .....   STOP with [Ctrl][C] 
+   
+   Copy XP BootFiles .....
+   boot.ini  bootfont.bin  ntdetect.com  ntldr
+
+   Make Bootsector Files in btsec Folder ....
+
+
+:: ==========================================================================================================================
+:: ================= PART 3 - Copy XP Source to USB-Drive ===================================================================
+:: ==========================================================================================================================
+
+   ***** USB-Drive Free Size TOO SMALL for XP Source Folder   - WARNING  *****
+
+   ***** WARNING Existing Folder $WIN_NT$.~LS on USB-Drive Detected   *****
+   
+   Yes = Replace Files by Copy of XP Source to USB-Drive - 15 minutes
+   No  = Stop - Update USB-Drive with Total Commander Synchronize Dirs Asymmetric
+
+   Date = !DATE! !TIME:~0,8!
+   $WIN_NT$.~BT Folder                 Copy to USB-Drive is Running ....
+   Please Wait about 5 minutes .....   STOP with [Ctrl][C] 
+
+   Copy Custom txtsetup.sif , setupldr.bin from Temporary usb_xpbt to USB_Drive
+
+   Copy XPSOURCE folders cmpnents and i386 to USB-Drive Folder $WIN_NT$.~LS
+
+   Copy Custom Files from usb_xpbt\$WIN_NT$.~LS to USB-Drive Folder $WIN_NT$.~LS
+
+   Copy Folder OEM from XPSOURCE Folder OEM to USB-Drive Folder OEM
+
+
+:: ==========================================================================================================================
+:: ================= PART 4 - Copy BartPE Source to USB-Drive ===============================================================
+:: ==========================================================================================================================
+
+   USB-Drive - 50 = %u_mb% MB     Existing Folder minint   = !u_mini! MB
+   USB-Drive FREE = !u_free! MB     Existing Folder Programs = !u_prog! MB
+   BartPE  Source = !u_bart! MB
+
+   ***** USB-Drive Free Size TOO SMALL for BartPE Source - End of Program *****
+
+   BartPE Source Folders Programs and I386 as minint are copied to USB-Drive
+
+:: ==========================================================================================================================
+:: ================= PART 5 Finish - COPY VISTA TO USB - Change migrate.inf =================================================
+:: ==========================================================================================================================
+
+:: Create Patched PELDR and Make BartPE BootSector File Or Remove BartPE from boot.ini Menu
+
+:: If No XP Setup Folders - Remove TXT Mode Setup from boot.ini Menu
+
+:: ================= COPY VISTA TO USB =================================================
+
+    USB-Drive - 50 = %u_mb% MB     Existing Folder SOURCES   = !u_sources! MB
+    USB-Drive FREE = !u_free! MB
+    Vista   Source = !u_vista! MB
+
+    ***** USB-Drive Free Size TOO SMALL for Vista Source - End of Program *****
+
+:: ================= END COPY VISTA TO USB =============================================
+
+:: ================== Change migrate.inf ====================================================================================
+
+   MkMigrateInf2.cmd
+
+   Make USB-stick in XP Setup to be Preferred Boot Drive U:  Enter: y
+  
+   For Mixed SATA / PATA Config: Don't change migrate.inf    Enter: n
+
+   For Bootable USB-Harddisk migrate.inf is NOT Changed
+
+:: ==========================================================================================================================
+:: ================= PART 6 - Copy Multiple XP Source for Install from USB-Drive ============================================
+:: ==========================================================================================================================
+
+:: Measure FreeSpace and Compare to XP Source
+
+    USB-Drive - 50 = %u_mb% MB
+    USB-Drive FREE = !u_free! MB + 50 MB Reserved 
+    Win XP  Source = !u_xpfolder! MB
+
+    ***** USB-Drive Free Size TOO SMALL for XP Source - End of Program *****
+
+:: Rename $WIN_NT$.~BT and $WIN_NT$.~LS Folders and Do Patching
+:: Make New BootSector Files for Original XP Source
+
+   Give NEW Name for Original XP in boot.ini Menu
+
+   Give Name of EXTRA XP Source for boot.ini Menu
+
+:: Make BootSector Files
+
+:: Do FileCopy New XP Source
+
+   Customize for $WIN_0%xp_nr%$
+
+:: Set USB-stick BootDrive Letter
+
+   ============================================================================= 
+   *** HELP for Using MultiBoot USB-Drive *** Read Help_USB_MultiBoot.txt File
+   Boot with USB-Drive plugged and Press [Delete] or F2 to Enter BIOS Setup
+   Change BIOS Boot Settings: 
+   Harddisk is First Boot Device Type and USB-Drive is seen as First Harddisk
+   Reboot from USB-Drive and Make Selection from Boot Menu
+   ============================================================================= 
+   ***** HELP for Using USB-Drive for Install of Windows XP: *****
+    
+   First Remove ALL Other USB-Drives ** So Harddisk in Setup gets DriveLetter C 
+   Reboot from USB-Drive and Select  1. TXT Mode Setup Windows XP
+   Use Only C: Drive of Computer Harddisk as Partition for Install of Windows XP
+   and then Select Quick Format with NTFS FileSystem, XP Install is Automatic
+    
+   ***** NEVER UNPLUG USB-Drive ***** Until After First Logon of Windows XP
+    
+   New Harddisk and Creating Partitions after Booting from USB-Drive:
+   Direct after Deleting and Creating New partitions, Quit XP Setup with F3 
+   OR Switch OFF your Computer and Boot in any case from USB-Drive again and 
+   Run 1. TXT Mode Setup again so that DriveLetters get their Correct Value
+   So in this case one Boots ** TWICE ** in the TXT-mode Setup
+     
+   End Program - USB_MultiBoot.CMD will be Closed - Date = %DATE% %TIME:~0,8%
+
+=========================================================================================================  
+
+
+C. ***** NON-STANDARD INSTALLS OF WINDOWS XP AND INSTALL OF WIN2003*****
+
+
+   Install of XP Windows from the bootable USB-Drive 
+   next to WINDOWS on the same or on a different partition of the harddisk, 
+   was realised successfully by proper manually adjustment in advance 
+   of the BOOT.INI file on the USB-Drive.
+
+   Adjust BOOT.INI on USB-Drive: ( Select Correct boot.ini Using Option B) in Menu Screen )
+   For Install on the Second Partition,  change partition(1) in partition(2)
+   For Install Next to WINDOWS,  change WINDOWS to what will be used as Install FoderName, e.g. WINDOWS.51
+   Windows Install Folder Name required according to MS-DOS 8.3 format
+
+   So these non-standard installs are still possible,
+   but require only small changes in the BOOT.INI on the USB-Drive in advance.
+   Otherwise ERROR Message for Setup of WINDOWS XP:  WINDOWS\system32\hal.dll file missing 
+   will orccur on Reboot for GUI Mode.
+
+   Examples of such boot.ini files are Selectable from w_sif folder.
+
+   USB-Repair Install of Windows XP is Supported with the rdisk(1) rule in boot.ini on Harddisk.
+   However, it is advisable to use a Fresh Install of Windows XP in only 30 min.
+   In case of Windows ERROR Alert: No Disk due to Cardreader, Use 4x Continue XP Setup
+
+   ERROR Message for WIN2003: <Windows root>\system32\ntoskrnl.exe file missing
+   indicates Install Foldername does not correspond to foldername in boot.ini
+   For Windows 2003 one has to adjust Manually boot.ini in Advance.
+   In makebt\boot.ini change foldername WINDOWS in WIN2003
+   or don't change boot.ini and use WINDOWS as Install Foldername instead of WIN2003
+
+   ilko_t about Install XP x64 from USB:
+   Seems like StorageDevicePolicies reg. entry works ONLY for XP SP2 32bits.
+   That means for any other windows version in 2000, XP and 2003 families, 
+   many files will be deleted from USB stick during Text Mode phase. 
+   Everything else would work as usual. In order to reuse the stick for another installation, 
+   one would need to make a backup of I386 (and AMD64 for x64) folder(s) on his hard drive 
+   once the stick is ready, and copy these two folders back to stick in $win_nt$.~ls folder. 
+   I am using KillCopy, and tell it to skip all duplicates.
+
+
+=========================================================================================================  
+
+
+D. ***** Further Improvements of (Multi) Bootable USB-Drive: *****
+
+   Using Windows XP Source with Updates and DriverPacks Integrated:
+   first using RyanVM Integrator http://integrator.siginetsoftware.com/index.php?download
+   with Update Packs and Addons http://www.ryanvm.net/forum/index.php?sid=58adec10fb305c75d490d2bd5184b68a
+   and then for DriverPacks using DP Base http://driverpacks.net/DriverPacks/overview.php
+   and for Unattended Install use winnt.sif file http://unattended.msfn.org/unattended.xp/ 
+
+   $OEM$\CMDLINES.TXT can be used for making UserAccounts and install of Registry Tweaks at T-12
+   On first logon the Extracted BTS DriverPacks are deleted, which normally takes a long time,
+   because SystemRestore copies them to System Volume Information folder.
+   The Disable_SystemRestore.reg Registry Tweak prevents this action, so that first logon is much faster.
+
+   It is essential to integrate BTS DriverPack Mass Storage with Text mode enabled.
+   This approach makes the Install Procedure most suitable for a great variety of computers.
+   Make a Ghost System Backup after Setup has completed.
+   Then Use Computer Custom Driver-CD OR Use the other DriverPacks Manually when Updating Drivers.
+   The extraction and deletion of these large DriverPacks would take a lot of time during Setup. 
+
+
+   Guide for MultiBoot USB-stick with boot.ini Menu made by wimb
+   FROM: http://www.911cd.net/forums//index.php?showtopic=20089
+
+   In this Guide is described How to Make a MultiBoot USB-stick, where boot options
+   as MS-DOS, FREEDOS 1.0, GRUB4DOS, BartPE, TXT-mode Setup Windows XP, WinPE 2.0 and SYSLINUX 
+   can be used directly from boot.ini Menu.
+
+   The booting mechanism of NTLDR with boot.ini Menu and the use of Bootsector Files in boot.ini 
+   has been excellently explained by jaclaz
+   http://www.911cd.net/forums//index.php?showtopic=16980&st=8
+
+
+=========================================================================================================  
+
+E. ***** Install Multiple XP from USB *****
+
+cdob an ilko_t have found a way to combine different versions of XP for Install from USB
+
+
+---------------------------------------------------------------------------------
+
+cdob
+http://www.msfn.org/board/Install-Multiple-OS-USB-t114543.html&st=7
+
+http://www.msfn.org/board/Installing-Unattended-USB-Thumb-Drive-t81788.html&st=7
+
+Txtsetup.sif [SetupData] SetupSourcePath is ignored at USB.
+
+Using a different directory set: 
+change setupldr.bin and setupdd.sys. 
+
+I get: given a USB hard disk:
+
+File txtsetup.sif renamed to txtset01.sif
+Folder $WIN_NT$.~BT renamed to $WIN_01$.~BT
+
+setupldr.bin hexedited: 
+txtsetup.sif changed to txtset01.sif
+$WIN_NT$.~BT changed to $WIN_01$.~BT
+
+--------------------------------------------------------------------------------
+
+ilko_t
+http://www.msfn.org/board/Install-Multiple-OS-USB-t114543.html&st=18
+
+Thanks to ilko_t for explaining:
+http://www.msfn.org/board/SOLVED-Install-Multiple-XP-USB-t114543.html&st=31
+
+How to Search in File $WIN_NT$.~BS\setupdd.sy_ for string $WIN_NT$.~LS using TinyHexer
+expand -r setupdd.sy_
+TinyHexer Open File setupdd.sys and Search with: Unicode (little endian) and Ignore case
+Search and replace of the $win_nt$.~ls string is preferred to be done with GSAR 
+
+From andy_le2k 
+See: http://www.msfn.org/board/SOLVED-Install-Multiple-XP-USB-t114543.html
+
+Thanks to everybody who made this possible for me - especially these superstars: jaclaz, ilko_t, cdob and wimb
+
+I just want to list the steps I took below, I can't promise that it will work for all of you but it worked for me.
+
+01 - Make XP1 Source using usb_multiboot.cmd
+
+02 - Rename $WIN_NT$.~BS and $WIN_NT$.~LS to $WIN_01$.~BS and $WIN_01$.~LS
+
+03 - Rename SETUPLDR.BIN to XPS01 and rename TXTSETUP.SIF to TXTSET01.SIF
+
+04 - Make XP2 Source using usb_multiboot.cmd
+
+05 - Rename $WIN_NT$.~BS and $WIN_NT$.~LS to $WIN_02$.~BS and $WIN_02$.~LS
+
+06 - Rename SETUPLDR.BIN to XPS02 and rename TXTSETUP.SIF to TXTSET02.SIF
+
+07 - HEX Edit XPS01 replace every reference of "$WIN_NT" to "$WIN_01"
+- HEX Edit XPS01 replace every reference of "txtsetup" to "txtset01"
+
+08 - HEX Edit XPS02 replace every reference of "$WIN_NT" to "$WIN_02"
+- HEX Edit XPS02 replace every reference of "txtsetup" to "txtset02"
+
+09 - EXPAND setupdd.sy_ to setupdd.sys located in your ~BS folders
+- For $WIN_01$.~BT\setupdd.sys run "GSAR -i -o -s$:x00W:x00I:x00N:x00_:x00N:x00T:x00$:x00.:x00~:x00L:x00S:x00 -r$:x00W:x00I:x00N:x00_:x000:x001:x00$:x00.:x00~:x00L:x00S:x00 setupdd.sys"
+- For $WIN_02$.~BT\setupdd.sys run "GSAR -i -o -s$:x00W:x00I:x00N:x00_:x00N:x00T:x00$:x00.:x00~:x00L:x00S:x00 -r$:x00W:x00I:x00N:x00_:x000:x002:x00$:x00.:x00~:x00L:x00S:x00 setupdd.sys"
+
+10 - MAKECAB setupdd.sys for each of the ~BS folders
+
+11 - Use MakeBS3.cmd (located in your usb_multiboot package under \makebt) 
+"MakeBS3.cmd [USB_DRIVE_LETTER]:\XPS01" and 
+"MakeBS3.cmd [USB_DRIVE_LETTER]:\XPS02"
+- This will make 2 boot sector files in your [USB_DRIVE_LETTER]:\btsec folder named
+XPS01.bs and XPS02.bs
+
+12 - EDIT boot.ini and add the lines "C:\btsec\XPS01.bs" and "C:\btsec\XPS02.bs"
+
+13 - In \$win_01$.~ls\I386\ren_fold.cmd change
+
+SET TAGFILE=\$WIN_NT$.~BT
+
+ren %USBDRIVE%\txtsetup.sif txtsetup.bak
+ren %USBDRIVE%\$WIN_NT$.~BT WIN_NT.BT
+ren %USBDRIVE%\$WIN_NT$.~LS WIN_NT.LS
+
+to
+
+SET TAGFILE=\$WIN_01$.~BT
+
+ren %USBDRIVE%\txtset01.sif txtset01.bak
+ren %USBDRIVE%\$WIN_01$.~BT WIN_01.BT
+ren %USBDRIVE%\$WIN_01$.~LS WIN_01.LS
+
+
+In \$win_01$.~ls\I386\undoren.cmd change
+
+SET TAGFILE=\$WIN_NT$.~BT
+
+ren %USBDRIVE%\txtsetup.bak txtsetup.sif
+ren %USBDRIVE%\WIN_NT.BT $WIN_NT$.~BT
+ren %USBDRIVE%\WIN_NT.LS $WIN_NT$.~LS
+
+to
+
+SET TAGFILE=\$WIN_01$.~BT
+
+ren %USBDRIVE%\txtset01.bak txtset01.sif
+ren %USBDRIVE%\WIN_01.BT $WIN_01$.~BT
+ren %USBDRIVE%\WIN_01.LS $WIN_01$.~LS 
+
+14 - Repeat the above for the batch files in \$win_02$.~ls\ making sure you replace 01 with 02 
+
+
+=========================================================================================================  
+
+F. ***** Install Vista from USB *****
+
+See http://www.msfn.org/board/Install-Vista-USB-t111506.html
+    http://www.msfn.org/board/vista-t114092.html
+
+After booting with boot.ini menu, one can select GRUB4DOS Menu with the option to
+launch VISTA Setup directly by chainload of bootmgr on any partition of any harddisk.  
+It also possible to boot first with Windows PE 2.0 and then run VISTA Setup from a different partition. 
+
+So Vista and XP Setup can coexist on a single partition USB-stick having NTLDR (XP) Bootsector and boot.ini menu. 
+
+By the way I just copied 2.8 GB Vista Setup files using XP as OS in 16 minutes  
+to a normal 8 GB Corsair Flash Voyager USB-stick earlier prepared with USB_MultiBoot.cmd 
+
+After booting from the stick with boot.ini Menu, 
+I selected Option 12 of GRUB4DOS Menu to launch Vista Setup from the stick.
+Vista Setup took 24 minutes in total, but therefore
+it is needed to unplug the USB-Drive just at the First Restart of Vista Install.  
+Earlier unplugging gives Install Error (cannot be solved).
+Without unplugging it took 47 minutes, where in the extra 23 minutes it seemed that nothing
+was occurring at the computer harddisk. In this period the USB-light was flashing all the time,
+but on later inspection at first sight there seemed to be no changes there. Strange long wait ....  
+
+If you want to combine it with Vista x64 on the same USB-stick:
+
+The Vista Setup Files can also be located in a Separate Folder on your USB-stick
+e.g. Copy 32-bits Vista Setup Files to Folder Vista_32 on NTFS USB-stick prepared with USB_MultiBoot6.cmd
+Copy to the Root of your USB-stick the contents of the Windows PE 2.0 x86 ISO Folder.
+Boot in this case via boot.ini Menu > GRUB4DOS Menu > Select Windows PE 2.0 
+Then the Windows Boot Manager Menu Appears and one can launch Windows PE 2.0
+In Win PE 2.0 Command Window > Select USB-Drive and Folder with Vista Setup > Run Vista Setup
+This idea was tested with success for the 32-bits version of Vista.  
+Booting with Windows PE 2.0 does not take extra time,
+since it is otherwise part of Vista Setup.
+
+According to andy_le2k:
+Also WinPE2 can run both x86 and x64 files so u can launch both setups from one PE.
+So the following approach is not needed.
+
+Similarly one might Install the 64-bits version of Vista from a Vista_64 Folder, but I am not able to test it.
+Booting with Windows PE 2.0 x86 and x64 will be different, but this problem can be overcome.
+It is possible to edit the BCD Store on the USB-stick such that the Windows Boot Manager Menu
+allows to Select either boot32.wim or boot64.wim from the Windows PE 2.0 sources Folder.
+For this purpose we use in XP OS the Vista file bcdedit.exe to edit file boot\bcd on the USB-stick.
+
+1. Copy Vista file bcdedit.exe to your XP C:\WINDOWS\system32 folder
+2. Open in XP Command Window with path C:\WINDOWS\system32
+bcdedit.exe /? and bcdedit.exe /? /set give a lot of help info for using bcdedit.exe
+
+3. The present BCD store entries for Windows PE 2.0 on USB-Drive P: are obtained by running the command
+CODE
+C:\WINDOWS\system32>bcdedit /store P:\boot\bcd /enum
+
+Windows Boot Manager
+--------------------
+identifier              {bootmgr}
+description             Windows Boot Manager
+locale                  en-US
+inherit                 {globalsettings}
+default                 {default}
+displayorder            {default}
+toolsdisplayorder       {memdiag}
+timeout                 30
+
+Windows Boot Loader
+-------------------
+identifier              {default}
+device                  ramdisk=[boot]\sources\boot.wim,{7619dcc8-fafe-11d9-b411-000476eba25f}
+path                    \windows\system32\boot\winload.exe
+description             Windows Setup
+locale                  en-US
+inherit                 {bootloadersettings}
+osdevice                ramdisk=[boot]\sources\boot.wim,{7619dcc8-fafe-11d9-b411-000476eba25f}
+systemroot              \windows
+detecthal               Yes
+winpe                   Yes
+ems                     Yes
+
+4. Now as a test we are going to Edit the BCD Store to change boot.wim in boot32.wim by using
+CODE
+C:\WINDOWS\system32>bcdedit /store P:\boot\bcd /set {default} DEVICE ramdisk=[boot]\sources\boot32.wim,{7619dcc8-fafe-11d9-b411-000476eba25f}
+
+C:\WINDOWS\system32>bcdedit /store P:\boot\bcd /set {default} OSDEVICE ramdisk=[boot]\sources\boot32.wim,{7619dcc8-fafe-11d9-b411-000476eba25f}
+
+It turns out that booting with the Windows PE 2.0 Renamed as boot32.wim enables
+also to Install 32-bits version of Vista by using
+Win PE 2.0 Command Window > Select USB-Drive and Folder with Vista Setup > Run Vista Setup
+So the idea of using Separate Folders for 32-bits and 64-bits Vista Setup Files is useful  
+
+It will be possible to add to the WinPE x86 BCD Store a new entry for launching Windows PE 2.0 x64 by
+CODEC:\WINDOWS\system32>bcdedit /store P:\boot\bcd /copy {default} /d "Windows PE 2.0 x64"
+and use then the entries found in the WinPE x64 BCD Store to make in the WinPE x86 BCD Store 
+with a similar edit as given above the correct entries which are suitable for boot64.wim
+
+More Interesting Info on bcdedit and Vista:
+http://www.multibooters.co.uk/cloning.html
+http://www.multibooters.co.uk/
+
+I have tried also to edit the BCD store of Root folder boot\bcd such that Vista_32\SOURCES\BOOT.WIM
+was launched directly from the Windows Boot Manager Menu.
+Booting was OK, but when arriving at the point of Install Now there were complaints about missing drivers  
+and Install.wim could not continue. So this approach was not successful. 
+
+
+=========================================================================================================  
+
+
+G. ***** USB-stick Requirements and Benchmarking *****
+
+   A tool to test your USB key (speed...), Fast and Convenient:
+   http://www.flashmemorytoolkit.com/
+   My Apacer HT203 with nominally Read/Write Speed 30/18 MByte/sec is benched as 11/8 MByte/sec
+
+   Very nice program to test your sticks speed, AFAIK backing up data is not required, but you never know... 
+   http://www.hugesystems.com/supportspace/bench32.exe
+
+   Test on many different USB sticks, thread is in bulgarian, but pictures give very clear idea:
+   http://www.hardwarebg.com/forum/showthread.php?t=92033
+
+
+From: http://www.abxzone.com/forums/f55/where-get-atto-44211.html
+
+ATTO
+http://www.attotech.com
+
+Directory
+http://www.attotech.com/software/app1.html
+
+The Disk Benchmark is part of this Utility package.
+Windows SCSI Utilities Version 1.63 
+http://www.attotech.com/software/files/ept163.exe
+
+All you probably will want to use is the benchmark utility. Out of the 3 programs installed.
+Since you actually don't have an ATTO SCSI card in your system (unless you really do), 
+I would recommend not using the SCSI utilities that are also installed.
+
+You can go into the C:\ATTO directory where the program was installed and copy these three files:
+bench32.cnt
+bench32.exe
+bench32.hlp
+And copy them to a safe place because you don't need to Install the utility again, 
+you just need these three files. 
+You can now delete the C:\ATTO folder because you have a safe copy of the 3 files 
+that make up the ATTO Disk Benchmark.
+
+Just run Bench32.exe directly, whenever you want to run the ATTO Disk Benchmark program.
+
+You will want to leave all the settings at Default.
+Also you can look and see how others in the Forums are using the settings in the Benchmark program, 
+to make sure you are comparing Apples with Apples..... Or should we say PC's with PC's! *heh heh heh*
+
+Be sure to choose the Drive you want tested before pressing the "START" button.
+
+=========================================================================================================  
+

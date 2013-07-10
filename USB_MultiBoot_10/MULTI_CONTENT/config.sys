@@ -1,0 +1,58 @@
+[menu]
+menuitem=UMBP, Boot with  umbpci
+menuitem=UMBC, Boot with  umbpci + CD Support
+menuitem=EMMX, Boot with  emm386
+menuitem=EMMC, Boot with  emm386 + CD Support
+menuitem=NUMB, Boot no upper mem
+menuitem=NUMC, Boot no upper mem + CD Support
+menuitem=CLEAN, Clean boot (don't load any drivers)
+menudefault=UMBP,30
+
+[UMBP]
+device=\dosdev\umbpci.sys
+device=\dosdev\lowdma.sys
+device=\dosdev\qhimem.sys
+
+[UMBC]
+device=\dosdev\umbpci.sys
+device=\dosdev\lowdma.sys
+device=\dosdev\qhimem.sys
+devicehigh=\dos\oakcdrom.sys /D:mscd001 
+
+[EMMX]
+device=\dos\himem.sys /testmem:off /v
+device=\dos\emm386.exe /v x=d000-d8ff h=128 noems notr
+; devicehigh=\dos\ifshlp.sys
+
+[EMMC]
+device=\dos\himem.sys /testmem:off /v
+device=\dos\oakcdrom.sys /D:mscd001 
+device=\dos\emm386.exe /v x=d000-d8ff h=128 noems notr
+; devicehigh=\dos\ifshlp.sys
+
+[NUMB]
+device=\dos\himem.sys /testmem:off /v
+; device=\dos\ifshlp.sys
+
+[NUMC]
+device=\dos\himem.sys /testmem:off /v
+device=\dos\oakcdrom.sys /D:mscd001 
+; device=\dos\ifshlp.sys
+
+[CLEAN]
+
+[COMMON]
+; device=\dos\display.sys con=(ega,,1)
+; country=031,437,\dos\country.sys
+; install=\dos\mode.com con cp prepare=((437) \dos\ega.cpi)
+; install=\dos\mode.com con cp select=437
+; install=\dos\keyb.com us,,\dos\keyboard.sys
+switches=/f
+break=off
+dos=high,umb
+files=60
+buffers=30
+stacks=9,256
+lastdrive=z
+set os=ms
+shell=\dos\command.com /e:1024 /p

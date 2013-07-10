@@ -1,0 +1,103 @@
+ ³              ³     ³       ³      ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄ¿   ³     ³      ³     ³
+ back=ESC       ³     ³       ³      ³  Close help:   ³   ³     ³      ³ Quit³= Alt-F4
+ close      Search, next  Go to line ³ << back (ESC)  ³   ³     ³      ³ ÄÄÄÄÙ
+ file               (F3)   (number)  ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ   ³     ³      ³
+                                                          ³     ³      ³   Maximum line size: 1Kb
+                                                 Return: Ä´     ³      ³   No automatic line breaks for long lines
+ Search starting in current        jump back (see below)  ³     ³      ³
+ window; case ignored.             ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ     ³      ³
+ Next: from cursor position                Top / End of text  ÄÄ´      ³
+                                           = keys Home / End    ³      ³
+ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿             ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ      ³
+ Grab & drag (drag mouse):   ³                  Horizontal shift ÄÄÄÄÄÄ´
+ text position is grabbed,   ³                  = cursor left/right    ³
+ and moved behind the window ³                  with Ctrl key:         ³
+ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ                  leftmost/rightmost     ³
+                                                ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+
+ Commmand keys: initial letters                       Scroll bar up/down  ÄÄ>>
+ Move cursor/ruler: Alt+cursor                            by line / page
+                                                     = cursor/page up/dn
+ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ Double click or ENTER: GO from index or view linked file (see below) ³
+ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+ More info (click):
+                        1. Notes
+                        2. RET feature
+                        3. GO from index
+                        4. Linked text files
+                        5. Copyright
+
+
+ 1. Notes
+ --------
+ Horizontal shifting is possible only if the text is wider than the window.
+ Line (number) and column in top line monitor the cursor position.
+ LFN's (long file names) are supported under Win9x and Win2000 (not NT).
+ INI file (colors): see comments in SHOW.INI
+
+
+ 2. RET feature
+ --------------
+ When you jump somewhere (by line, going to top/end, or starting a search),
+ the current location is saved, so you can easily return thru the RET button
+ or by "R" key. Another RET will go back to where you came from (the RET
+ function also saves its location).
+
+ Important: the top of text (cursor in line #1) is never saved (you would
+ not need that anyhow). Instead, the previously saved location is preserved.
+ This means: from anywhere in your text you can jump to the top, do a search,
+ and then return to the original point.
+
+
+ 3. GO from index
+ ----------------
+ In a text document with a numbered index a double click on an index line
+ will jump to the associated text section.
+
+ This is how it works: Upon double click the first string of the line is
+ taken as search string. Any characters allowed, delimited by blank space.
+
+ SHOW searches for this string (ahead in text) only at the beginning of lines.
+ Thus the associated paragraph must begin with the same string (index numbers
+ or keyword). Leading spaces are always ignored. "Search next" if necessary.
+ Back to index by RET.
+
+ The feature can be turned off in the INI file.
+
+
+ 4. Linked text files
+ --------------------
+ Linked (text) files can be opened by double click. To return to the previous
+ file click on the << button or hit ESC. Nesting up to 10 levels.
+
+ A linked file name is denoted by the ">" prefix.
+
+ Examples:      >README.TXT
+                >"another text.one"
+                >"more files\also a valid link.txt"
+
+ SHOW locates the file by inserting the path of the currently viewed file.
+                                        ---------------------------------
+ Also possible: file name with full path (with or without drive).
+ The ">" prefix is NOT used in this case.
+
+ Examples:      C:\Autoexec.bat
+                \Windows\WIN.INI
+ Notes:
+ Links must be enclosed in blank space (unless at beginning/end of line)
+ Trailing comma or semicolon is also accepted.
+
+ Take care that an index line (see #3, above) does not include anything
+ that can be confused with a file link.
+
+ The link feature can be turned off in the INI file.
+
+
+ 5. Copyright
+ ------------
+ (c) 2001, Horst Schaeffer, horst.schaeffer@gmx.net
+           http://home.nikocity.de/horst.muc/int/
+
+ Freeware, no waranties, no liability of any kind.
+ *

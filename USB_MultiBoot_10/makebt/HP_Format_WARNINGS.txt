@@ -1,0 +1,15 @@
+***** WARNINGS *****
+Be very carefull with writing of bootsectors with HDHacker, bootsect.exe or mkbt.exe
+Be always aware you make your changes on the right drive. Otherwise loss of DATA may be the result.
+It is advisable to first remove all other removable drives, like USB Backup Harddisks and Memory Cards,
+so that they cannot be involved by mistake in the writing process.
+
+HP USB Disk Storage Format Tool Destroys Partition Table of USB-Harddisk and
+cannot be used to Format one single partition of USB-Harddisk. 
+Using HP Tool makes Data partitions of USB-Harddisk inaccessible !!
+So don't use HP USB Disk Storage Format Tool to Format USB-Harddisk.
+
+Using PeToUSB.exe is SAFE, it can only Format partitions with size less than 2 GB
+without destroying the existing partition table, so that Data partitions are still accessible.
+
+Use of USB_MultiBoot.cmd and everything in this Guide is COMPLETELY at your own risk. 

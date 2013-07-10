@@ -1,0 +1,13 @@
+ 
+ Program - USB_MultiBoot_10.cmd - 06 June 2008 - Date = 2009-10-08 21:33:04 
+ 
+ 
+ Prepares MultiBoot USB-Drive provided with Windows XP Setup LocalSource 
+ 지원하는 부팅종류: MS-DOS  BartPE  WinPE 2.0 and Setup Windows XP 
+ 
+ GRUB4DOS로 가능한 부팅: DOS FLOPPY IMAGES + Linux + Vista Setup + SYSLINUX Menu 
+ 
+ *** 시작하기전에 : *** 되도록이면 빠른 속도의 USB메모리를 사용해주세요. 
+ 비스타유저는 UAC를 꼭 끄세요 - XP에서의 작업이 3배 빠릅니다. 
+ 외장하드 이용자분들은 1900MB의 파티션을 디스크 앞부분에 따로 만들어야 합니다. 
+ 

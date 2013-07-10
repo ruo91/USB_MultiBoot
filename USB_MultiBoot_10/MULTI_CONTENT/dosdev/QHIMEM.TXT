@@ -1,0 +1,364 @@
+
+                       QHIMEM -- DOS XMS Manager, V3.8
+                     ===================================
+
+1. Description
+   -----------
+
+   QHIMEM is a DOS driver that functions as an XMS memory manager.   It is
+   a replacement for HIMEM, FDXMS and other similar drivers.
+
+   QHIMEM actively supports the V3.70+ UMBPCI driver by Uwe Sieber.   Many
+   users like UMBPCI, as it takes far less memory than EMM386.   If UMBPCI
+   loads first to enable it, QHIMEM then loads directly into upper-memory.
+   QHIMEM can then provide both upper and XMS memory to a DOS system.   It
+   includes an "I-O catcher" similar to QDBOOT and can "catch" diskette or
+   hard disk I-O above 640K.   Such I-O is done through the low memory DOS
+   workspace buffer, to avoid DMA trouble in UMBPCI "Shadow RAM".    For a
+   small "XMS only" system, QHIMEM will default to low memory loading with
+   no I-O "catcher", when UMBPCI is not present.   QHIMEM takes 2496 bytes
+   in UMBPCI upper-memory with its usual 32 XMS "Handles" up to 3456 bytes
+   with 128 "Handles".   NO low memory is used, and QHIMEM needs no "boot"
+   driver for itself nor QDBOOT/QDREL for disks!   When QHIMEM defaults to
+   loading in low memory, it takes 2048 bytes with 32 XMS "Handles", up to
+   3008 bytes with 128 "Handles".
+
+   QHIMEM also supports V4.49 and V4.95 EMM386 (MS-DOS V6.22 or V7.10) and
+   the JEMM386 driver.   It has 10-byte XMS "Handles" and other items that
+   are needed by "EMM386" drivers.   JEMM386/EMM386 require an XMS manager
+   to be present, so QHIMEM loads first in "boot" mode with its /B switch.
+   This puts it into "temporary" memory.    After JEMM386/EMM386 loads and
+   enables it, QHIMEM is loaded in upper-memory without a /B switch.    It
+   then copies all temporary data and takes over XMS work from its "boot".
+   With its normal 32 XMS "Handles", only 384 bytes stay in low memory, so
+   JEMM386/EMM386 can access the "Handles" at a fixed address.   All other
+   QHIMEM logic resides in upper-memory, allowing DOS users to load larger
+   programs in memory below 640K.   When loaded by its "boot", QHIMEM uses
+   1728 bytes of upper-memory and 384 to 1344 bytes of low memory, for its
+   table of 32 to 128 XMS "Handles".   An extra 240 to 480 bytes of upper-
+   memory may be used, if XMS setup is "delayed" by DOS until after QHIMEM
+   loads.   As with UMBPCI, QHIMEM can also load stand-alone in low memory
+   with the "EMM386" drivers (no "boot" first).   It then takes 2048 bytes
+   using 32 XMS "Handles", up to 3008 bytes with all 128 "Handles".
+
+   V3.8+ QHIMEM now sets specific DOS driver "names" indicating how it has
+   been loaded.   If its /H switch is given and the driver loads in UMBPCI
+   upper-memory, a 32-byte driver "header" remains in low memory, with the
+   driver name XMSUUUU0.   Automatic installation "scripts" can then issue
+   "if exist XMSUUUU0" to determine if UMBPCI followed by QHIMEM have been
+   loaded.   /H and the "header" are needed, since UMBPCI and QHIMEM leave
+   NOTHING in low memory otherwise!   If the driver defaults to low memory
+   (no UMBPCI) or is loaded stand-alone, its name is XMSXXXX0, same as the
+   MS-DOS HIMEM.   When its /B switch is given and the driver "boots" into
+   upper-memory, its "Handles" table in low memory gets the name XMSBOOT0,
+   and the driver keeps the name XMSXXXX0.    Thus, automatic installation
+   "scripts" can test for a "boot" load by issuing "if exist XMSBOOT0" and
+   can test for the driver itself by issuing "if exist XMSXXXX0".
+
+   QHIMEM is written to XMS V3.0 Specifications and will handle up to 4-GB
+   of XMS memory.    An 80386 or newer CPU with at least 512K of "extended
+   memory" is required.    Any system with at least 2-Megabytes of RAM can
+   use QHIMEM.    See section 4 below, for setting XMS "Handles" using the
+   /N switch and for other switch options.   For more details about QHIMEM
+   see section 7 below.
+
+   V3.8+ QHIMEM adds the driver "name" support noted above.    Many Thanks
+   to Erwin Veermans for this useful idea!   V4.8+ QCACHE and V4.2+ QCDROM
+   are upgraded to recognize V3.8+ QHIMEM and continue using its "fast XMS
+   move" logic.
+
+   *** NOTE ***
+     Due to incessant, unfavorable posts on FreeDOS forums, this driver is
+     PROHIBITED from use with FreeDOS and will now ABORT if loaded in that
+     system.   Use of the driver in all other DOS systems (MS-DOS, EDR-DOS
+     etc.) is still supported and is unaffected.
+
+
+2. NO Warranty
+   -----------
+
+   QHIMEM is offered as "free software", as-is and "use at your own risk",
+   and WITHOUT any warranty,  not even the implied warranties of MERCHANT-
+   ABILITY nor of FITNESS for ANY particular purpose!
+
+   Driver questions or comments may be addressed to the website of Johnson
+   Lam, <johnson@tmfc.net>.    The writer of QHIMEM in the U.S.A. will try
+   to reply and to keep the drivers working O.K.
+
+
+3. Revisions
+   ---------
+
+   V3.8  14-Jan-07  QHIMEM now sets specific driver "names", for use by
+                      an automatic installation "script" file.   Thanks
+                      to Erwin Veermans for this idea!
+
+   V3.7   9-Jan-07  QHIMEM error setting 128 "Handles" is corrected.
+   V3.6   4-Jan-06  QHIMEM is now an "all in one" driver!
+   V3.5  31-Dec-06  QXHIMEM loads in low memory if UMBPCI is not found.
+                      Thanks to Erwin Veermans for this idea!
+   V3.4  17-Dec-06  QXHIMEM now supports UMBPCI and JEMM386/EMM386.
+   V3.3   6-Dec-06  QXUMBPCI deleted as V3.70 UMBPCI runs with QXHIMEM,
+                      Thanks to Uwe Sieber!   FreeDOS use PROHIBITED!
+   V3.2  30-Oct-06  Added "all in one" QXHIMEM driver and QXUMBPCI.
+   V3.1  15-Aug-06  Fixed a SERIOUS "Handles" error in QHMBOOT/QHIMEM.
+   V3.0   7-Aug-06  QHIMEM2 and QHMBOOT2 added for full EMM386 support.
+
+   V2.9  31-Jul-06  Fixed possible QHIMEM "Int 2Fh/15h" logic errors.
+   V2.8  11-Jul-06  Faster "XMS move" logic for use by QDMA and QCDROM.
+   V2.7  27-Jun-06  Fixed QHIMEM "132 Handles" error if /N is invalid.
+   V2.6  23-Jun-06  QHMBOOT memory area can be set using the /M switch.
+   V2.5   4-Jun-06  QHIMEM now has /386 and /486 switches for old CPUs.
+   V2.4   1-Jun-06  /T switch and better extended-memory logic added.
+   V2.3   7-May-06  QHIMEM now uses only 64 bytes of low-memory.
+   V2.2   6-May-06  Fixed a QHIMEM "VDS lock" error affecting EMM386.
+   V2.1   1-May-06  QHIMEM/QHMBOOT advanced to V2.1, to support EMM386.
+
+   V1.4  29-Apr-06  Added "Reallocates" for complete XMS V3.0 support.
+   V1.3  22-Apr-06  Null-handle logic fixed, minor speed improvements.
+   V1.2  15-Apr-06  Fixed 1 major and 2 minor "bugs".
+   V1.1  13-Apr-06  Added 4-Gigabyte capability, most XMS V3.0 logic.
+   V1.0  10-Apr-06  Original release.
+
+
+4. Switch Options
+   --------------
+
+   QHIMEM uses the following switch options:
+
+      /386   Specifies a system using an old 80386 or 80486 CPU.   A newer
+      /486      CPU does not need any switches.    When using "boot" mode,
+                /386 and /486 are ignored by the "boot" driver and must be
+                specified when the main driver loads later.
+
+      /B     Specifies "boot" mode.   /B causes the driver to be loaded in
+                temporary memory, until upper-memory is enabled via UMBPCI
+                or EMM386.   Without /B, the driver loads in normal memory
+                and can take over XMS functions from its "boot".   See the
+                CONFIG.SYS examples in section 5 below.
+
+      /H     Requests that QHIMEM leave a 32-byte DOS driver "header" with
+                the name XMSUUUU0 in low memory, if it loads after UMBPCI.
+                NO low memory is used with UMBPCI when /H is omitted.   /H
+                helps automatic installation "scripts" check if UMBPCI and
+                QHIMEM are present, as noted in section 1 above.   /H will
+                be ignored if UMBPCI is unused or has not loaded properly.
+
+      /Mn    Specifies a "temporary" memory space, used to load the driver
+                in "boot" mode, or used for UMBPCI upper-memory I-O before
+                DOS posts a "workspace" buffer.   Values are:
+
+                  /M1 = 00010300h (64K).      /M5 = 00050300h (320K).
+                  /M2 = 00020300h (128K).     /M6 = 00060300h (384K).
+                  /M3 = 00030300h (192K).     /M7 = 00070300h (448K).
+                  /M4 = 00040300h (256K).     /M8 = 00080300h (512K).
+
+                If /M is omitted, /M5 is assumed and the 320K area will be
+                used.   NOTE that some DOS systems may not load at address
+                0 upward and often have temporary data anywhere in memory!
+                /Mn allows adjusting the driver "temporary" memory address
+                to find a "safe" area for use.   /M is ignored when QHIMEM
+                is not using UMBPCI nor "boot" mode.
+
+      /Nnn   Specifies how many XMS "Handles" can be used by DOS programs.
+                The value nn may be 32, 48, 64, 96, or 128.    Without /N,
+                32 "Handles" are set.   If /T asks for BIOS "E820h" tests,
+                a minimum 48 "Handles" are set, if the driver loads stand-
+                alone or with UMBPCI.   In "boot" mode, any /N values from
+                32 to 128 are accepted, and this value is used by the main
+                driver when it loads later.   The normal 32 "Handles" work
+                fine on most systems, and /N can usually be omitted.   Big
+                systems doing much XMS work may require more "Handles".
+
+      /Tn    Specifies the BIOS requests to try in getting extended memory
+                as follows:
+
+                   /T1   "E820h" requests only.
+                   /T2   "E801h" request only.
+                   /T3   "E820h" requests first, then an "E801h" request.
+                   /T4   Old 64-Megabyte request only.
+                   /T5   "E820h" requests, then an old 64-MB request.
+                   /T6   "E801h" requests, then an old 64-MB request.
+                   /T7   "E820h", then "E801h", then an old 64-MB request.
+
+                /T can usually be omitted, which causes /T6 to be assumed.
+                For details on BIOS memory requests and when /T is needed,
+                see section 7 below.   In "boot" mode, /T must be used for
+                the "boot" driver, as it must test for upper-memory first.
+                /T given when the main driver loads later will be ignored.
+
+      /W     Specifies use of the DOS "workspace" buffer, for upper-memory
+                I-O if loading with UMBPCI.   MS-DOS V5.0+ or similar must
+                be present.   When /W is omitted, an "old" DOS is used, or
+                "workspace" logic is not provided by DOS, QHIMEM shall set
+                its 512-byte buffer with a 32-byte "header" in low memory.
+                /W is ignored when the driver is not used with UMBPCI.
+
+   For all switches, a dash may replace the slash, and a lower-case letter
+   may be used if desired.
+
+
+5. Setup and Configuration
+   -----------------------
+
+   QHIMEM is loaded by the CONFIG.SYS file.    Your CONFIG.SYS should have
+   a command line similar to:
+
+         DEVICE [HIGH] = [path] QHIMEM.SYS [/386] [/486] [/B] [/Mn]
+                                           [/Nnn] [/Tn] [/W]
+
+   Examples:   DEVICE=C:\BIN\QHIMEM /N48 /W
+
+               DEVICE=C:\DOS\QHIMEM.SYS /M6 /T7 /B
+
+               DEVICEHIGH=C:\BIN\QHIMEM.SYS /486
+
+   When V3.70+ UMBPCI and QHIMEM are used, no "boot" drivers are required!
+   In this case, UMBPCI loads first to enable upper-memory, then QHIMEM to
+   provide it and XMS for DOS, and then other drivers.   Use of JEMM386 or
+   EMM386 is optional, and UMBPCI can be omitted for an "XMS only" system.
+   An example CONFIG.SYS file for V3.70+ UMBPCI and QHIMEM is as follows:
+
+      SHELL=C:\DOS\COMMAND.COM C:\DOS /E:512 /P
+      DEVICE=C:\BIN\UMBPCI.SYS                            [Can be omitted]
+      DEVICE=C:\BIN\QHIMEM /N32 /W
+      DOS=HIGH,UMB
+      DEVICE=C:\BIN\EMM386.EXE I=B000-B7FF X=C400-EFFF NOEMS    [Optional]
+      DEVICEHIGH=C:\BIN\QCACHE.SYS /F /L
+      DEVICEHIGH=C:\BIN\QCDROM.SYS /D:CDROM1 /UF /L
+          ..
+          ..  Etc.
+          ..
+
+   If QHIMEM is loaded stand-alone, it must be the first DOS system driver
+   to load, and it must load in LOW memory, as in the following example:
+
+      SHELL=C:\DOS\COMMAND.COM C:\DOS /E:512 /P
+      DEVICE=C:\BIN\QHIMEM.SYS /N32
+      DOS=HIGH,UMB
+      DEVICE=C:\DOS\EMM386.EXE I=B000-B7FF NOEMS        [Or JEMM386, etc.]
+          ..
+          ..  Etc.
+          ..
+
+   When QHIMEM is used with JEMM386/EMM386, it is normally loaded first in
+   "boot" mode, followed by the "EMM" driver, then QHIMEM loads finally in
+   upper-memory.    /L switches for QCACHE/QDMA/QCDROM are unneeded, since
+   the "EMM" drivers do not set "Shadow RAM" as upper-memory.   An example
+   CONFIG.SYS file using the QHIMEM "boot" procedure is as follows:
+
+      SHELL=C:\DOS\COMMAND.COM C:\DOS /E:512 /P
+      DEVICE=C:\BIN\QHIMEM.SYS /N32 /B
+      DOS=HIGH,UMB
+      DEVICE=C:\DOS\EMM386.EXE I=B000-B7FF NOEMS        [Or JEMM386, etc.]
+      DEVICEHIGH=C:\BIN\QHIMEM.SYS
+      DEVICEHIGH=C:\BIN\QCACHE.SYS /F
+      DEVICEHIGH=C:\BIN\QCDROM.SYS /D:CDROM1 /UF
+          ..
+          ..  Etc.
+          ..
+
+   Note that QDBOOT/QDREL are usually unneeded if using the "EMM" drivers,
+   and QHIMEM sets its "I-O Catcher" only when it finds UMBPCI is present.
+   If unusual systems require the "I-O Catcher", to deal with upper-memory
+   I-O, QHIMEM can still be loaded with QDBOOT/QDREL, as follows:
+
+      SHELL=C:\DOS\COMMAND.COM C:\DOS /E:512 /P
+      DEVICE=C:\BIN\QHIMEM.SYS /N32 /B
+      DOS=HIGH,UMB
+      DEVICE=C:\BIN\QDBOOT.SYS /R /W
+      DEVICE=C:\DOS\EMM386.EXE I=B000-B7FF NOEMS      [Or JEMM386/UMBPCI]
+      DEVICEHIGH=C:\BIN\QDREL.SYS                     [For QDBOOT /R only]
+      DEVICEHIGH=C:\BIN\QHIMEM.SYS
+      DEVICEHIGH=C:\BIN\QDMA.SYS /F /X /L             [Or QCACHE as above]
+      DEVICEHIGH=C:\BIN\QCDROM.SYS /D:CDROM1 /UF /L
+      DEVICEHIGH=C:\BIN\QCACHE.SYS /N                 [/N when using QDMA]
+          ..
+          ..  Etc.
+          ..
+
+   In these examples, QHIMEM with /B handles XMS requests temporarily, and
+   QDBOOT (if used) puts drivers safely into upper-memory.   EMM386/UMBPCI
+   loads next to enable upper-memory.   QDREL (if used) can put the QDBOOT
+   routines in upper-memory.   The main QHIMEM can load next.   QCACHE (or
+   QDMA, when used along with QCACHE) should load after QHIMEM, so it then
+   can request its XMS memory buffer.   When the QCDROM driver is used, it
+   must load following QCACHE (or QDMA, if used) so it may "share" the XMS
+   buffer.   The QCACHE driver should be loaded after QDMA or other stand-
+   alone hard disk drivers.    When no other disk drivers are used, QCACHE
+   can be loaded directly after QHIMEM.   See the QDMA and QCDROM "README"
+   files for more details.    All other drivers in CONFIG.SYS (SETVER.EXE,
+   ANSI.SYS etc.) can then be loaded in any desired order.
+
+
+6. Error Reporting
+   ---------------
+
+   QHIMEM returns normal XMS codes for any errors.   These codes are shown
+   in the XMS V3.0 Specification, which is available from Microsoft and at
+   other sources on the Internet.
+
+
+7. SPECIAL NOTES
+   -------------
+
+   With UMBPCI, QHIMEM loads in upper-memory BEFORE the memory is declared
+   to a DOS system.   The memory used by QHIMEM is not shown directly in a
+   memory display, as QHIMEM's memory is not part of the DOS memory lists.
+   Note that memory displays with UMBPCI begin with a block having a 009Ch
+   offset, or greater with more than 32 XMS "Handles".    The upper-memory
+   "skipped" by this offset is occupied by QHIMEM.
+
+   Three types of extended-memory requests are supported by BIOS programs.
+   Modern BIOS programs normally accept all three, but some may NOT, and a
+   pre-1994 BIOS can take only "old" requests!   QHIMEM uses the /T switch
+   to specify what BIOS extended-memory requests are desired.   These are:
+
+     A) BIOS "Int 15h, AX=E820h" requests, that offer a list of all memory
+          areas.   ROM, ACPI, mapped I-O, or other unusable memory "holes"
+          at any addresses are noted.   This is the newest (1995) and best
+          BIOS method.   "E820h" requests are complex and take more logic.
+          So, the /T switch must "ask" for them to be used.
+
+     B) The BIOS "Int 15h, AX=E801h" request, that returns 2 memory ranges
+          below and above 16-Megabytes.   This can specify a memory "hole"
+          below 16-MB.   Any "hole" past 16-MB will limit the upper range!
+          This request is used if a BIOS does not accept "E820h".    It is
+          standard for QHIMEM, as it requires less logic and works on most
+          modern systems.   Slightly less memory than "E820h" may be found
+          as "E801h" returns only whole 65K blocks above 16-MB and ignores
+          any "leftovers".
+
+     C) The BIOS "Int 15h, AH=88h" request, that returns 1 memory range of
+          up to 64-Megabytes.    Any memory "hole" below 64-MB limits this
+          range!   This is the "old" 1980s BIOS method and is used with an
+          older system or when neither "E820h" nor "E801h" are accepted.
+
+   Users can first try QHIMEM without a /T switch.   This causes it to use
+   a default of /T6 and to ask for memory with an "E801h" request, then an
+   old 64-MB request where needed.   If omitting /T causes XMS trouble, or
+   not all XMS memory is found, users may try /T4, /T2 and /T1 separately,
+   to see which memory requests their BIOS will accept.    A pre-1994 BIOS
+   should ignore "E801h" and accept the old 64-MB request.    If not, such
+   older systems will need a /T4 switch to load QHIMEM.
+
+   XMS V3.0 Specifications say to delay memory setup until after the first
+   driver request.    With UMBPCI or when loaded stand-alone, QHIMEM saves
+   XMS setup routines temporarily in its "Handles" tables.   Using "E820h"
+   memory-test logic requires a 48 "Handle" table.   Without "E820h" logic
+   a 32 "Handle" table is O.K.    When QHIMEM loads using "boot" mode, its
+   "Handles" table in low memory is not used by XMS setup logic (the logic
+   stays with its "boot" in temporary memory), so a 32 "Handles" table can
+   always be used when running with JEMM386/EMM386.
+
+   QHIMEM has the /386 or /486 switches to denote an old CPU.   Protected-
+   mode XMS moves are done by the BIOS, but some BIOS logic does XMS moves
+   with interrupts off!   To avoid "losing" any interrupts, XMS drivers do
+   protected-mode moves in small sections, with interrupts enabled between
+   sections.   Pentium, AMD K5/K6/K7/Athlon, and other newer CPUs are fast
+   enough to allow 16K data sections.   An 80486 CPU needs 4K sections and
+   an 80386 CPU needs 1K sections, so they will not disable interrupts for
+   too long!   Real-mode moves, as with UMBPCI, are not affected.   QHIMEM
+   in "boot" mode is temporary and uses 1K sections on all CPUs.   /386 or
+   /486 are needed only when the main QHIMEM driver loads after "boot".
+

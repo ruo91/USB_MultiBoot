@@ -1,0 +1,5 @@
+Windows Registry Editor Version 5.00
+
+;NoLowDiskSpaceChecks won't check if you are low on diskspace and pop up a balloon telling you.
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer]
+"NoLowDiskSpaceChecks"=dword:00000001

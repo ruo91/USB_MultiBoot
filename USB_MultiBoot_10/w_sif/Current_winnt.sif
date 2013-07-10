@@ -1,0 +1,42 @@
+;SetupMgrTag
+[Data]
+floppyless="1"
+MsDosInitiated="1"
+UnattendedInstall="Yes"
+	MsDosInitiated=No
+
+[Unattended]
+UnattendMode=FullUnattended
+OemSkipEula=Yes
+OemPreinstall=No
+	DriverSigningPolicy=Ignore
+	NonDriverSigningPolicy=Ignore
+
+[GuiUnattended]
+AdminPassword=*
+EncryptedAdminPassword=NO
+OEMSkipRegional=1
+TimeZone=230
+OemSkipWelcome=1
+
+[UserData]
+ProductID=12345-12345-12345-12345-12345
+FullName="UserXP"
+OrgName="Microsoft"
+ComputerName=*
+
+[Identification]
+JoinWorkgroup=WORKGROUP
+
+[Networking]
+InstallDefaultComponents=Yes
+
+
+;
+; Edited by DriverPacks BASE 8.12.4
+; http://www.driverpacks.net/
+;
+
+
+[GUIRunOnce]
+	command9="%SystemDrive%\DPsFnshr.exe"

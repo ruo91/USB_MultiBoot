@@ -1,0 +1,15 @@
+[Version]
+Signature = "$Windows NT$"
+
+[Addreg]
+HKLM,"SYSTEM\MountedDevices",,0x00000010
+HKLM,"SYSTEM\ControlSet001\Control\StorageDevicePolicies","WriteProtect",%REG_DWORD%,1
+
+[Strings]
+;Handy macro substitutions (non-localizable)
+REG_SZ = 0x00000000
+REG_BINARY = 0x00000001
+REG_DWORD = 0x00010001
+REG_MULTI_SZ = 0x00010000
+REG_SZ_APPEND = 0x00010008
+REG_EXPAND_SZ = 0x00020000

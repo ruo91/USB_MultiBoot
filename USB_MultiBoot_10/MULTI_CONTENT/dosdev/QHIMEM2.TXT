@@ -1,0 +1,152 @@
+
+                      QHIMEM -- DOS XMS Manager, V2.3
+                    ===================================
+
+1. Description
+   -----------
+
+   QHIMEM is a DOS driver that works as an XMS memory manager.   It can be
+   used instead of HIMEM, FDXMS or other XMS drivers.   QMIMEM is intended
+   to work with the UMBPCI Upper-Memory driver.    It has also been tested
+   with V4.49 EMM386 [MS-DOS V6.22] and V4.95 EMM386 [MS-DOS V7.10] and it
+   works O.K. with EMM386.   QHIMEM can handle up to 4-Gigabytes of system
+   memory.   It is written to the V3.0 XMS Specifications.
+
+   Many users prefer the UMBPCI upper-memory driver written by Uwe Sieber.
+   UMBPCI takes much less low-memory than EMM386.   When used with UMBPCI,
+   QHIMEM can be loaded into upper-memory by the QHMBOOT driver.   QHMBOOT
+   is a small DOS "boot" driver.   It must be loaded first, and it will do
+   "temporary" XMS work, until UMBPCI and QHIMEM are loaded.   QHIMEM will
+   "see" QHMBOOT, and it will copy all of QHMBOOT's data and take over XMS
+   work.   Only 64 bytes stay in low-memory, so other programs that "link"
+   to QHMBOOT can now talk to QHIMEM instead.   When QHIMEM takes over XMS
+   work, QHMBOOT will "disappear"!   This saves from 1800 to 2500 bytes of
+   low-memory.   DOS users can then run bigger programs!
+
+   QHIMEM takes 1888 bytes of memory using its regular 32 "handles", up to
+   2560 bytes with all 128 "handles".   See section 4 below for how to set
+   the XMS memory "handles" with the /N switch.   QHIMEM requires an 80386
+   or newer CPU and at least 512K "extended memory".    Any system with at
+   least 2 Megabytes of RAM can use QHIMEM.
+
+
+2. NO Warranty
+   -----------
+
+   QHIMEM is offered as free software, "as is" and "use at your own risk",
+   and WITHOUT any warranty,  not even the implied warranties of MERCHANT-
+   ABILITY, nor of FITNESS for ANY particular purpose!
+
+   QHIMEM questions may be addressed to Johnson Lam at <johnson@tmfc.net>.
+   The writer of QHIMEM in the U.S.A. will try to reply and to keep QHIMEM
+   working O.K.
+
+
+3. Revisions
+   ---------
+
+   V2.3   7-May-06  QHIMEM now uses only 64 bytes of low-memory.  Other
+                      minor logic improvements.
+
+   V2.2   6-May-06  Corrected a QHIMEM "VDS lock" error that may affect
+                      EMM386 users.   UMBPCI users were NOT affected.
+
+   V2.1   1-May-06  QHIMEM and QHMBOOT are now version 2.1, which stops
+                      EMM386 "Warning" messages!
+
+   V1.4  29-Apr-06  Added full XMS Reallocate request handling.  QHIMEM
+                      now meets all XMS V3.0 requirements.
+
+   V1.3  22-Apr-06  "Null Handle" logic fixed, minor speed improvements.
+
+   V1.2  15-Apr-06  Fixed 1 major and 2 minor "bugs".
+
+   V1.1  13-Apr-06  Added 4-Gigabyte capability and most XMS V3.0 logic.
+
+   V1.0  10-Apr-06  Original release.
+
+
+4. Switch Options
+   --------------
+
+   QHIMEM has one switch option:
+
+      /Nnn   Specifies how many XMS "handles" can be used by DOS programs.
+                The value nn can be 16, 32, 48, 64, 96, or 128.   If /N is
+                not given, 32 "handles" will be used.   Bigger numbers are
+                for "big" systems that use much XMS memory.   16 "handles"
+                is for very small systems and should be tested first!
+
+   A dash may replace the slash, and a lower-case "n" may be used.    Note
+   that QHMBOOT has no switches and always has 16 "handles", as it is only
+   a temporary "boot" driver.
+
+
+5. Setup and Configuration
+   -----------------------
+
+   QHIMEM is loaded by the CONFIG.SYS file.   Your CONFIG.SYS should have:
+
+           DEVICE[HIGH] = [path]QHIMEM.SYS [/Nnn]
+
+   Examples:    DEVICE=C:\DOS\QHIMEM.SYS
+                DEVICEHIGH=C:\BIN\QHIMEM.SYS /N48
+
+   When used by itself, QHIMEM must be the first system driver loaded, and
+   it must load in low-memory, as in the following example:
+
+                SHELL=C:\DOS\COMMAND.COM C:\ /E:500 /P
+                DEVICE=C:\BIN\QHIMEM.SYS
+                DOS=HIGH
+                    .
+                    .
+                    .
+
+   When using UMBPCI and loading QHIMEM into upper-memory, QHMBOOT must be
+   loaded first, then UMBPCI and finally QHIMEM, as shown in the following
+   example:
+
+                SHELL=C:\DOS\COMMAND.COM C:\ /E:512 /P
+                DEVICE=C:\BIN\QHMBOOT.SYS
+                DOS=HIGH,UMB
+                DEVICE=C:\BIN\QDBOOT.SYS
+                DEVICE=C:\BIN\UMBPCI.SYS I=C800-EFFF NOEMS
+                DEVICEHIGH=C:\QHIMEM.SYS /N48
+                DEVICEHIGH=C:\BIN\QDMA.SYS /O /D /F /L
+                DEVICEHIGH=C:\BIN\QCDROM.SYS /D:MYCDROM /UF /L
+                DEVICEHIGH=C:\DOS\SETVER.EXE
+                DEVICEHIGH=C:\DOS\ANSI.SYS
+                    .
+                    .
+                    .
+                FILES=20
+                FCBS=10
+                BUFFERS=10
+                STACKS=9,256
+                LASTDRIVE=H
+
+   The QDBOOT driver can also be used to load the QDMA hard-disk driver in
+   upper-memory.   This is shown above.   QHIMEM must load first after the
+   UMBPCI driver.   QHIMEM can then "serve" other drivers that ask for XMS
+   memory, as QDMA does.    QHMBOOT and QDBOOT can be used together, as in
+   the above example, with no problem.
+
+
+6. Error Reporting
+   ---------------
+
+   QHMBOOT or QHIMEM return normal XMS codes for errors.   These codes are
+   listed in the V3.0 XMS Specification, which is available from Microsoft
+   or on the Internet.
+
+
+7. SPECIAL NOTES
+   -------------
+
+   QHIMEM does not use 6-byte or 10-byte "Handles" like other XMS drivers.
+   It uses 7-byte "Handles", which make QHIMEM smaller and still permit up
+   to 4-Gigabytes of XMS memory.    But, some memory display programs like
+   MI.COM expect only the normal "Handles" and may give invalid values for
+   QHIMEM.   A memory display program that permits ANY "Handles" should be
+   used instead.   The "MEM" program from <www.freedos.org> does work O.K.
+

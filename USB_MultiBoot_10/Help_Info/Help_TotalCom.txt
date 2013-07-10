@@ -1,0 +1,73 @@
+
+   Program  USB_MultiBoot.cmd  -  06 June 2008
+
+   Prepares MultiBoot USB-Drive provided with Windows XP Setup LocalSource 
+   Supports Booting: MS-DOS  FREEDOS  BartPE  WinPE 2.0 and Setup Windows XP
+   Supports GRUB4DOS with DOS FLOPPY IMAGES + Linux and Supports SYSLINUX Menu
+
+   Also Updating Existing USB-Drive having NTLDR Bootsector and Multi BOOT.INI Menu is possible.   
+   The Bootable USB-Drive is used for Install of Windows XP on Computer Harddisk.
+
+=========================================================================================================  
+
+
+   ***** Use Total Commander For Update of Existing USB-Drive *****
+
+   Total Commander Synchronize Dirs in Asymmetric mode Results in an Update of the Right Directory
+
+   Use Total Commander For Update of Existing USB-Drive having XP LocalSource Folders:
+
+1. Before the FileCopy of XP Source to USB-Drive starts, it is possible to Leave the USB_MultiBoot.cmd Program
+
+2. Plugin Your USB-Drive having XP LocalSource Folders
+
+3. Start Total Commander
+   Select as Left  Directory Your XP BootFolder as Source Folder:  USB_MultiBoot\usb_xpbt\$WIN_NT$.~BT
+   Select as Right Directory Your USB-Drive   with Target Folder:  $WIN_NT$.~BT
+
+4. Nothing ....
+
+5. Select Commands / Synchronize Dirs ...
+   Select Asymmetric and Subdirs On
+   Select Show - Green and Blue On
+   Select Show - duplicates and singles On ( Default )
+
+6. Select Compare to Start the comparison between the two chosen directories
+
+   The symbol in the middle defines the copy direction, which can be chosen by the end user. 
+   The coloring of the text defines the default copy direction determined by the comparison:
+   Green: Copy from left to right
+   Blue:  Delete on the right side (Asymmetric mode, the file has a Red cross symbol X in the middle)
+
+   Never Make a Blue Arrow because that has a Copy direction from Target to Source (Unwanted)
+   
+   The symbol in the middle is not Selected when the Source File is Older then the Target File.
+   In general Update of such files must be Accepted giving them the Green Arrow,
+   because our Source is always considered better than the USB-Drive Target.
+   An Exception is migrate.inf ( and boot.ini in Root Dir ) which must NOT be replaced on USB-Drive.
+
+   The Bootsector Files SETUPLDR.bs and BackupBS.ori in the btsec folder of the Right Directory 
+   would get in Comparison a Red Cross, but these files must not be Deleted from the USB-Drive.
+   So for these 2 files the Red Cross must be removed by mouseclick.
+
+7. Select Synchronize to Automatically
+   Copy    the Green selected files from Left to Right Dir ( Use No Confirm Overwrites )
+   Deletes the Blue  selected files on the Right Directory ( marked with Red Cross in the middle )
+
+8. Repeat Steps 4-7 for the $WIN_NT$.~LS Folder and the OEM Folder if present in usb_xpbt
+
+9. Select as Left  Directory Your USB_MultiBoot\usb_xpbt Folder
+   Select as Right Directory Your USB-Drive Root Directory as Target
+
+10. Copy txtsetup.sif from the Left Source Dir to the USB-Drive Target Directory on the Right side
+
+11. Select as Left  Directory Your XP Source Folder
+    Select as Right Directory Your USB-Drive   with Target Folder:  $WIN_NT$.~LS
+    Repeat Steps 5-7 To Update XP LocalSource Folder on your USB-Drive
+
+Instead of the Copy of about 6000 files in 15 minutes to USB-Drive,
+one needs to copy may be only 150 files in the Asymmetric Synchronize Update.
+
+***** GOOD LUCK *****
+
+=========================================================================================================  

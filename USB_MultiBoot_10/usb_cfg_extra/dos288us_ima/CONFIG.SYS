@@ -1,0 +1,67 @@
+[menu]
+menuitem=UMBP, Boot with  umbpci
+menuitem=UMBC, Boot with  umbpci + CD Support
+menuitem=EMMX, Boot with  emm386
+menuitem=EMMC, Boot with  emm386 + CD Support
+menuitem=NUMB, Boot no upper mem
+menuitem=NUMC, Boot no upper mem + CD Support + SCSI CD
+menuitem=CLEAN, Clean boot (don't load any drivers)
+menudefault=UMBP,30
+menucolor=7,0
+
+[UMBP]
+device=umbpci.sys
+device=lowdma.sys
+device=qhimem.sys
+; devicehigh=ifshlp.sys
+
+[UMBC]
+device=umbpci.sys
+device=lowdma.sys
+device=qhimem.sys
+device=oakcdrom.sys /D:mscd001 
+; devicehigh=ifshlp.sys
+
+[EMMX]
+device=himem.sys /testmem:off /v
+device=emm386.exe /v x=d000-d8ff h=128 noems notr
+; devicehigh=ifshlp.sys
+
+[EMMC]
+device=himem.sys /testmem:off /v
+device=emm386.exe /v x=d000-d8ff h=128 noems notr
+device=oakcdrom.sys /D:mscd001 
+; devicehigh=ifshlp.sys
+
+[NUMB]
+device=himem.sys /testmem:off /v
+; devicehigh=ifshlp.sys
+
+[NUMC]
+device=himem.sys /testmem:off /v
+device=oakcdrom.sys /D:mscd001 
+device=btdosm.sys 
+device=flashpt.sys
+device=btcdrom.sys /D:mscd001
+device=aspi2dos.sys
+device=aspi8dos.sys
+device=aspi4dos.sys
+device=aspi8u2.sys
+device=aspicd.sys /D:ASPI001
+; devicehigh=ifshlp.sys
+
+[CLEAN]
+
+[COMMON]
+; device=display.sys con=(ega,,1)
+; country=031,437,country.sys
+; install=mode.com con cp prepare=((437) ega.cpi)
+; install=mode.com con cp select=437
+; install=keyb.com us,,keyboard.sys
+files=60
+buffers=30
+dos=high,umb
+stacks=9,256
+lastdrive=z
+set os=ms
+shell=\command.com /e:1024 /p

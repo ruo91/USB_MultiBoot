@@ -1,0 +1,43 @@
+
+Run Program INSTALL_DRIVERS.CMD
+
+Supports Post XP Setup Install of Drivers with Device Manager by
+Unpacking DriverPacks or OEM Source Folder to Selected Target Drive
+And by Setting DevicePath to Selected Target Driver Folder.
+
+It is also possible to FREE Select a Driver Folder containing
+all needed Drivers for a given Computer collected manually from BTS DriverPacks.
+The Program wil Set DevicePath to Selected Target Driver Folder and Open Device Manager. 
+
+Device Manager : R-Mouse Device - Select Driver Update ....
+Wizard Hardware: NO WinUpdate and Automatic Install of Driver Software
+
+After Driver Update Close Device Manager and Select Next Driver Type from Menu.
+
+END Program - Reset DevicePath - Needed
+
+DriverPacks From http://driverpacks.net/DriverPacks/overview.php
+
+Usefull Links:
+
+UnknownDevices http://www.halfdone.com/Development/UnknownDevices/
+
+SIV  http://siv.mysite.wanadoo-members.co.uk/
+
+SIW  http://www.gtopala.com/
+
+CPU-Z http://www.cpuid.com/cpuz.php
+
+Vista requires to turn User Account Control OFF
+
+
+Best Approach:
+- Make Driver Folder with only all needed Driver Folders collected manually from BTS DriverPacks
+- Start INSTALL_DRIVERS.CMD
+- 2) Select Target Drive with Driver Folder
+- 5) Use Existing  DriverPacks From Target Drive
+- F = Free Select Driver Folder containing needed Drivers only
+- Install Drivers with Device Manager
+- Q = END Program - Reset DevicePath - Needed - Restart Your Computer
+
+

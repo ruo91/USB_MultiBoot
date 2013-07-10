@@ -1,0 +1,43 @@
+; FreeDOS 1.0 Final distro  by Blair Campbell [Blairdude@gmail.com], 
+; last update 2005-08-02 by Blair Campbell [Blairdude@gmail.com]
+; config.sys loads system drivers. Please edit to suit your needs.
+;!SWITCHES=/E
+!SWITCHES=/N
+menucolor=7,0
+MENU     ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+MENU     บ       FreeDOS 1.0 Final (2006-July-30)                            บ
+MENU     ฬอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออน
+MENU     บ   1. FREEDOS + QHIMEM2 + UMBPCI + XDMA (default)                  บ
+MENU     บ                                                                   บ
+MENU     บ   2. FREEDOS + QHIMEM2 + UMBPCI + XDMA + CD                       บ
+MENU     บ                                                                   บ
+MENU     บ   3. FreeDOS +  HIMEM  + EMM386 + XDMA                            บ
+MENU     บ                                                                   บ
+MENU     บ   4. FreeDOS +  HIMEM  + EMM386 + XDMA + CD                       บ
+MENU     บ                                                                   บ
+MENU     บ   5. FREEDOS +  HIMEM                                             บ
+MENU     บ                                                                   บ
+MENU     บ   6. FreeDOS +  HIMEM + CD                                        บ
+MENU     บ                                                                   บ
+MENU     บ   7. FreeDOS Safe Mode  (don't load any drivers)                  บ
+MENU     บ                                                                   บ
+MENU     บ      FreeDOS is a trademark of Jim Hall 1994-2006                 บ
+MENU     ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+MENUDEFAULT=1,30
+
+12?!DEVICE=\DOSDEV\QHIMEM2.SYS
+3456?!DEVICE=\DOSDEV\HIMEM.EXE
+12?!DEVICE=\DOSDEV\UMBPCI.SYS
+12?!DEVICE=\DOSDEV\LOWDMA.SYS
+34?!DEVICE=\DOSDEV\EMM386.EXE X=TEST
+1234?!DEVICEHIGH=\DOSDEV\XDMA.SYS
+24?!DEVICEHIGH=\DOSDEV\XCDROM.SYS /D:FDCD0000
+6?!DEVICE=\DOSDEV\XCDROM.SYS /D:FDCD0000
+1234567?!SHELL=\FREEDOS\COMMAND.COM /E:2048 /F /MSG /P
+!DOSDATA=UMB
+!DOS=HIGH,UMB
+!FILES=50
+!BUFFERS=25
+!LASTDRIVE=Z
+!set os=fd
+

@@ -1,0 +1,22 @@
+
+Windows PE 2.0 is included in the Windows Automated Installation Kit WAIK
+- Download WAIK (about 1 GB) 
+http://www.microsoft.com/downloads/details.aspx?familyid=C7D4BC6D-15F3-4284-9123-679830D629F2&displaylang=en
+
+- Follow the instructions in the WAIK guide to create PE 2.0 files (folder ISO is about 185 MB)
+- Copy the contents of the "ISO" folder created in the proceding step to the root of your USB stick
+- You may Add imagex.exe for Imaging Purposes
+
+In Command Window - Create PE 2.0 and copy imagex.exe Using: 
+copype.cmd x86 c:\winpe_x86
+copy “c:\program files\Windows AIK\Tools\x86\imagex.exe” c:\winpe_x86\iso\
+
+
+Create wimscript.ini file in Root of USB_Drive
+Using Imagex.exe after Booting from Windows PE 2.0:
+
+Image Backup:
+imagex.exe /compress fast /capture c: d:\WIM_XP\xpimage.wim "mijn XP-installatie" /verify
+
+Image Restore:
+imagex.exe /apply d:\WIM_XP\xpimage.wim 1 c:

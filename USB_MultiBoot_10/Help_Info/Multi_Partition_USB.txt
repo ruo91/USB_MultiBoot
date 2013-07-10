@@ -1,0 +1,179 @@
+
+TITLE INSTALL_DUMMY.CMD - Make ALL USB-sticks seen as Fixed Local Harddisk - 06 June 2008
+
+This Batch Program Installs dummy.sys in Your WINDOWS\system32\drivers Folder
+So that After Restart ALL USB-sticks are seen as Fixed Local Harddisks
+
+dummydisk.sys was developed by Anton Bassov
+http://www.codeproject.com/KB/system/soviet_direct_hooking.aspx
+
+Windows Disk Manager can then be used to make New Partitions with NTFS Format
+
+This allows you to MultiPartition an USB-stick and use NTFS FileSystem
+
+- Doubleclick INSTALL_DUMMY.cmd so that dummy.sys is Installed in Your System
+- Restart Your Computer 
+
+Disadvantages:
+
+USB-Drive becomes NOT Boot Drive U: - MkMigrateInf2 does not work for Fixed USB-Drives
+Cardreader is not seen as Removable Drives 
+
+==============================================================================
+
+TITLE REMOVE_DUMMY.CMD - Make ALL USB-sticks seen as Removable Disks
+
+This Batch Program Removes dummy subkey from your HKLM Registry Key
+So that After Restart ALL USB-sticks are seen as Removable Disks
+
+start /wait REG.EXE DELETE HKLM\SYSTEM\ControlSet001\Services\dummy
+
+dummy subkey was Removed from your HKLM Registry, Restart Computer to Activate
+
+==============================================================================
+
+More Info See:
+
+From: http://www.911cd.net/forums//index.php?showtopic=20089&st=24
+
+
+Multi-Partitioning the USB-stick using cfadisk.sys or dummydisk.sys was studied
+
+as follow up on reply of jaclaz in http://www.911cd.net/forums//index.php?showtopic=21362&st=16
+
+I used cfadisk.sys as described by diddy in http://www.911cd.net/forums//index.php?showtopic=18846 
+so that the USB-stick was indeed seen as Fixed Local Disk and patitioning is possible.  
+
+Here is the procedure from diddy for using cfadisk.sys slightly modified by me:
+
+Download Hitachi Microdrive Filter (cfadisk.sys) from http://xpefiles.com/cs/files/folders/hardware/entry616.aspx
+
+Open cfadisk.inf and edit the [cfadisk_device] section 
+by adding an entry with Hardware-id for your USB-stick and removing the others (DiskIBM)
+
+The Hardware-id for your stick is found from 
+Device Manager > Diskdrives (USB-stick) > Properties > Details > 1st entry
+For my 1GB Corsair test USB-stick I get: USBSTOR\DiskCorsair_Flash_Voyager___1.00
+
+
+CODE
+[cfadisk_device]
+%Microdrive_devdesc% = cfadisk_install,USBSTOR\DiskCorsair_Flash_Voyager___1.00
+
+Open Device manager and check for your USB drive in "Disk Drives". 
+Right click on the entry for your drive and select option to update driver. 
+
+* Don't use windows update
+* Install from a list or specific location
+* Don't search. I will choose the driver to install
+* Have disk
+* Browse to location of edited cfadisk.inf
+
+Update and restart windows
+
+If the driver installed successfully your USB stick should now be mounted as a Local Disk not Removable Disk
+
+==============================================================================
+
+Then I tried to use dummydisk.sys of Anton Bassov
+http://www.codeproject.com/KB/system/soviet_direct_hooking.aspx
+
+as described by Dietmar, but was not successful, as found also by diddy.  
+http://www.911cd.net/forums//index.php?showtopic=14181&st=1957
+
+On booting XP from Harddisk, the system was in trouble and changed to ControlSet002
+but dummy.sys belongs to ControlSet001 so that did not work.
+
+The Current ControlSet being used is found in the HKEY_LOCAL_MACHINE\SYSTEM\Select registry key.
+
+I decided to remove the [HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\dummy\Enum] 
+from the proposed Registry Tweak.
+The point is that the Enum Registry key is produced later by the Windows XP System 
+and must not be introduced with the Tweak. 
+
+After using Ghost for Restore of my XP System, I did install dummy.sys again and got success.  
+
+The USB-stick was seen as Fixed Local Harddisk and Partitioning is possible and NTFS Format can be used.
+
+So here is the adapted procedure of Dietmar and diddy which worked for me:
+
+* Downloaded the driver dummydisk.sys
+* Renamed dummydisk.sys to dummy.sys and copied it to C:\WINDOWS\system32\drivers Folder
+* Imported the following file to registry:
+
+
+CODE
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\dummy]
+"Type"=dword:00000001
+"Start"=dword:00000000
+"ErrorControl"=dword:00000001
+"ImagePath"=hex(2):53,00,79,00,73,00,74,00,65,00,6d,00,33,00,32,00,5c,00,44,00,\
+52,00,49,00,56,00,45,00,52,00,53,00,5c,00,64,00,75,00,6d,00,6d,00,79,00,2e,\
+00,73,00,79,00,73,00,00,00
+"DisplayName"="USB-Massenspeichertreiber"
+"Group"="System Reserved"
+"Tag"=dword:00000001
+
+
+After Reboot your USB device is shown at once as Local harddisk. 
+Also, every new connected USB stick is shown as Local harddisk and Partitioning is possible.
+The fact that dummy.sys is NOT USB-stick Specific, makes it more easy to use than cfadisk.sys 
+
+When dummy.sys is Installed, then a with Killdisk Erased USB-stick
+will be initiated by Windows Disk Manager giving it a MBR. 
+Mulptiple Patitions with NTFS Format can be made.
+Setting Active the first partition is needed for booting from the stick.
+
+==============================================================================
+
+Without dummydisk.sys the stick is seen as Removable Device and Disk Manager will NOT intitiate the MBR code,
+but we can use mbrbatch.cmd for Creating and Writing XP-MBR code on the previously Erased USB-stick. 
+
+First mbrbatch.cmd is used from CMD Window to CREATE File my_xp.mbr in mbrbatch directory.
+When the USB-stick is Physical Drive 2 we can WRITE file my_xp.mbr to Drive 2 by:
+
+
+CODE
+mbrbatch.cmd CREATE my_xp.mbr
+mbrbatch.cmd WRITE my_xp.mbr 2
+
+Change the Drive Number 2 for your USB-stick Drive Number seen in XP Disk Manager.
+
+After Disconnecting and Reconnecting the device, Open Windows XP Disk Manager.
+Now it is possible to Create New Partition on USB-stick with Windows Disk Manager.
+
+Allow NTFS Format for Removable Drives by:
+Change USB-stick Drive Properties in "optimize for performance"
+
+Open Windows Explorer allows now to Format USB-stick with NTFS FileSystem.
+
+In this way the USB-stick gets a Harddisk like structure wth MBR and a single NTFS Partition
+similar to what can be made with HP USB Format Tool.
+
+MBRBATCH from jaclaz is a great tool for this purpose. http://www.boot-land.net/forums/?showtopic=3191
+
+More Interesting Info on USB-sticks Properties See: http://www.uwe-sieber.de/usbstick_e.html
+
+==============================================================================
+
+USB_MultiBoot.cmd can be used for realising multiple PE from USB-Drive having two Partitions.
+Simply by running the program twice.  
+
+First BartPE plus XP Setup Folders are Installed on First Partition as usual.
+Then UBCD4Win is Installed on Second Partition, using Empty XX_Content Source Folder and No Copy of XP Source.
+
+In GRUB4DOS menu.lst on First Partition one has to make adjustment for launching UBCD4Win
+
+
+CODE
+title UBCD4Win - Load PELDR From USB-HD 0 - Partition 1
+root (hd0,1)
+chainloader (hd0,1)/PELDR
+
+This works, no problem with manual hexediting and no conflict of PROGRAMS folders 
+
+USB_MultiBoot.cmd does all the work  
+
+==============================================================================

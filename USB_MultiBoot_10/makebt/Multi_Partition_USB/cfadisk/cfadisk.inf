@@ -1,0 +1,74 @@
+[Version]
+Signature="$Windows NT$"
+Class=DiskDrive
+ClassGuid={4D36E967-E325-11CE-BFC1-08002BE10318}
+Provider=%HGST%
+LayoutFile=layout.inf
+DriverVer=12/14/2002,1.00.0000.1
+
+[Manufacturer]
+%HGST% = cfadisk_device
+
+[DestinationDirs]
+cfadisk_copyfiles=12    ; %SystemRoot%\system32\drivers
+gendisk_copyfiles=12    ; %SystemRoot%\system32\drivers
+
+[cfadisk_copyfiles]
+cfadisk.sys
+
+[gendisk_copyfiles]
+disk.sys
+
+; ---------------------
+
+[cfadisk_device]
+%Microdrive_devdesc% = cfadisk_install,USBSTOR\DiskCorsair_Flash_Voyager___1.00
+; %Microdrive_devdesc% = cfadisk_install,IDE\DiskIBM-DSCM-11000__________________________SC2IC801
+; %Microdrive_devdesc% = cfadisk_install,IDE\DiskIBM-DSCM-11000__________________________SC2IC815
+; %Microdrive_devdesc% = cfadisk_install,IDE\DiskIBM-DSCM-11000__________________________SC2IC915
+
+; %Microdrive_devdesc% = cfadisk_install,IDE\DiskIBM-DSCM-10512__________________________SC1IC801
+; %Microdrive_devdesc% = cfadisk_install,IDE\DiskIBM-DSCM-10512__________________________SC1IC815
+; %Microdrive_devdesc% = cfadisk_install,IDE\DiskIBM-DSCM-10512__________________________SC1IC915
+
+; %Microdrive_devdesc% = cfadisk_install,IDE\DiskIBM-DMDM-10340__________________________MD2IC501
+; %Microdrive_devdesc% = cfadisk_install,IDE\DiskIBM-DMDM-10340__________________________MD2IC601
+
+; debug on VMWare/special drive
+; %Microdrive_devdesc% = cfadisk_install,IDE\DiskVMware_Virtual_IDE_Hard_Drive___________00000001
+; %Microdrive_devdesc% = cfadisk_install,IDE\DiskIC25N040ATCS04-0________________________CA4OA71A
+
+[cfadisk_addreg]
+HKR,,"LowerFilters",0x00010008,"cfadisk"
+
+[cfadisk_install]
+CopyFiles=cfadisk_copyfiles,gendisk_copyfiles
+
+[cfadisk_install.HW]
+AddReg=cfadisk_addreg
+
+[cfadisk_install.Services]
+AddService=disk,2,gendisk_ServiceInstallSection
+AddService=cfadisk,,cfadisk_ServiceInstallSection
+
+[gendisk_ServiceInstallSection]
+DisplayName    = "Disk Driver"
+ServiceType    = 1
+StartType      = 0
+ErrorControl   = 1
+ServiceBinary  = %12%\disk.sys
+LoadOrderGroup = SCSI Class
+
+[cfadisk_ServiceInstallSection]
+DisplayName    = "CompactFlash Filter Driver"
+ServiceType    = 1
+StartType      = 3
+ErrorControl   = 1
+ServiceBinary  = %12%\cfadisk.sys
+LoadOrderGroup = Pnp Filter
+
+; -----------------------
+
+[Strings]
+HGST = "Hitachi Global Storage Technologies"
+Microdrive_devdesc = "Hitachi Microdrive"

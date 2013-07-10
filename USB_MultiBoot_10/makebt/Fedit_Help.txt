@@ -1,0 +1,51 @@
+FROM: http://www.msfn.org/board/Fedit_t48200.html
+
+  -add
+     Tells Fedit to add LINE.
+  -rem
+     Tells Fedit to remove LINE.
+  -f "some file"
+     The file to be edited
+  -l "some text"
+     The text to be added or removed
+
+When adding, these are additional (optional) parameters:
+  -a[:co] "some text"
+     The text will be added after this line
+  -b[:co] "some text"
+     The text will be added before this line
+  -s[:c] "some text"
+     The text will be added in the section [some text]
+  -once
+     The text to be added, will only be added once in the whole file
+  -create
+     If the section isn't found, it will be created
+
+When removing, -l supports the parameter [:co], and these additional
+(optional) parameters:
+  -a[:co] "some text"
+     All instances of the text after this line will be removed.
+  -b[:co] "some text"
+     All instances of the text before this line will be removed.
+  -s[:c] "some text"
+     All instances of the text in section [some text] will be removed.
+  -once
+     The text to be removed, will only be removed once.
+
+The option [:co] means the following:
+If you have a parameter -a "some text", Fedit will automatically search for
+strings that match it (without being case sensitive). If you want it to be
+case sensitive, change it to this:
+  -a:c "some text"
+If you think that 'some text' is contained in a bigger string like 'this is
+some text written somewhere', then change it to this:
+  -a:o "some text"
+You can combine both to this:
+  -a:co "some text"
+
+IMPORTANT: none of the parameters are case sensitive, so for example -rem is
+  the same as -Rem or -REM. Same thing for -a:co or -A:CO
+IMPORTANT: the order of the parameters is unimportant, so:
+  Fedit -rem -f file -l:co text
+Is the same as:
+  Fedit -f file -l:oc text -rem

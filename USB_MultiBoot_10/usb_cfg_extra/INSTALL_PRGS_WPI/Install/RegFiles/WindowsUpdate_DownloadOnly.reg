@@ -1,0 +1,9 @@
+Windows Registry Editor Version 5.00
+
+;------------------------------------------------------------------------------------------------------------
+; Disable Automatic Windows Updates - Wel Downloaden
+;------------------------------------------------------------------------------------------------------------
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update]
+"AUOptions"=dword:00000003
+;------------------------------------------------------------------------------------------------------------
+

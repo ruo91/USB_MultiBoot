@@ -1,0 +1,171 @@
+color white/blue  black/light-gray
+timeout 30
+
+default 0
+
+# menu.lst for X_CONTENT images for NTFS Format USB-stick
+
+title 01 - Start Vista - Load bootmgr From Computer  HD 1 - Partition 0
+root (hd1,0)
+chainloader (hd1,0)/bootmgr
+
+title 02 - Memtest86+  V1.51 - RAM Memory Test
+find --set-root /grldr
+kernel /memdisk
+initrd /images/memtp151.img
+
+title 03 - Floppy Image - MS-DOS  - UBCD Bart's Modboot
+map (hd0,0)/images/msubcd.img (fd0)
+map --hook
+chainloader (fd0)+1
+rootnoverify (fd0)
+
+title 04 - Floppy Image - FREEDOS - UBCD FreeDOS Bart's Modboot
+map (hd0,0)/images/fdubcd.img (fd0)
+map --hook
+chainloader (fd0)+1
+rootnoverify (fd0)
+
+title 05 - BartPE - MINI XP
+find --set-root /grldr
+chainloader /peldr
+
+title 06 - Boot Windows PE 2.0 - Run Vista Setup From HD 0
+root (hd0,0)
+chainloader (hd0,0)/bootmgr
+
+title 07 - Puppy Linux - NTFS Read / Write
+find --set-root /grldr
+kernel /vmlinuz root=/dev/ram0 initrd=initrd.gz PMEDIA=usbflash PKEYS=uk
+initrd /initrd.gz
+
+# Direct Load MS-DOS and DSL-Linux not available for NTFS USB-stick
+
+# title 08 - MS-DOS  Direct Load io.sys
+# root (hd0,0)
+# chainloader (hd0,0)/io.sys
+
+# title 09 - FREEDOS Direct Load kernel.sys
+# root (hd0,0)
+# chainloader (hd0,0)/kernel.sys
+
+# title 10 - Damn Small Linux  - NTFS Read Only - Knoppix
+# find --set-root /grldr
+# kernel /linux24 ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 initrd=minirt24.gz nomce noapic qemu quiet BOOT_IMAGE=knoppix frugal
+# initrd /minirt24.gz
+
+# title 08 - Image - MS-DOS + UMB-Menu  GHOST PR MBRTOOL - PWD_CHNG - MBRWIZD
+# map (hd0,0)/images/msd28gh.ima (fd0)
+# map --hook
+# chainloader (fd0)+1
+# rootnoverify (fd0)
+
+# title 09 - Image - FREEDOS + UMB-Menu + GHOST PTDOCTOR MBRTOOL PWD_CHNG PTEDIT
+# map (hd0,0)/images/fdboot2.ima (fd0)
+# map --hook
+# chainloader (fd0)+1
+# rootnoverify (fd0)
+
+# title 10 - Image - PC DOS + GHOST - KILLDISK - MBRTOOL - PWD_CHNG - PTEDIT
+# map (hd0,0)/images/pcd28gh.ima (fd0)
+# map --hook
+# chainloader (fd0)+1
+# rootnoverify (fd0)
+
+# title 11 - Image - FREEDOS + UMB-Menu + GHOST KILLDISK MBRTOOL PWD_CHNG PARTINFO
+# map (hd0,0)/images/fdboot3.ima (fd0)
+# map --hook
+# chainloader (fd0)+1
+# rootnoverify (fd0)
+
+title 12 - Start Vista Setup - Load bootmgr From USB-HD 0 - Partition 0
+root (hd0,0)
+chainloader (hd0,0)/bootmgr
+
+title 13 - Start Vista Setup - Load bootmgr From USB-HD 0 - Partition 1
+root (hd0,1)
+chainloader (hd0,1)/bootmgr
+
+title 14 - UBCD4Win - Load PELDR From USB-HD 0 - Partition 1
+root (hd0,1)
+chainloader (hd0,1)/PELDR
+
+title 15 - Launch "Windows(tm) Recovery Console"
+fallback 15
+find --set-root /cmdcons/setupldr.bin
+chainloader /cmdcons/setupldr.bin
+#####################################################################
+# write string "cmdcons" to memory 0000:7C03 in 2 steps:
+#####################################################################
+# step 1. Write 4 chars "cmdc" at 0000:7C03
+write 0x7C03 0x63646D63
+# step 2. Write 3 chars "ons" and an ending null at 0000:7C07
+write 0x7C07 0x00736E6F
+savedefault --wait=2
+
+title 16 - Start Windows XP Professional  from Harddisk 1 - Partition 0
+map (hd1) (hd0)
+map --hook
+rootnoverify (hd0)
+root (hd0,0)
+chainloader (hd0,0)/ntldr
+
+# title 17 - Start Acronis Recovery Media from ISO
+# map (hd0,0)/acronis.iso (hd32)
+# map --hook
+# chainloader (hd32)
+
+# This finds and loads ERD Commander 2005
+# title 18 - ERD Commander 2005
+# find --set-root /ERDC/setupldr.bin
+# chainloader /ERDC/setupldr.bin
+
+# title PCI-Sniffer V1.2
+# find --set-root /grldr
+# kernel /memdisk
+# initrd /images/pcisniff.img
+
+# title Recovery Console Windows XP - cmdcons Folder
+# find --set-root /grldr
+# chainloader /cmldr
+
+# title Phase 1 WinXP Text Mode Setup - Install Windows XP
+# chainloader (hd0,0)/ntldrstp
+
+# title Start BartPE - Load RAMDISK in about 18 minutes
+# chainloader (hd0,0)/ntldrbpe
+
+# title Boot floppy image - MS-DOS  + UMB-Menu    + PRG-Menu + GHOST
+# map (hd0,0)/images/dos288us.ima (fd0)
+# map --hook
+# chainloader (fd0)+1
+# rootnoverify (fd0)
+
+# title Boot floppy image - MS-DOS Bart's Modboot + PRG-Menu + GHOST
+# map (hd0,0)/images/corpcdus.img (fd0)
+# map --hook
+# chainloader (fd0)+1
+# rootnoverify (fd0)
+
+# title Boot floppy image - PC DOS + GHOST - Burn Bootable Ghost Image on CD / DVD
+# map (hd0,0)/images/pcdghost.img (fd0)
+# map --hook
+# chainloader (fd0)+1
+# rootnoverify (fd0)
+
+# title Boot floppy image - FREEDOS Bart's Modboot
+# map (hd0,0)/images/freedos.img (fd0)
+# map --hook
+# chainloader (fd0)+1
+# rootnoverify (fd0)
+
+# title Boot floppy image - FREEDOS Indirect via --mem
+# map --mem (hd0,0)/images/freedos.img (fd0)
+# map --hook
+# chainloader (fd0)+1
+# rootnoverify (fd0)
+
+# title Boot floppy image via memdisk - Windows 98 boot disk
+# find --set-root /grldr
+# kernel /memdisk
+# initrd /images/dos288us.ima

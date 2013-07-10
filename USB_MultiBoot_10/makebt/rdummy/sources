@@ -1,0 +1,7 @@
+TARGETNAME=rdummy
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+SOURCES=rdummy.c
+
+
+

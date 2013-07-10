@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+
+<NU2MENU>
+	<MENU ID="Startmenu">
+		<MITEM TYPE="POPUP" MENUID="WinTools">WinTools</MITEM>
+		<MITEM TYPE="SEPARATOR"></MITEM>
+		<MITEM TYPE="ITEM" CMD="RUN" FUNC="@GetEnvVar('ComSpec')">Command Prompt (CMD)</MITEM>
+		<MITEM TYPE="ITEM" CMD="RUN" FUNC="@ShowRunDialog()">Run...</MITEM>
+		<MITEM TYPE="POPUP" MENUID="About">About</MITEM>
+		<MITEM TYPE="SEPARATOR"></MITEM>
+		<MITEM TYPE="ITEM" CMD="EXIT">Exit</MITEM>
+	</MENU>
+
+<! Begin WinTools - 5jan8 Changed \tools\ in \wintools\ -->
+	<MENU ID="WinTools">
+                <MITEM TYPE="POPUP" MENUID="Desktop Utilities">Desktop Utilities</MITEM>
+		<MITEM TYPE="POPUP" MENUID="File Analysis">File Analysis</MITEM>
+		<MITEM TYPE="POPUP" MENUID="Harddisk Tools">Harddisk Tools</MITEM>
+		<MITEM TYPE="POPUP" MENUID="Hardware Info">Hardware Info</MITEM>
+		<MITEM TYPE="POPUP" MENUID="Netwerk Tools">Netwerk Tools</MITEM>
+                <MITEM TYPE="POPUP" MENUID="Password Cracking">Password Cracking</MITEM>
+                <MITEM TYPE="POPUP" MENUID="Process Viewer">Process Viewer</MITEM>
+                <MITEM TYPE="POPUP" MENUID="Registry Utils">Registry Utils</MITEM>
+  	        <MITEM TYPE="POPUP" MENUID="Other Tools">Other Tools</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\ghostexp.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\ghostexp.exe">Ghost Explorer</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\ExplorerXP.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\ExplorerXP.exe">ExplorerXP</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\diskdata.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\diskdata.exe">DiskData</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\TweakUI.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\TweakUI.exe">TweakUI</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\SCDWriter.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\SCDWriter.exe">Small CD Writer</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\filerecovery\handyrecovery\HandyRecovery.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\filerecovery\handyrecovery\HandyRecovery.exe">Handy Recovery</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\filerecovery\unerase\unerase.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\filerecovery\unerase\unerase.exe">Unerase - File Recovery</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\siw.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\siw.exe">System Info for Windows</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\stinger.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\stinger.exe">McAfee Stinger</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\aswclnr.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\aswclnr.exe">AVAST Cleaner</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\UltraVNC_Viewer\vncviewer.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\UltraVNC_Viewer\vncviewer.exe">Ultra VNC Viewer</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\commandline\cmd.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\commandline\cmd.exe /k cd @GetProgramDrive()\wintools\commandline">Command Line Tools...</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\commandline\cmd.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\commandline\cmd.exe /k cd @GetProgramDrive()\wintools\commandline\pstools">Command Line PsTools...</MITEM>
+	</MENU>
+
+	<MENU ID="Desktop Utilities">
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\desktoputils\sysexp.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\desktoputils\sysexp.exe">SysExporter</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Or(@FileExists(@GetWinDir()\setupldr.bin), @Not(@FileExists(@GetProgramDrive()\wintools\desktoputils\puretext.exe)))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\desktoputils\puretext.exe">PureText (not from PE)</MITEM>
+	</MENU>
+
+	<MENU ID="File Analysis">
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\fileanalysis\folrep.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\fileanalysis\folrep.exe">Folders Report</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\fileanalysis\diskview.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\fileanalysis\diskview.exe">Disk View</MITEM>
+	</MENU>
+
+	<MENU ID="Harddisk Tools">
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\harddisktools\PartInNT.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\harddisktools\PartInNT.exe">Partition Info</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\harddisktools\PTEDIT32.EXE))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\harddisktools\PTEDIT32.EXE">Partition Table Editor</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\harddisktools\HD Tune\HDTune.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\harddisktools\HD Tune\HDTune.exe">HD Tune</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\tinyhexer\mpth_small.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\tinyhexer\mpth_small.exe">Tiny Hexer</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\KILLDISK_WIN\KD_WIN.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\KILLDISK_WIN\KD_WIN.exe">KILLDISK Pro</MITEM>
+	</MENU>
+
+	<MENU ID="Hardware Info">
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\siw.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\siw.exe">System Info for Windows</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\hardwareinfo\cpuz\cpuz.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\hardwareinfo\cpuz\cpuz.exe">CPU-Z</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\hardwareinfo\siv\siv.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\hardwareinfo\siv\siv.exe">SIV</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\hardwareinfo\driverview.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\hardwareinfo\driverview.exe">Driver View</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\hardwareinfo\DiskCheckup\DiskCheckup.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\hardwareinfo\\DiskCheckup\DiskCheckup.exe">Disk Checkup</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\UnknownDevices\UnknownDevices.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\UnknownDevices\UnknownDevices.exe">UnknownDevices</MITEM>
+	</MENU>
+
+	<MENU ID="Netwerk Tools">
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\networksniffer\smsniff.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\networksniffer\smsniff.exe">SmartSniffer</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\networktools\ipnetinfo.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\networktools\ipnetinfo.exe">IP NetInfo</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\networktools\awatch.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\networktools\awatch.exe">Adapter Watch</MITEM>
+         	<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\networktools\cports.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\networktools\cports.exe">Current Ports</MITEM>
+         	<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\networktools\tcpview.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\networktools\tcpview.exe">TCP View</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\extratools\vncviewer.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\extratools\vncviewer.exe">VNC Viewer</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\extratools\putty.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\extratools\putty.exe">Putty</MITEM>
+		<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\extratools\winscp382.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\extratools\winscp382.exe">WinSCP</MITEM>
+	</MENU>
+
+	<MENU ID="Password Cracking">
+        	<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\passwordcracking\accesspv.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\passwordcracking\accesspv.exe">MS Access Passwords</MITEM>
+          	<MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\passwordcracking\pspv.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\passwordcracking\pspv.exe">Protected Storage PassView</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\passwordcracking\dialupass.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\passwordcracking\dialupass.exe">Dialup PassView</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\passwordcracking\empv.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\passwordcracking\empv.exe">SQL-Server (Enterprise Manager) PassView</MITEM>
+         	<MITEM TYPE="ITEM" DISABLED="@Or(@FileExists(@GetWinDir()\setupldr.bin), @Not(@FileExists(@GetProgramDrive()\wintools\passwordcracking\mailpv.exe)))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\passwordcracking\mailpv.exe">Mail PassView (not from PE)</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\passwordcracking\win9xpv.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\passwordcracking\win9xpv.exe">Win 9x PassView</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\passwordcracking\mspass.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\passwordcracking\mspass.exe">Messenger PassView</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\passwordcracking\netpass.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\passwordcracking\netpass.exe">Network PassView</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\passwordcracking\astlog.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\passwordcracking\astlog.exe">Asterisk Logger</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\passwordcracking\crackit.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\passwordcracking\crackit.exe">Crackit! MS Office</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Or(@FileExists(@GetWinDir()\setupldr.bin), @Not(@FileExists(@GetProgramDrive()\wintools\passwordcracking\keyfinder\keyfinder.exe)))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\passwordcracking\keyfinder\keyfinder.exe">Keyfinder (only from running system)</MITEM>
+	</MENU>
+
+	<MENU ID="Process Viewer">
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\processviewer\cprocess.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\processviewer\cprocess.exe">Current Process</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\processviewer\TOKENMON.EXE))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\processviewer\TOKENMON.EXE">Token Monitor</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@OR(@FileExists(@GetWinDir()\setupldr.bin), @Not(@FileExists(@GetProgramDrive()\wintools\processviewer\procexp.exe)))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\processviewer\procexp.exe">Process Explorer (not from PE)</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\processviewer\serviwin.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\processviewer\serviwin.exe">ServiWin & Drivers</MITEM>
+       		<MITEM TYPE="ITEM" CMD="RUN" FUNC="taskmgr.exe">Windows Task Manager</MITEM>
+	</MENU>
+
+	<MENU ID="Registry Utils">
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\registrytools\regscanner.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\registrytools\regscanner.exe">RegScanner</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\registrytools\Regmon.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\registrytools\Regmon.exe">Registry Monitor</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\registrytools\autoruns.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\registrytools\autoruns.exe">Autoruns</MITEM>
+
+                <MITEM TYPE="SEPARATOR"></MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\registrytools\asviewer\asviewer.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\registrytools\asviewer\asviewer.exe">Autostart Viewer</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\registrytools\autoruns.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\registrytools\autoruns.exe">Autoruns</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\registrytools\loadord.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\registrytools\loadord.exe">LoadOrder</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\registrytools\hijackthis.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\registrytools\hijackthis.exe">HijackThis</MITEM>
+	</MENU>
+
+	<MENU ID="Other Tools">
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\othertools\myuninst.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\othertools\myuninst.exe">My Uninstaller</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\othertools\shman.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\othertools\shman.exe">ShortCuts Manager</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\othertools\iehv.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\othertools\iehv.exe">IE History View</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\othertools\faview.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\othertools\faview.exe">Favourites View</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\othertools\iecv.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\othertools\iecv.exe">IE Cookies View</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\othertools\ProduKey.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\othertools\ProduKey.exe">Product Key</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\othertools\HtmlAsText.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\othertools\HtmlAsText.exe">Html As Text</MITEM>
+                <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\othertools\axhelper.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\othertools\axhelper.exe">ActiveX Helper</MITEM>
+                <MITEM TYPE="POPUP" MENUID="WUL">Windows Update List</MITEM>
+	</MENU>
+
+        <MENU ID="WUL">
+           <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\othertools\wul.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\othertools\wul.exe">Running System</MITEM>
+           <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\othertools\wul.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\othertools\wul.exe /another c:\windows">C:\Windows</MITEM>
+           <MITEM TYPE="ITEM" DISABLED="@Not(@FileExists(@GetProgramDrive()\wintools\othertools\wul.exe))" CMD="RUN" FUNC="@GetProgramDrive()\wintools\othertools\wul.exe /another c:\winnt))">C:\Winnt</MITEM>
+       </MENU>
+<! End WinTools -->
+
+	<MENU ID="About">
+		<MITEM TYPE="ITEM">OS: Windows @GetOSVersion(), Service Pack @GetServicePackNumber(), Build @OsBuild()</MITEM>
+		<MITEM TYPE="ITEM">User: @GetUserName() on @GetHostName()</MITEM>
+		<MITEM TYPE="ITEM">Windows directory: @GetWinDir()</MITEM>
+		<MITEM TYPE="ITEM">Temp dir: @GetTmpDir()</MITEM>
+		<MITEM TYPE="ITEM">Get environment ComSpec: @GetEnvVar('ComSpec')</MITEM>
+		<MITEM TYPE="SEPARATOR"></MITEM>
+		<MITEM TYPE="ITEM">PE-Builder version: @GetRegKey( 'HKLM', 'SYSTEM\CurrentControlSet\Control\PE Builder', 'Version', 'REG_SZ' )</MITEM>
+		<MITEM TYPE="ITEM">BartPE and PE Builder are Copyright (c) 2002-2004 Bart Lagerweij.</MITEM>
+		<MITEM TYPE="ITEM">http://www.nu2.nu/pebuilder/</MITEM>
+		<MITEM TYPE="SEPARATOR"></MITEM>
+		<MITEM TYPE="ITEM">Nu2Menu version: @Ver()</MITEM>
+		<MITEM TYPE="ITEM">Program directory: @GetProgramDir()</MITEM>
+		<MITEM TYPE="ITEM">Program drive: @GetProgramDrive()</MITEM>
+	</MENU>
+</NU2MENU>

@@ -1,0 +1,32 @@
+
+FROM: http://www.msfn.org/board/index.php?showtopic=61384&st=421
+
+
+Here is what has to be added to usb_prep.cmd to add rdummy driver. 
+
+
+CODE
+ECHO Adding lines to TXTSETUP.SIF ....
+.............
+REM added for USB hard drives, loads rdummy.sys during Text Setup, which makes usbstor to see USB drives as removable
+fedit -f %tmpdrive%\txtsetup.sif -add -once -l "rdummy.sys = 1,,,,,,4_,4,1,,,1,4" -s SourceDisksFiles
+fedit -f %tmpdrive%\txtsetup.sif -add -once -l "rdummy = rdummy.sys,4" -s SCSI.Load
+fedit -f %tmpdrive%\txtsetup.sif -add -once -l "rdummy = \"USB hard disk as removable\"" -s SCSI
+fedit -f %tmpdrive%\$WIN_NT$.~BT\winnt.sif -add -create -l "\"sc config rdummy start= disabled"" -s GuiRunOnce
+copy rdummy.sy_ %tmpdrive%\$WIN_NT$.~LS\I386
+copy rdummy.sy_ %tmpdrive%\$WIN_NT$.~BT
+
+
+rdummy.sy_ and it's source code are in the attachment. 
+Installation tested with XP SP2 source, 80GB IDE HD, generic IDE-USB adapter. 
+Drive formated FAT16x with 1.9GB partition using PEtoUSB. 
+XP built-in format didn't make it bootable. 
+On first GUI logon rdummy service is disabled, on next reboot it'll be inactive. 
+If one needs to reenable it simply change startup type in services to 0, 
+or use "sc config rdummy start= boot".
+
+WARNING!!! There is no warranty whatsoever for this driver and it's behavior, 
+use it COMPLETELY at your own risk. 
+The only issue I've seen by now is BSOD 7B when F3 is pressed to quit from Setup, 
+but there may be others. Not tested with 2K/2K3. 
+

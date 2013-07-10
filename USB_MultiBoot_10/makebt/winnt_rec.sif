@@ -1,0 +1,33 @@
+;
+; winnt_rec.sif File for Recovery Console to be placed in cmdcons Folder as File winnt.sif
+;
+; Change Language to your needs - Language=00000413 is Dutch
+;
+[data]
+msdosinitiated="1"
+floppyless="1"
+CmdCons="1"
+AutoPartition="0"
+UseSignatures="yes"
+InstallDir="\WINDOWS"
+EulaComplete="1"
+winntupgrade="no"
+win9xupgrade="no"
+Win32Ver="a280105"
+uniqueid="C:\WINDOWS\FBN"
+OriSrc="D:\XPROF7_710\"
+OriTyp="3"
+[regionalsettings]
+; Language=00000409
+LanguageGroup=1
+[setupparams]
+DynamicUpdatesWorkingDir=C:\WINDOWS\setupupd
+[unattended]
+unused=unused
+[userdata]
+productid=""
+productkey=""
+[OobeProxy]
+Enable=1
+Flags=1
+Autodiscovery_Flag=4

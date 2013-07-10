@@ -1,0 +1,232 @@
+
+                 QCDROM -- DOS CD and DVD Disk Driver, V4.2
+               ==============================================
+
+1. Description
+   -----------
+
+   QCDROM is a DOS driver for CD and DVD drives.   It is for use on normal
+   PC system IDE channels, including 1997 or later PC mainboards that have
+   Intel/VIA/SiS/ALi or similar UltraDMA controller chips.   QCDROM is NOT
+   for SCSI, Serial-ATA, or "add-on" UltraDMA cards by Promise, SiiG, etc.
+   QCDROM handles normal mainboard IDE channels, with or without UltraDMA,
+   avoiding a need for "add-on" cards!
+
+   QCDROM runs from 1 to 3 CD/DVD drives.   On loading, it checks both IDE
+   channels, in order from primary-master to secondary-slave, and runs the
+   first three CD/DVD drives found.   It has switch options (see below) to
+   specify the "driver name" and request testing of specific IDE units for
+   CD/DVD drives, instead of checking all units in "IDE order".   Both old
+   "PIO mode" and new UltraDMA CD/DVD drives may be used.   QCDROM handles
+   file-input requests issued by SHCDX33C, MSCDEX, etc.   It also supports
+   all DOS "audio" requests and can "play back" an audio CD.
+
+   QCDROM runs only the IDE channels at their normal I-O address ranges of
+   01F0h-1F7h (primary) and 0170h-177h (secondary).    The old "alternate"
+   addresses of 01E8h-1EFh (primary) and 0168h-16Fh (secondary) can be set
+   using its /A switch.   QCDROM does not use interrupts and does standard
+   "PIO mode" data input when no UltraDMA controller is found.   This lets
+   QCDROM work with older mainboards or with pre-1997 "plug-in IDE" cards.
+
+   QCDROM can set a local stack, does an 80386+ test and I-O timeout tests
+   and has other items to make the driver SAFE!    QCDROM takes 2528 bytes
+   of memory with its local-stack or 2016 bytes without a stack.    An XMS
+   buffer is recommended, to avoid "PIO mode" data input.    When the QDMA
+   driver loads first, QCDROM can "share" QDMA's XMS buffer, or QCDROM can
+   set its own if 128K of XMS is free.   XMS or "PIO mode" is used only as
+   needed -- QCDROM does UltraDMA input whenever possible, for best speed!
+
+   V4.2+ QCDROM is updated to detect the V3.8 QHIMEM driver.   V4.8 QCACHE
+   has been similarly updated.   Old versions should not be mixed with the
+   newer drivers.
+
+   *** NOTE ***
+     Due to incessant, unfavorable posts on FreeDOS forums, this driver is
+     PROHIBITED from use with FreeDOS and will now ABORT if loaded in that
+     system.   Using this driver in all other DOS systems (MS-DOS, EDR-DOS
+     etc.) is still supported and is unaffected.
+
+
+2. NO Warranty
+   -----------
+
+   QCDROM is offered as free software, "as is" and "use at your own risk",
+   and WITHOUT any warranty,  not even the implied warranties of MERCHANT-
+   ABILITY nor of FITNESS for ANY particular purpose!
+
+   QCDROM questions may be addressed to Johnson Lam at <johnson@tmfc.net>.
+   The author of QCDROM in the U.S.A. will try to reply and to keep QCDROM
+   working O.K.
+
+
+3. Revisions
+   ---------
+
+   V4.2  14-Jan-07  QCDROM updated to work with V3.8+ QHIMEM.
+
+   V4.1  10-Jan-07  QCDROM corrected to post "no disk in drive" status.
+   V4.0  29-Dec-06  QCDROM works again in VMWare!   Many Thanks to Erwin
+                      Veermans for his help!
+   V3.9   8-Dec-06  Corrected a load-time ERROR in QCDROM.
+   V3.8   6-Dec-06  Using QCDROM with FreeDOS is now PROHIBITED!
+   V3.7  12-Nov-06  QCDROM "A20 line" handling corrected.
+   V3.6   9-Nov-06  QCDROM stack increased.
+   V3.5   2-Nov-06  QCDROM /I switch added, to avoid "odd" BIOS trouble.
+   V3.4  24-Oct-06  QCDROM updated for QXHIMEM.   V3.3 changed DELETED!
+   V3.3  15-Oct-06  QCDROM no longer requires XMS memory with UMBPCI!
+   V3.2  11-Oct-06  QCDROM now has a /X switch and can omit its stack.
+   V3.1   1-Oct-06  Added QCDROM /A switch for alternate EIDE addresses.
+
+   V3.0  21-Sep-06  QCDROM now handles the Intel 82801EB chipset!
+   V2.9   8-Sep-06  QCDROM revised for the no-overlap V3.2+ QDMA/QDBOOT.
+   V2.8  15-Aug-06  QCDROM now reserves its own XMS memory, when needed.
+   V2.7   7-Aug-06  QCDROM updated to support V3.0 QHIMEM and QHIMEM2.
+   V2.6  11-Jul-06  QCDROM updated for fast V2.8+ QHIMEM XMS moves.
+   V2.5   8-Jul-06  QCDROM now loads in UMBPCI upper-memory and uses PIO
+                      mode as needed, if QDMA sets only one XMS buffer.
+   V2.4  30-Jun-06  QCDROM now has "Int 13h" logic to locate QDMA.   XMS
+                      buffers assigned one per driver, not per channel.
+
+                    [V2.2 and V2.3 were never used by QCDROM].
+
+   V2.1  23-Jun-06  QCDROM updated to work with V2.3+ QDBOOT.
+   V2.0  30-Apr-06  QCDROM/QDMA "linkage" revised to support EMM386.
+
+   V1.2  16-Mar-06  QCDROM loads in UMBPCI upper-memory with V1.4+ QDMA.
+   V1.1   8-Mar-06  QCDROM "shares" QDMA's XMS buffers and runs 3 units.
+   V1.0  20-Feb-06  Original release.
+
+
+4. Switch Options
+   --------------
+
+   QCDROM switch options are as follows:
+
+      /A    Requests use of the old alternate EIDE controller addresses,
+              01E8h-01EFh on the primary channel, and 0168h-016Fh on the
+              secondary channel.   If /A is omitted, the driver will use
+              normal controller addresses of 01F0h-01F7h or 0170h-0177h.
+              /A is only for an "odd" SATA BIOS or other unusual cases.
+
+      /D:   Specifies the desired "device name" which SHCDX33C or MSCDEX
+              will use during their initialization to address the CD/DVD
+              drives.   Examples are:  /D:CDROM1  /D:MYCDROM  etc.   The
+              device name must be from 1 to 8 bytes valid for use in DOS
+              filenames.   If /D: is omitted, or the "device name" after
+              a /D: is missing or invalid, QCDROM1 will be the default.
+
+      /I    Forces "independent" driver setup.   QCDROM requests its own
+              XMS buffer and does NOT test if QDMA is loaded.   An "odd"
+              BIOS may mishandle the special QCDROM call to locate QDMA!
+              For systems not using the QDMA driver, /I may be needed to
+              avoid drive-select or other "odd" BIOS errors!   /I is not
+              needed if /UX is also given.
+
+      /L    Limits DMA to memory below 640K.   /L is REQUIRED for UMBPCI
+              or other drivers whose upper-memory cannot do DMA.    When
+              QCDROM itself loads with /L in upper-memory, XMS memory is
+              required to issue DMA command-lists, or QCDROM will ABORT!
+              Without /L or if QCDROM is in low memory, XMS is optional.
+              /L makes QCDROM use its XMS buffer for input of data above
+              640K.   "PIO mode" will handle such requests if XMS is not
+              available or is unwanted due to QDMA's /B switch.    /L is
+              IGNORED, and XMS is not needed, if /UX is also given.
+
+      /PM   Requests the driver to check the IDE primary-master unit for
+              a CD/DVD drive during driver init.    If a CD/DVD drive is
+              NOT found as primary-master, driver loading will ABORT!
+
+      /PS   Same as /PM but tests the primary-slave unit only.
+
+      /SM   Same as /PM but tests the secondary-master unit only.
+
+      /SS   Same as /PM but tests the secondary-slave unit only.
+
+            --- NOTE ---
+              For 2 or 3 drives, multiple  /PM /PS /SM /SS  switches are
+              allowed.   The first-specified drive is addressed as "unit
+              0", the second as "unit 1", etc.    If fewer switches than
+              drives are given, unreferenced drives will be UNUSED.   If
+              NO drive switches are given, QCDROM will "scan" for CD/DVD
+              drives from primary-master to secondary-slave.   The first
+              drive found will be "unit 0", the second "unit 1", etc.
+
+      /UF   Enables "Fast DMA".   I-O requests which cross UltraDMA "64K
+              boundaries" use two-part DMA, for data up to the boundary,
+              and for data beyond it.    I-O which is misaligned (not at
+              an even 4-byte address) will go through QDMA's XMS buffers
+              if available or will use "PIO mode" otherwise.
+
+            --- NOTE ---
+              Despite UltraDMA specs, NOT ALL chipsets or mainboards run
+              "Fast DMA" properly!   /UF must be TESTED on every system!
+
+      /UX   Disables ALL UltraDMA, even for CD/DVD drives capable of it.
+              QCDROM then uses "PIO mode" for all commands.   /UX is not
+              usually needed and is mainly for tests or diagnostic work.
+
+      /X    Causes no local-stack to be set.   This saves 512 bytes when
+              SHCDX33C is used, as QCDROM can run on the SHCDX33C stack.
+              /X must NOT be given if SHCDX33C will not be used!
+
+   For each switch, a dash may replace the slash and lower-case characters
+   may be used.
+
+
+5. Setup and Configuration
+   -----------------------
+
+   QCDROM is loaded by the CONFIG.SYS file, which must have a command line
+   similar to:
+
+            DEVICE [HIGH] = [path] QCDROM.SYS [/D:DeviceNm] [...]
+
+   Examples:   DEVICE=C:\DOS\QCDROM.SYS
+
+               DEVICEHIGH=C:\BIN\QCDROM.SYS /D:CDROM1 /UF /L /X /SM /SS
+
+   If QCDROM is to share QDMA's XMS memory, the QDMA driver must be loaded
+   first.   When QDMA is not used, QCDROM may be loaded at any time.
+
+
+6. Error Reporting
+   ---------------
+
+   QCDROM reports an I-O error to its "CD-ROM redirector" program the same
+   as all other DOS CD/DVD drivers.    For full details, see the Microsoft
+   "MS-DOS CD-ROM Extensions 2.1", which includes information about CD/DVD
+   device drivers for use with SHCDX33C or MSCDEX.
+
+
+7. SPECIAL NOTES
+   -------------
+
+   Some CD/DVD drives (Sony, etc.) DO NOT follow all ATAPI "standards" and
+   may require DISABLING UltraDMA with the /UX switch!
+
+   Be sure to "enable" your CD/DVD drive(s) with the BIOS set-up routines!
+   A drive that is "disabled" may cause the BIOS to clear all its UltraDMA
+   flags and leave the drive in "PIO mode" zero, which is terribly SLOW!
+
+   When cabling a CD/DVD drive by itself to an IDE channel, note that both
+   "ends" of the cable must be used, NOT one end and the middle connector!
+   This prevents ERRORS, as an unused cable-end can pick up "noise" like a
+   RADIO antenna!
+
+   If the driver "scans" for CD/DVD drives to use, error events WILL occur
+   (select error, not a CD/DVD found, etc.).    Such events cause that IDE
+   unit to be ignored.   When an actual CD/DVD drive is ignored, users can
+   add the appropriate  /PM /PS /SM /SS  switch for that drive to QCDROM's
+   line in the CONFIG.SYS file, then re-boot.    Specifying a drive-select
+   switch always causes errors for that drive to be displayed.
+
+   If no CD/DVD drives are found, QCDROM displays "No CD/DVD drive to use;
+   QCDROM not loaded!" and aborts.   But note that some BIOS programs will
+   NOT "configure" mainboard UltraDMA chips when they find no IDE devices!
+   Users who get the above message must first verify that the CD/DVD drive
+   is "enabled" through the BIOS set-up routines.   If this HAS been done,
+   "No CD/DVD drive to use" says the UltraDMA chip is NOT set for "legacy"
+   IDE addresses (1F0h/170h, 1E8h/168h) and the BIOS might need an UPDATE!
+   Note also that QCDROM does not support "Native PCI mode" UltraDMA chips
+   ("servers"), only chips set to "Legacy IDE mode".
+

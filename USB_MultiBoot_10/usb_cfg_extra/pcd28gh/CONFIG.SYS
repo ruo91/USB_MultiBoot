@@ -1,0 +1,13 @@
+[COMMON]
+; device=display.sys con=(ega,,1)
+; country=031,437,country.sys
+; install=mode.com con cp prepare=((437) ega.cpi)
+; install=mode.com con cp select=437
+; install=keyb.com us,,keyboard.sys
+files=60
+buffers=30
+; dos=high,umb
+stacks=9,256
+lastdrive=z
+; set os=ms
+; shell=\command.com /e:1024 /p

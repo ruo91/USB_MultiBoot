@@ -1,0 +1,42 @@
+;SetupMgrTag
+[Data]
+MsDosInitiated=1
+floppyless=1
+UnattendedInstall="Yes"
+
+
+[GuiUnattended]
+AdminPassword=*
+EncryptedAdminPassword=NO
+OEMSkipRegional=1
+TimeZone=230
+OemSkipWelcome=1
+
+[UserData]
+ProductID=PT3Q9-XPBJW-D9QJF-BMWT2-326TG
+FullName="UserXP"
+OrgName="Microsoft"
+ComputerName=*
+
+[Identification]
+JoinWorkgroup=WORKGROUP
+
+[Networking]
+InstallDefaultComponents=Yes
+
+
+;
+; Edited by DriverPacks BASE 8.12.4
+; http://www.driverpacks.net/
+;
+
+
+[GUIRunOnce]
+"binifix4.cmd c:"
+"undoren.cmd"
+;  
+;  Changed by USB_MultiBoot for INSTALL XP from USB
+;  
+     command9=%SystemDrive%\DPsFnshr.exe
+[SetupParams]
+UserExecute = "ren_fold.cmd"

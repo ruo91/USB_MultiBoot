@@ -1,0 +1,100 @@
+===================================================================================================
+
+ ***** Credits - 06 June 2008 - Program USB_MultiBoot.cmd - Install XP From USB
+
+===================================================================================================
+
+See MSFN Forums > Member Contributed Projects > Install XP from USB
+http://www.msfn.org/board/Install-XP-USB-f157.html&s=6315c0e9da0cf4e715d76504524b7630
+
+Although the "main" authors are:
+ilko_t
+and
+wimb
+
+this project would never have seen the light without (in chronological order):
+
+the precious and sometimes vital contributions by :
+jaclaz for managing this project and for his knowledge and usefull links 
+       and for his Batch Programs binifix4.cmd MakeBS3.cmd and mbrbatch.cmd
+
+porear for believing in this and for the initial testing and troubleshooting
+cdob for sharing his knowledge on NT based systems and providing key ideas and program MkMigrateInf2.cmd
+Anton Bassov for kindly adapting his dummydisk.sys driver to rdummy.sys
+
+and all other people who supported the project by posting on the thread their "thank you".
+
+(should I have forgotten anyone by accident, please PM me and i'll fix the list)
+
+===================================================================================================
+
+We would like to thank for their valuable programs used by USB_MultiBoot.cmd
+
+Microsoft for BootSect.exe to convert bootmgr BootSector in NTLDR BootSector
+Microsoft for MSFN Forum as Important Source of Knowledge
+http://www.msfn.org/board/forums.html
+
+Dariusz Stanislawek for the DS File Ops Kit (DSFOK)  
+http://members.ozemail.com.au/~nulifetv/freezip/freeware/
+Used for making the Bootsector Files:
+dsfo.exe - save a block of data of any size from any location within a file
+dsfi.exe - overwrite a block of data of any size at any location within a file
+
+Rich Burnham - PeToUSB v3.0 to Format USB-Drive as Harddisk with MBR and Partition
+http://gocoding.com/page.php?al=petousb
+
+Tormod Tjaberg and Hans Peter Verne - for gsar.exe general search and replace utility 
+http://gnuwin32.sourceforge.net/packages/gsar.htm
+
+Bart Lagerweij - for mkbt.exe used for Install and Copy of Bootsectors
+Henk de Jong - for Nu2Menu.exe used for WinTools Menu
+http://www.nu2.nu/utilities/
+
+Rob van der Woude - for his valuable Batch Scripting Pages
+http://www.robvanderwoude.com/index.html
+
+djbe for Fedit.exe used for editing files
+http://www.msfn.org/board/Fedit-t48200.html
+
+The Makers of GRUB4DOS
+http://grub4dos.jot.com/WikiHome
+
+H. Peter Anvin - for SYSLINUX
+http://syslinux.zytor.com/download.php
+
+The Makers of FREEDOS
+http://www.freedos.org/
+
+Erwin Veermans - for the UBCD BootFloppy Images
+http://www.veder.com/nwdsk/
+
+Vsevolod V. Volkov - Volkov Commander
+http://www.egner-online.de/vc/en/intro.shtml
+
+Hewlett-Packard - Makers of HPUSBFW.EXE
+HP USB Disk Storage Format Tool V2.0.6
+
+Hitachi for their Hitachi Microdrive Filter (cfadisk.sys)
+http://xpefiles.com/cs/files/folders/hardware/entry616.aspx
+
+Anton Bassov for developing dummydisk.sys
+http://www.codeproject.com/KB/system/soviet_direct_hooking.aspx
+
+jaclaz for his handy Batch Programs binifix4.cmd and
+MBRBatch.cmd http://www.boot-land.net/forums/?showtopic=3191
+MakeBS.cmd   http://www.boot-land.net/forums/?showtopic=2362
+
+Uwe Sieber for UMBPCI UMB-driver for DOS and Win9x and Handy Info on USB-sticks
+http://www.uwe-sieber.de/english.html
+
+Kåre Smith and Systemintegrasjon AS for MbrFix.exe
+http://www.sysint.no/nedlasting/mbrfix.htm
+
+The Maker of MBRwizard
+http://mbrwizard.com/
+
+Daniel B. Sedory for his Handy Pages with MBR info
+http://mirror.href.com/thestarman/asm/mbr/index.html
+
+===================================================================================================
+

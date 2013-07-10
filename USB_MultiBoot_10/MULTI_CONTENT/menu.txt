@@ -1,0 +1,8 @@
+1 - Damn Small Linux (KNOPPIX) - NTFS Read Only 
+2 - Memtest86+  V1.51
+3 - Floppy Image - MS-DOS
+4 - Floppy Image - FREEDOS
+5 - BartPE - MINI XP
+6 - Boot WinPE 2.0 - Run Vista Setup from HD 0 - Partition 1
+7 - Linux Puppy - NTFS Read / Write Support
+8 - MS-DOS  Direct Load io.sys

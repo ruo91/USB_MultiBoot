@@ -1,0 +1,317 @@
+Use MULTI_CONTENT Folder only with FAT Format USB-Drive 
+for Support of Direct Booting with MS-DOS from boot.ini Menu 
+
+Use X_CONTENT Source Folder for making NTFS or FAT Format USB-Drive
+with Support of Booting from DOS Floppy Images via GRUB4DOS Menu
+
+=========================================================================================================  
+
+A. Essential Files to be Added to MULTI_CONTENT Folder:
+
+Direct Booting with MS-DOS from boot.ini Menu requires:
+IO.SYS
+MSDOS.SYS
+
+Folder DOS:
+COMMAND.COM
+
+From Win98 MS-DOS BootFloppy Copy the files IO.SYS and MSDOS.SYS and COMMAND.COM to your MULTI_CONTENT Folder. 
+These Hidden System Files are only visible in Windows Explorer after adjusting Tools > Folder Options
+
+Run USB_MultiBoot.cmd and choose FAT Format with PeToUSB (max 2GB stick) and
+Select Multi_boot.ini as boot.ini (option B ) and MULTI_CONTENT as Source (option 2) in the Main Menu.
+The supplied config.sys of the MULTI_CONTENT folder regulates that for MS-DOS 
+the COMMAND.COM is found in the DOS folder so that confusion with FREEDOS is prevented.
+
+Direct Booting with FREEDOS from USB was Removed since there were too few cases successful.
+
+Not all options are available on all USB-Drive Devices. So you can edit boot.ini to your needs.
+Booting from MS-DOS is not available on 4 GB Apacer HT203, whereas 1 and 2 GB sticks are OK.
+A lot of FREEDOS Bootsectors don't work and even the supplied FREEDOS Bootcode 
+only works on some USB-sticks and not on USB-Harddisk.
+
+For FAT32 and NTFS Format  Windows PE 2.0  MS-DOS and FREEDOS will not boot from boot.ini Menu
+Instead Use GRUB4DOS Menu for booting with DOS Floppy Images + Windows PE 2.0 and Install of Vista
+
+Edit the Menu Files boot.ini  menu.lst (GRUB4DOS-Menu)  and menu.txt + syslinux.cfg (SYSLINUX-Menu) 
+to your needs for Available Boot Options.
+
+=========================================================================================================  
+
+
+Download ready-to-run DOS Boot Floppy Images fdubcd.img and msubcd.img (MS-DOS BootFloppy)
+made by Erwin Veermans http://www.veder.com/nwdsk/
+Add DOS Boot Floppy Images fdubcd.img and msubcd.img to Folder MULTI_CONTENT\images
+
+Download FREEDOS 1.0 bootfloppy image fdboot.img from http://www.freedos.org/
+and modify as fdboot1.ima using WinImage and files from usb_cfg_extra\fdboot1_ima
+
+Download the latest Puppy Linux ISO file - Tested using "puppy-2.12-seamonkey.iso"
+http://puppylinux.org/user/news.php
+
+Download the latest DSL Embedded .ZIP file - Tested using "dsl-3.3-embedded.zip"
+http://damnsmalllinux.org/
+
+Added already to Folder MULTI_CONTENT: GRUB4DOS grldr and SYSLINUX memdisk
+
+Downloads:
+GRUB4DOS from http://grub4dos.jot.com/WikiHome and http://download.gna.org/grub4dos/
+Add grldr and grub.exe to MULTI_CONTENT folder
+
+Download SYSLINUX
+http://syslinux.zytor.com/download.php
+http://www.kernel.org/pub/linux/utils/boot/syslinux/
+
+=========================================================================================================  
+
+Windows PE 2.0 is included in the Windows Automated Installation Kit WAIK
+- Download WAIK (about 1 GB) 
+http://www.microsoft.com/downloads/details.aspx?familyid=C7D4BC6D-15F3-4284-9123-679830D629F2&displaylang=en
+
+- Follow the instructions in the WAIK guide to create PE 2.0 files (folder ISO is about 185 MB)
+- Copy the contents of the "ISO" folder created in the proceding step to the root of your USB stick
+- You may Add imagex.exe for Imaging Purposes
+
+In Command Window Create PE 2.0 and copy imagex.exe Using:  
+copype.cmd x86 c:\winpe_x86
+copy “c:\program files\Windows AIK\Tools\x86\imagex.exe” c:\winpe_x86\iso\
+
+
+Using Imagex.exe after Booting from Windows PE 2.0:
+
+Image Backup:
+imagex.exe /compress fast /capture c: d:\WIM_XP\xpimage.wim "mijn XP-installatie" /verify
+
+Image Restore:
+imagex.exe /apply d:\WIM_XP\xpimage.wim 1 c:
+
+=========================================================================================================  
+
+B. More Files and Folders to be Added to MULTI_CONTENT Folder:
+
+Added Folders:
+btsec              Bootsector Files
+DOS                MS-DOS
+dosapps            DOS Applications
+dosdev             DOS Device Drivers
+DOSPRG             MS-DOS Programs
+images             Floppy Images
+INSTALL_DRIVERS    Manual Install of BTS DriverPacks
+INSTALL_PRGS       Manual Install
+INSTALL_PRGS_WPI   Automatic Install
+KNOPPIX            Damn Small Linux
+wintools           Portable XP Tools
+VC                 Volcov Commander
+
+Generated Folders:
+$WIN_NT$.~BT       XP-BootFolder
+$WIN_NT$.~LS       XP-LocalSource
+minint             BartPE System
+OEM                BTS DriverPacks
+Programs           BartPE Programs
+
+Root Files:
+AUTOEXEC.BAT       Editable MS-DOS + FREEDOS
+boot.ini           Editable Boot Menu ***************************** EDIT
+Bootfont.bin       XP BootFile
+bootsect.bin       BartPE made by PeToUSB, Not Used
+config.sys         Editable MS-DOS
+ctmouse.exe        DOS Mouse
+GO_WINTOOLS_MENU.BAT             START Menu - Portable XP Tools
+grldr              GRUB4DOS
+grub.exe
+INITRD.GZ          Puppy Linux
+IO.SYS             MS-DOS
+KERNEL.SYS         FREEDOS
+ldlinux.sys        SYSLINUX
+linux24            Damn Small Linux
+memdisk            SYSLINUX
+menu.lst           Editable GRUB4DOS Menu ************************* EDIT
+menu.txt           Editable SYSLINUX Menu ************************* EDIT
+minirt24.gz        Damn Small Linux
+MSDOS.SYS
+ntdetect.com       XP BootFile
+NTLDR              XP BootFile
+peldr              BartPE
+PUP_212.SFS        Puppy Linux
+SETUPLDR.BIN       XP Setup
+XPSTP              XP Setup instead of SETUPLDR.BIN because of NTFS Format 5-letter limit
+syslinux.cfg       Editable SYSLINUX Menu ************************* EDIT
+txtsetup.sif       XP Setup
+usbflash           Tagfile USB-Drive
+VCM.BAT            Volcov Commander
+VMLINUZ            Puppy Linux
+win51ip            BartPE Tagfile XP
+win51ip.sp2        BartPE Tagfile XP SP2
+winbom.ini         BartPE
+
+
+Folder dosdev:
+ATAPICD.SYS
+cdrcache.sys
+CTLOAD.COM
+devload.com
+eltorito.sys
+emm386.exe
+himem.exe
+LOWDMA.SYS
+LOWDMA.TXT
+QCDROM.SYS
+QCDROM.TXT
+QHIMEM.SYS
+QHIMEM.TXT
+QHIMEM2.SYS
+QHIMEM2.TXT
+SHCDX33A.COM
+SHCDX33C.COM
+SHCDX33C.TXT
+shsucdhd.exe
+shsucdx.com
+UMBPCI.SYS
+UMBPCI.TXT
+xcdrom.sys
+xdma.sys
+
+Folder images:
+fdboot1.ima
+fdubcd.img
+freedos.img
+freentfs.ima
+memtp151.img
+msubcd.img
+pcdghost.img
+pcisniff.img
+
+Folder DOS:
+aspi1394.sys
+ASPI2DOS.SYS
+ASPI4DOS.SYS
+ASPI8DOS.SYS
+ASPI8U2.SYS
+ASPICD.SYS
+ATTRIB.EXE
+AUTOEXEC.BAT
+BTCDROM.SYS
+BTDOSM.SYS
+CHOICE.COM
+COMMAND.COM
+CONFIG.SYS
+country.sys
+CP850UNI.TBL
+ctmouse.exe
+DEBUG.EXE
+detect.com
+DEVLOAD.COM
+display.sys
+DMACHK.COM
+DMACHK.TXT
+doskey.com
+DOSLFN.COM
+DRVSPACE.BIN
+EDIT.COM
+EDIT.HLP
+ega.cpi
+emm386.exe
+EXTRACT.EXE
+fdisk.exe
+findcd.com
+FLASHPT.SYS
+FORMAT.COM
+guest.exe
+HIMEM.SYS
+HIRAM.TXT
+ifshlp.sys
+IO.SYS
+keyb.com
+keyboard.sys
+LOWDMA.COM
+LOWDMA.SYS
+LOWDMA.TXT
+MEM.EXE
+mode.com
+MORE.COM
+MSCDEX.EXE
+MSDOS.SYS
+OAKCDROM.SYS
+paralink.com
+partinfo.exe
+PTEDIT.EXE
+QHIMEM.SYS
+QHIMEM.TXT
+QHIMEM2.SYS
+QHIMEM2.TXT
+READ.ME
+SCANDISK.EXE
+SCANDISK.INI
+show.com
+show.hlp
+show.ini
+SYS.COM
+UMBCHK.EXE
+UMBCHK.TXT
+UMBFILL.COM
+UMBFILL.TXT
+UMBFILLH.EXE
+UMBPCI.SYS
+UMBPCI.TXT
+XCOPY.EXE
+XCOPY32.EXE
+XCOPY32.MOD
+xmsdsk.exe
+
+Folder dosapps to be filled with DOS Applications:
+ghost folder
+killdisk folder
+mbrtool folder
+mbrwizd folder
+pr folder
+ptdoctor folder
+pwd_chng folder
+readntfs folder
+uneraser folder
+
+Folder DOSPRG:
+bios folder
+CMOSPWD folder
+MBRutils folder
+NTFSPRO folder
+PM8 folder
+VC folder
+ATTRIB.EXE
+COMMAND.COM
+CP850UNI.TBL
+DEBUG.EXE
+detect.com
+DISKEDIT.EXE
+DISKEDIT.HLP
+disktool.cfg
+disktool.exe
+disktool.txt
+doskey.com
+DOSLFN.COM
+EDIT.COM
+EDIT.HLP
+EXTRACT.EXE
+FDISK.EXE
+FORMAT.COM
+GHOST.EXE
+GhReboot.exe
+MEM.EXE
+MI.COM
+MORE.COM
+PARTINFO.EXE
+PTEDIT.EXE
+RESTART.COM
+SCANDISK.EXE
+SCANDISK.INI
+show.com
+show.hlp
+show.ini
+SYS.COM
+unzip.exe
+XCOPY.EXE
+XCOPY32.EXE
+XCOPY32.MOD
+zip.exe
+
+=========================================================================================================  

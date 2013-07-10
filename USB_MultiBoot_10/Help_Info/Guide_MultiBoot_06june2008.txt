@@ -1,0 +1,661 @@
+From: [url="http://www.911cd.net/forums//index.php?showtopic=20089"]http://www.911cd.net/forums//index.php?showtopic=20089[/url]
+
+[size=4][u]Guide for MultiBoot USB-stick with boot.ini Menu[/u][/size]
+
+In this Guide is described How to Make a MultiBoot USB-stick, where boot options
+as [b]MS-DOS, FREEDOS 1.0, GRUB4DOS, BartPE, TXT-mode Setup Windows XP, WinPE 2.0 and SYSLINUX [/b]
+can be used directly from boot.ini Menu. In this way a powerful Admin's Swiss Army Knife is obtained.
+
+The [b]USB_MultiBoot.cmd[/b] Batch Program can now be used for making such MultiBoot USB-Drive, 
+instead of the Manual Procedure as described below. The Attachment gives USB_MultiBoot.zip file.
+The USB_MultiBoot.cmd program can be used for making
+MultiBoot USB-Drive for Install of Windows XP  with Extra Boot Options for System Recovery with Ghost.
+
+All Editable Configuration Files for making a MultiBoot USB-stick are given in the MULTI_CONTENT folder.
+The content of MULTI_CONTENT folder is copied to USB-Drive by the USB_MultiBoot.cmd program.
+Adapt the configuration files and the content of the MULTI_CONTENT folder to your personal needs.
+
+Where USB-stick is mentioned in the description, USB-Harddisk with 2 GB FAT Partition can be used as well.
+Use USB-sticks with High Read/Write Speed and FAT Format for Direct Booting with MS-DOS from USB. 
+e.g. Buffalo FireStix RUF2-R2G-S (Corsair Flash Voyager sticks are too slow for FAT Format)
+
+Direct Booting with MS-DOS from FAT Format USB-stick with boot.ini Menu is prepared as follows:
+You only have to add from Win98 MS-DOS BootFloppy the files IO.SYS and MSDOS.SYS to 
+the MULTI_CONTENT Folder and file COMMAND.COM to the folder DOS of the MULTI_CONTENT Folder.
+These Hidden System Files are only visible in Windows Explorer after adjusting Tools > Folder Options
+
+Run USB_MultiBoot.cmd and choose FAT Format with PeToUSB (max 2GB stick) and
+Select Multi_boot.ini as boot.ini (option B ) and MULTI_CONTENT as Source (option 2) in the Main Menu.
+The supplied config.sys of the MULTI_CONTENT folder regulates that for MS-DOS 
+the COMMAND.COM is found in the DOS folder so that confusion with FREEDOS is prevented.
+
+Direct Booting with FREEDOS from USB was Removed since there were too few cases successful.
+
+More INFO on Install XP from USB:  [url="http://www.msfn.org/board/install-XP-USB-t111406.html&st=6"]http://www.msfn.org/board/install-XP-USB-t...6.html&st=6[/url]
+
+HP USB Disk Storage Format Tool V2.0.6 - NTFS Format
+Install of XP from USB in 16 minutes - Corsair Flash Voyager 4 GB USB-stick
+
+Supports also USB-Drives having FAT32 or NTFS Format, thus overcoming the 2 GB limit of FAT Format. 
+NTFS Format allows larger DriveSize and is very useful for Install of XP from USB-Harddisk.
+Besides NTFS Format is handy for Install of Vista from USB via GRUB4DOS chainload of bootmgr
+FAT32 is extremely slow in Windows XP FileCopy during TXT Mode,
+whereas NTFS Format of USB-Drive makes everything go faster than with FAT Format.
+
+Multi-Partitioning an USB-stick is possible when dummydisk of Anton Bassov 
+is Installed in your computer [url="http://www.codeproject.com/KB/system/soviet_direct_hooking.aspx"]http://www.codeproject.com/KB/system/sovie...ct_hooking.aspx[/url]
+More Info See below.
+
+================================================================================
+
+[b]A. Boot Test[/b] - Making Bootable USB-stick or USB-Harddisk with boot.ini Menu and NTLDR Bootsector
+   First Test if your PC is Booting from USB-stick:
+
+1. Use 2 GB USB-stick with High Read/Write Speed (e.g. Apacer HT203 OR Buffalo FireStix RUF2-R2G-S are OK)
+   
+2. Format USB-stick with [b]PeToUSB.exe[/b] [url="http://gocoding.com/page.php?al=petousb"]http://gocoding.com/page.php?al=petousb[/url]
+   to Make Bootable USB-stick with FAT FileSystem, FAT = Faster
+   such that USB-stick has NTLDR Logical Drive Bootsector(mostly sector 0x3F=63) 
+   and is seen by BIOS as Harddisk (MBR is at sector 0).
+   Use PeToUSB.exe with Settings: Enable Disk Format with LBA FAT16X
+
+3. Copy XP BootFiles ntldr, NTDETECT.COM, Bootfont.bin and boot.ini from your XP C-drive to USB-stick
+   For this purpose in Windows Explorer Extra>Folder Options, Set Hidden and System Files to be Visible. 
+
+4. Change in boot.ini on stick rdisk(0) in rdisk(1) and add a second entry 
+   so that on Booting from USB-stick you will be able to see the boot.ini Menu. 
+   Before you Edit boot.ini, Remove first via Right-click and Properties the Read Only property.
+
+[b]boot.ini[/b]
+[code][boot loader]
+timeout=30
+default=multi(0)disk(0)rdisk(1)partition(1)\WINDOWS
+[operating systems]
+multi(0)disk(0)rdisk(1)partition(1)\WINDOWS="Microsoft Windows XP Professional" /noexecute=optin /fastdetect
+multi(0)disk(0)rdisk(1)partition(1)\WINDOWS="Boot Test Windows XP Professional" /noexecute=optin /fastdetect[/code]
+5. Reboot your PC with USB-stick plugged in and Enter BIOS Setup by pressing [Delete] or F2
+   and change Boot settings more permanent so that Harddisk is used as first Boot device type
+   and USB-Drive is seen as first Harddisk. Save BIOS Settings with F10.
+
+6. Test if your PC is Booting from USB-stick with boot.ini Menu. If you can see the Menu, it is OK  
+   If USB-stick is not bootable:
+   Check BIOS bootsequence settings or use different USB-stick / computer combination,
+   OR Instead of PeToUSB use HP USB Disk Storage Format Tool Version 2.0.6 and use FAT filesystem
+   [url="http://download.chip.eu/en/USB-Disk-Storage-Format-Tool-2.0.6_176935.html"]http://download.chip.eu/en/USB-Disk-Storag...0.6_176935.html[/url]
+
+If you did prepare your USB-stick with USB_MultiBoot.cmd so that it can be used for Install of Windows XP,
+than you had already a stick with boot.ini Menu and the required bootfiles, and you don't need to do steps 1-4
+
+Instead of an USB-stick one can also make a Bootable USB-Harddisk using the steps 2-6 given above.
+
+FOR USB-Harddisk make 1900 MB partition at beginning of the USB-Harddisk using e.g. Partition Magic.
+Use FAT Format and Set Active OR use PeToUSB to Format such partition.
+Without Set Active you will get DISK BOOT FAILURE.
+
+================================================================================
+
+[b]***** WARNINGS *****
+Be very careful with writing of bootsectors with HDHacker, bootsect.exe or mkbt.exe
+Be always aware you make your changes on the right drive. Otherwise loss of DATA may be the result.
+It is advisable to first remove all other removable drives, like USB Backup Harddisks and Memory Cards,
+so that they cannot be involved by mistake in the writing process.
+
+Do NOT use HP Tool for USB-Harddisks having more than 1 Partition
+WARNING -  HP Tool Formats whole Disk - Second Partition is Lost
+
+Using PeToUSB.exe is SAFE, it can only Format partitions with size less than 2 GB
+without destroying the existing partition table, so that Data partitions are still accessible.
+
+Use of USB_MultiBoot.cmd and everything in this Guide is COMPLETELY at your own risk. [/b]
+
+================================================================================
+
+[b]B. Adding New Boot Options[/b] - e.g. Booting the USB-stick via boot.ini directly into MS-DOS
+
+   This requires making a Bootsector File for each specific Boot Option and Adding a rule to boot.ini
+   [b]mkbt.exe[/b] of [b]Bart Lagerweij[/b] is very handy to make such Bootsector Files.
+   See: [url="http://www.nu2.nu/mkbt/"]http://www.nu2.nu/mkbt/[/url]
+   mkbt.exe is so handy because it can change the Bootcode in the Bootsector,
+   while keeping the BIOS Parameter Block and the Extended Parameter Block unchanged. 
+   This means the Drive geometry and File System (FAT) is maintained !
+   For this purpose the 7 f16*.bin files are supplied in folder makebt\BS_F16 as Source Code Bootsector Files.
+
+1. Use procedure of Part A to make Bootable USB-stick with boot.ini Menu and NTLDR Bootsector
+   Make a proper Selection of your PeToUSB Settings to make a USB-Drive with FAT Format.
+   PeToUSB Settings To Format USB-Drive : Enable Disk Format with LBA FAT16X
+   When USB_MultiBoot.cmd is applied on existing USB-Drive with XP Install Files,
+   then Format is not needed and should be DeSelected.
+
+   Copy XP BootFiles ntldr, NTDETECT.COM, Bootfont.bin from your XP C-drive to USB-stick
+   Copy XP BootFile Multi_boot.ini from b_ini Folder to your USB-stick and Rename as boot.ini
+
+2. Use mkbt.exe to Save the USB-stick Logical Drive bootsector as file NTBOOT.bs in folder btsec on your USB-stick.
+   Next use mkbt to Install MS-DOS Bootcode from bootsector file f16msdos.bin into USB-Drive Bootsector 
+   Then Save modified USB-Drive Bootsector as Bootsector File MSBOOT.bs
+   And finish by Resetting USB-Drive Bootsector to the original NTLDR Bootsector using file NTBOOT.bs
+
+   Usage   :  mkbt [switches] <source> <target>
+   switches:  -c = Copy mode(copy bootsector to Bootsector File,   -x =  Expert mode 
+
+   For this purpose Open a Command Window (cmd) at the USB_MultiBoot\makebt Folder and type:
+
+[code]mkbt.exe -x -c R: R:\btsec\NTBOOT.bs
+mkbt.exe -x BS_F16\f16msdos.bin R:
+mkbt.exe -x -c R: R:\btsec\MSBOOT.bs
+mkbt.exe -x R:\btsec\NTBOOT.bs R:[/code]where R: is your USB-stick drive
+
+3. boot.ini on stick was changed by adding the following rule:
+
+   C:\btsec\MSBOOT.bs="3. MS-DOS 7.10"
+
+   From Win98 MS-DOS BootFloppy Copy the files IO.SYS and MSDOS.SYS and COMMAND.COM to your USB-stick. 
+   These Hidden System Files are only visible in Windows Explorer after adjusting Tools > Folder Options
+
+4. In a similar way we can make the Bootsector File for FREEDOS 1.0 KERNEL.SYS
+   When both MS-DOS and FREEDOS are added it is necessary to place the COMMAND.COM in a folder
+   and to use in CONFIG.SYS and FDCONFIG.SYS SHELL commands like shell=\dos\command.com /e:1024 /p
+   and 12345?!SHELL=\FREEDOS\COMMAND.COM /E:2048 /F /MSG /P
+   Download FREEDOS 1.0 bootfloppy image fdboot.img from [url="http://www.freedos.org/"]http://www.freedos.org/[/url]
+
+5. TXT-mode Setup Windows XP, BartPE and WinPE 2.0 require a bootcode which is the same as
+   present in the NTLDR Bootsector, except that the file to which the bootsector refers is different,
+   being XPSTP, PELDR and BOOTMGR respectively instead of NTLDR.
+   SETUPLDR.BIN of XP was renamed to XPSTP because of NTFS Format 5-letter limit of MakeBS3.cmd
+   The program [b]MakeBS3.cmd[/b] made by [b]jaclaz[/b] is very handy to make 
+   Bootsector Files XPSTP.bs for TXT-mode Setup Windows XP and PELDR.bs for BartPE or UBCD4Win,
+   where only the NTLDR loader filename was changed into e.g. XPSTP and PELDR respectively using:
+
+[code]MakeBS3.cmd R:\XPSTP
+MakeBS3.cmd R:\PELDR[/code]where R: is your USB-stick drive
+
+   Such Bootsector Files are given in makebt folder as files f16xpstp.bin and f16peldr.bin
+   of which the BootCode can be used also by mkbt.exe to make XPSTP.bs and PELDR.bs 
+   similarly as the procedure for making MSBOOT.bs 
+
+6. For [b]Windows PE 2.0[/b] a Bootsector File is required which refers to [b]BOOTMGR[/b] instead of NTLDR.
+   The same Bootsector file can also be used to Install [b]Windows Vista[/b] by launching Vista Setup.
+   Open CMD Window and use BootSect.exe to change the bootsector for use with bootmgr
+
+[code]BootSect.exe /nt60 R: /force
+mkbt.exe -x -c R: R:\btsec\BOOTMGR.bs
+mkbt.exe -x R:\btsec\NTBOOT.bs R:[/code]where R: is your USB-stick drive.
+
+   Such BOOTMGR Bootsector File is given in makebt folder as file f16btmgr.bin with correct Error Messages,
+   which can be used by mkbt.exe to make BOOTMGR.bs similarly as the procedure for making MSBOOT.bs, 
+   so that BootSect.exe which is more difficult to obtain, is no longer needed.
+
+   WinPE is a Console with rather limited use. 
+   A lot of simple programs which run from BartPE, do not run from WinPE.
+   Windows PE 2.0 is included in the Windows Automated Installation Kit WAIK (see below for Download)
+   - Follow the instructions in the WAIK guide to create PE 2.0 files.
+   - Copy the contents of the "ISO" folder created in the proceding step to the root of your USB stick.
+
+
+7. [b]SYSLINUX Menu Support[/b] from boot.ini Menu requires to make Bootsector file SLBOOT.bs according to:  
+   - Download syslinux from [url="http://syslinux.zytor.com/download.php"]http://syslinux.zytor.com/download.php[/url]
+   - Use syslinux.exe from win32 folder in a Command Window as given below
+   - Copy the Bootsector with mkbt.exe as file SLBOOT.bs in btsec folder on USB-stick
+   - Reset USB-Drive to NTLDR Bootsector using mkbt.exe and the original Bootsector File NTBOOT.bs
+
+[code]syslinux.exe -f R:
+mkbt.exe -x -c R: R:\btsec\SLBOOT.bs
+mkbt.exe -x R:\btsec\NTBOOT.bs R:[/code]where R: is your USB-stick drive.
+
+8. [b]GRUB4DOS Menu Support[/b] is added to boot.ini Menu as follows:
+   Download grub4dos from [url="http://grub4dos.jot.com/WikiHome"]http://grub4dos.jot.com/WikiHome[/url] and [url="http://download.gna.org/grub4dos/"]http://download.gna.org/grub4dos/[/url]
+   Copy grldr and grub.exe to the Root directory of the USB-stick and make Custom file [b]menu.lst[/b]
+   Launching of GRUB4DOS Menu via grldr is obtained by simply adding to boot.ini the rule:
+   C:\grldr="Start GRUB4DOS Menu - DOS FLOPPY IMAGES + Linux - Start Vista"
+
+The boot.ini file in the Root Directory of the USB-Drive making all Boot Options available is given by:
+
+[b]boot.ini[/b]
+[code][Boot Loader]
+Timeout=10
+Default=multi(0)disk(0)rdisk(1)partition(1)\WINDOWS
+[Operating Systems]
+C:\btsec\XPSTP.bs="1. TXT Mode Setup Windows XP, Never unplug USB-Drive Until After Logon"
+multi(0)disk(0)rdisk(1)partition(1)\WINDOWS="2. GUI Mode Setup Windows XP, Continue Setup + Start XP from HD 1" /FASTDETECT
+multi(0)disk(0)rdisk(2)partition(1)\WINDOWS="3. Start Windows XP from Harddisk 2" /noexecute=optin /fastdetect
+c:\grldr="4. Start GRUB4DOS Menu - DOS FLOPPY IMAGES + Linux - Start Vista"
+C:\btsec\PELDR.bs="5. BartPE - MINI XP" 
+C:\btsec\BOOTMGR.bs="6. Windows PE 2.0 - Run Vista Setup from Second Partition of USB-Drive"
+C:\btsec\SLBOOT.bs="7. SYSLINUX Menu"
+C:\btsec\MSBOOT.bs="8. MS-DOS 7.10"[/code]
+Not all options are available on all USB-Drive Devices. So you can edit boot.ini to your needs.
+Booting from MS-DOS is not available on 4 GB Apacer HT203, whereas 1 and 2 GB sticks are OK.
+A lot of FREEDOS Bootsectors don't work and even the supplied FREEDOS Bootcode 
+only works on some USB-sticks and not on USB-Harddisk.
+
+TinyHexer or HDHacker are useful to View in detail and to Save the USB-stick Logical Drive bootsector.
+The Logical Drive bootsector is usually located 63 sectors from the beginning (MBR=sector 0) of the USB-disk.
+HDHacker       see [url="http://dimio.altervista.org/eng/"]http://dimio.altervista.org/eng/[/url]
+TinyHexer 1.8  see [url="http://www.chip.de/downloads/c1_downloads_13014623.html"]http://www.chip.de/downloads/c1_downloads_13014623.html[/url]
+HDHacker can also be used to Load Bootsector Files and to Write as Bootsector on USB-stick Logical Drive.
+
+BootSect.exe can be obtained from the very large VISTA WAIK download (almost 1 GB).
+The Windows Automated Installation Kit with the program bootsect.exe is available as download from Microsoft:
+[url="http://www.microsoft.com/downloads/details.aspx?familyid=C7D4BC6D-15F3-4284-9123-679830D629F2&displaylang=en"]http://www.microsoft.com/downloads/details...;displaylang=en[/url]
+
+================================================================================
+
+[b]C. Bootsector Files - Extra Info[/b]
+
+The booting mechanism of NTLDR with boot.ini Menu and the use of Bootsector Files in boot.ini 
+has been excellently explained by [b]jaclaz[/b] and is reproduced below:
+[url="http://www.911cd.net/forums//index.php?showtopic=16980&st=8"]http://www.911cd.net/forums//index.php?sho...=16980&st=8[/url]
+
+1) The BOOTSECTOR (i.e. first sector of the Active Primary Partition) 
+   contains CODE that boots (under NT/2K/XP/2003) the NTLDR
+2) The NTLDR has the capacity to boot (through the selection in BOOT.INI and using NTDETECT.COM) 
+   only the windows NT/2K/XP/2003 System partition, (i.e. \Winnt or \Windows) through an arcpath sintax, 
+   (i.e. something like multi(0)disk(0)rdisk(0)partition(1)\WINNT)
+3) To keep compatibility with elder MS operating systems, 
+   the NTLDR has also the option to load ANOTHER bootsector; 
+   this bootsector MUST have the same geometry (dynamic data) of the main one, but can have different CODE, 
+   i.e. can load something different like the DOS files IO.SYS MSDOS.SYS COMMAND.COM 
+   or another OS, or even another bootloader
+4) BartPE normally boots by using a copy of SETUPLDR.BIN renamed as NTLDR or PELDR.
+5) SETUPLDR.BIN behaves differently from NTLDR:
+   a.) It DOES NOT use the BOOT.INI settings file
+   b.) Searches for needed files in the \I386 directory 
+       (this is fixed, hardcoded INSIDE SETUPLDR.BIN, needs hexediting to be changed) 
+       or in the \minint one if on hard disk
+   c.) Reads the textsetup.SIF, or WINNT.SIF (or any other .sif file)
+
+The way to have a BartPE selection in boot.ini is to have an alternate BOOTSECTOR, peboot.bin, 
+that loads PELDR (i.e. a renamed SETUPLDR.BIN) INSTEAD of NTLDR.
+
+So the booting goes like this:
+1) REAL BOOTSECTOR loads NTLDR
+2) NTLDR loads BOOT.INI
+3) If the line invoking the ALTERNATE bootsector peboot.bin is chosen, peboot.bin loads PELDR
+
+You cannot load anything else but an ARCPATH or a BOOTSECTOR from NTLDR/BOOT.INI!
+
+Using GRLDR or GRUB.EXE makes it possible to load DIRECTLY (i.e. chainload) NTLDR or SETUPLDR.BIN 
+without need for renaming the latter to NTLDR or PELDR.
+
+Note Added: Bootsector File peboot.bin is equal to our PELDR.bs Bootsector file.
+
+================================================================================
+
+[b]D. GRUB4DOS Menu Support - Extra Info[/b]
+
+GRUB4DOS is added to boot.ini Menu as follows:
+Download grub4dos from [url="http://grub4dos.jot.com/WikiHome"]http://grub4dos.jot.com/WikiHome[/url] and [url="http://download.gna.org/grub4dos/"]http://download.gna.org/grub4dos/[/url]
+Copy grldr to the Root directory of the USB-stick and make Custom file [b]menu.lst[/b]
+Launching of GRUB4DOS Menu via grldr is obtained by simply adding to boot.ini the rule:
+C:\grldr="Start GRUB4DOS Menu - DOS Boot Floppy Images + Linux"
+
+Use WinImage [url="http://www.winimage.com/"]http://www.winimage.com/[/url] to Inject Files and to Save a DOS Boot Floppy Image.
+
+Download ready-to-run DOS Boot Floppy Images fdubcd.img and msubcd.img 
+made by [b]Erwin Veermans [/b]http://www.veder.com/nwdsk/
+These images are based on the Modular Boot Disk of [b]Bart Lagerweij [/b]http://www.nu2.nu/bootdisk/modboot/
+and were made for Ultimate Boot CD [url="http://www.ultimatebootcd.com/"]http://www.ultimatebootcd.com/[/url]
+BootDisk.com has also a lot of Info and bootdisks available, See [url="http://www.bootdisk.com/"]http://www.bootdisk.com/[/url] 
+
+Use the grub4dos tutorial to make menu.lst and add menu.lst to USB-stick
+[url="http://grub4dos.sourceforge.net/wiki/index.php/Main_Page"]http://grub4dos.sourceforge.net/wiki/index.php/Main_Page[/url]
+[url="http://www.gnu.org/software/grub/manual/grub.html"]http://www.gnu.org/software/grub/manual/grub.html[/url]
+[url="http://grub4dos.sourceforge.net/wiki/index.php/Grub4dos_tutorial"]http://grub4dos.sourceforge.net/wiki/index...ub4dos_tutorial[/url]
+
+GRUB4DOS via boot.ini is in any FileSystem very powerful, especially using chainload of BootLoaders.
+
+Use Disk emulation with Direct mapping in menu.lst:
+
+[b]menu.lst[/b]
+[code]color white/blue  black/light-gray
+timeout 30
+
+default 0
+
+# title Phase 1 WinXP Text Mode Setup - Install Windows XP
+# chainloader (hd0,0)/ntldrstp
+
+title 0 - Start Vista - Load bootmgr From Computer  HD 1 - Partition 0
+root (hd1,0)
+chainloader (hd1,0)/bootmgr
+
+title 1 - Start Windows XP Professional  from Harddisk 1 - Partition 0
+map (hd1) (hd0)
+map --hook
+rootnoverify (hd0)
+root (hd0,0)
+chainloader (hd0,0)/ntldr
+
+title 2 - Memtest86+  V1.51 - RAM Memory Test
+find --set-root /grldr
+kernel /memdisk
+initrd /images/memtp151.img
+
+title 3 - Floppy Image - MS-DOS  - UBCD Bart's Modboot
+map (hd0,0)/images/msubcd.img (fd0)
+map --hook
+chainloader (fd0)+1
+rootnoverify (fd0)
+
+title 4 - Floppy Image - FREEDOS - UBCD FreeDOS Bart's Modboot
+map (hd0,0)/images/fdubcd.img (fd0)
+map --hook
+chainloader (fd0)+1
+rootnoverify (fd0)
+
+title 5 - BartPE - MINI XP
+find --set-root /grldr
+chainloader /peldr
+
+title 6 - Boot Windows PE 2.0 - Run Vista Setup From HD 0 - Partition 1
+root (hd0,0)
+chainloader (hd0,0)/bootmgr
+
+title 7 - Puppy Linux - NTFS Read / Write
+find --set-root /grldr
+kernel /vmlinuz root=/dev/ram0 initrd=initrd.gz PMEDIA=usbflash PKEYS=uk
+initrd /initrd.gz
+
+title 8 - MS-DOS  Direct Load io.sys
+root (hd0,0)
+chainloader (hd0,0)/io.sys
+
+title 10 - Damn Small Linux  - NTFS Read Only - Knoppix
+find --set-root /grldr
+kernel /linux24 ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 initrd=minirt24.gz nomce noapic qemu quiet BOOT_IMAGE=knoppix frugal
+initrd /minirt24.gz
+
+title 11 - Boot floppy image - FREEDOS + UMB-Menu	+ PRG-Menu + GHOST
+map (hd0,0)/images/fdboot1.ima (fd0)
+map --hook
+chainloader (fd0)+1
+rootnoverify (fd0)
+
+title 12 - Start Vista Setup - Load bootmgr From USB-HD 0 - Partition 0
+root (hd0,0)
+chainloader (hd0,0)/bootmgr
+
+title 13 - Start Vista Setup - Load bootmgr From USB-HD 0 - Partition 1
+root (hd0,1)
+chainloader (hd0,1)/bootmgr[/code]
+Besides DOS Floppy Images, it is interesting to add to menu.lst of grub4dos also
+Puppy Linux (NTFS Read/Write support) and DSL Linux (Knoppix with NTFS Read only support) ,
+as described by [b]diddy[/b]
+[url="http://www.911cd.net/forums//index.php?showtopic=18846"]http://www.911cd.net/forums//index.php?showtopic=18846[/url]
+
+Download the latest Puppy Linux ISO file - Tested using "puppy-2.12-seamonkey.iso"
+[url="http://puppylinux.org/user/news.php"]http://puppylinux.org/user/news.php[/url]
+
+Download the latest DSL Embedded .ZIP file - Tested using "dsl-3.3-embedded.zip"
+[url="http://damnsmalllinux.org/"]http://damnsmalllinux.org/[/url]
+
+================================================================================
+
+[b]E. TXT-mode Setup of Windows XP - Software Install Extra Info[/b]
+ 
+TXT-mode and GUI-mode Setup Windows XP 
+The procedure for Install of Windows XP from bootable USB-stick using a LocalSource was developed by 
+[b]ilko_t , jaclaz , cdob and porear[/b] and is described by [b]ilko_t[/b] in MSFN Forum:
+[url="http://www.msfn.org/board/index.php?showtopic=61384&st=199"]http://www.msfn.org/board/index.php?showto...1384&st=199[/url]
+The automatic making of a bootable USB-stick for Install of Windows XP can be realised 
+with the [b]USB_MultiBoot.cmd[/b] batch command program.
+
+The TXT-mode Setup of Windows XP includes the possibility to use the Recovery Console.
+The Recovery Console is of very limited use as compared to 
+BartPE having Mini XP Desktop with very powerful Program Menu.
+Nevertheless it is worthwhile to mention the Recovery Console within the scope of this subject.
+
+Further Improvements of MultiBoot USB-stick:
+1. Using Windows XP Source with Updates and DriverPacks Integrated:
+using RyanVM Integrator [url="http://integrator.siginetsoftware.com/index.php?download"]http://integrator.siginetsoftware.com/index.php?download[/url]
+with Update Packs and Addons [url="http://www.ryanvm.net/forum/index.php?sid=58adec10fb305c75d490d2bd5184b68a"]http://www.ryanvm.net/forum/index.php?sid=...490d2bd5184b68a[/url]
+and for DriverPacks using DP Base [url="http://driverpacks.net/DriverPacks/overview.php"]http://driverpacks.net/DriverPacks/overview.php[/url]
+and for Unattended Install [url="http://unattended.msfn.org/unattended.xp/"]http://unattended.msfn.org/unattended.xp/[/url] 
+
+$OEM$\CMDLINES.TXT can be used for making UserAccounts and install of Registry Tweaks at T-12
+On first logon the Extracted BTS DriverPacks are deleted, which normally takes a long time,
+because SystemRestore copies them to System Volume Information folder.
+The Disable_SystemRestore.reg Registry Tweak prevents this action, so that first logon is much faster.
+
+Personally I am using only the 5 smallest BTS DriverPacks with Mass Storage text mode enabled.
+So I do not integrate the 5 large Sound and Graphics DriverPacks, but use these Packs manually
+when Updating Drivers. The extraction and deletion of these 5 large DriverPacks is taking a lot of time.
+Mass Storage DriverPack with text mode enabled offers a lot of Extra SCSI, SATA and RAID Drivers
+for the $WIN_NT$.~BT Windows XP Bootfolder so that F6 for Extra Driver Floppies is no longer needed.
+ 
+2. Booting from DOS, with Ghost for System Backup and System Restore
+[url="http://www.911cd.net/forums//index.php?showtopic=19621&st=7"]http://www.911cd.net/forums//index.php?sho...=19621&st=7[/url]
+3. Adding WPI for Automatic Install of Additional Programs [url="http://wpiw.net/"]http://wpiw.net/[/url]
+4. Unattended Install of Office 2003 with Updates Integrated [url="http://www.siginetsoftware.com/forum/"]http://www.siginetsoftware.com/forum/[/url]
+5. Adding WinTools running direct from USB-stick using nu2menu [url="http://www.dirk-loss.de/win-tools.htm"]http://www.dirk-loss.de/win-tools.htm[/url]
+Such WinTools are small programs which can run from WinTools Menu without the need of Install.
+Double-click on [b]GO_WINTOOLS_MENU.BAT [/b] on USB-drive provides WinTools Menu from [b]GO[/b] button.
+It also is possible to run the WinTools from any drive, 
+by copying the wintools folder and GO_WINTOOLS_MENU.BAT to the root of a harddisk drive.
+Support for extra Portable Utilities is possible by editing [b]nu2menu.xml [/b]file in MULTI_CONTENT\wintools\Nu2Menu folder.
+An additional interesting list of Portable WinTools which can be added to WinTools Menu by editing nu2menu.xml file,
+ is found here [url="http://users.pandora.be/Robvdb/USBMemStick.htm"]http://users.pandora.be/Robvdb/USBMemStick.htm[/url]
+
+================================================================================
+
+[b]F. BartPE or UBCD4Win - Extra Info[/b]
+  
+BartPE of [b]Bart Lagerweij[/b] is a MINI XP with very powerful Program Menu, 
+and can simply be added to boot.ini Menu [url="http://www.nu2.nu/pebuilder/"]http://www.nu2.nu/pebuilder/[/url]
+UBCD4Win is based on BartPE and can be used as well [url="http://www.ubcd4win.com/index.htm"]http://www.ubcd4win.com/index.htm[/url]
+USB_MultiBoot.cmd Program has a build in routine for Adding BartPE or UBCD4Win to your USB-drive.
+
+For a MultiBoot USB-stick combining BartPE ( minint folder ) and the LocalSource of Windows XP Setup (see below),
+I found the following solution to make BartPE boot from the minint folder, instead of launching Windows XP setup.
+Hexedit peldr using TinyHexer. Change in peldr the first occurrence of txtsetup.sif in notsetup.sif
+Now BartPE will boot from minint folder and will not use WinXP txtsetup.sif from root directory.
+[url="http://www.msfn.org/board/index.php?showtopic=61384&st=224"]http://www.msfn.org/board/index.php?showto...1384&st=224[/url]
+
+Thanks to [b]jaclaz[/b] for his helpful advice to use [b]gsar.exe[/b] for Hexediting of peldr in USB_MultiBoot.cmd program.
+Download gsar from [url="http://gnuwin32.sourceforge.net/packages/gsar.htm"]http://gnuwin32.sourceforge.net/packages/gsar.htm[/url]
+
+Usage:   gsar [options] -s[search string] -r[replace string] [infile] [outfile]
+
+[code]copy /y R:\minint\setupldr.bin R:\peldr
+makebt\gsar -b -o -sBT:x00:x00:x00\:x00:x00:x00txtsetup -rBT:x00:x00:x00\:x00:x00:x00notsetup R:\peldr[/code]
+gsar Option -o
+Search  and replace of multiple files, overwrite the input file(s). 
+For each input  file,  gsar  creates  a  tempfile which contains the replacements and 
+copies the tempfile to the original input file name. 
+If no  matches  were  found, the input file stays the same. The tempfile is removed.
+
+================================================================================
+
+[b]G. SYSLINUX Menu Support - Extra Info[/b]
+
+Install of SYSLINUX is drive specific and it is not possible to Reinstall SYSLINUX by simple filecopy.
+File [b]ldlinux.sys[/b] made in USB Root directory uses the Custom made files syslinux.cfg and menu.txt
+Bootsector Files are only recognised by SYSLINUX as such when they have the extension [b].bs[/b]
+
+[b]syslinux.cfg[/b]
+[code]PROMPT 1
+TIMEOUT 0
+DEFAULT 1
+DISPLAY Menu.txt
+
+LABEL 1
+KERNEL linux24
+APPEND ramdisk_size=100000 init=/etc/init lang=us apm=power-off vga=791 initrd=minirt24.gz nomce noapic qemu quiet BOOT_IMAGE=knoppix frugal
+
+LABEL 2
+KERNEL memdisk
+APPEND initrd=images/memtp151.img
+
+LABEL 3
+KERNEL memdisk
+APPEND initrd=/images/msubcd.img
+
+LABEL 4
+KERNEL memdisk
+APPEND initrd=/images/fdubcd.img
+
+LABEL 5
+KERNEL btsec/PELDR.bs
+APPEND -
+
+LABEL 6
+KERNEL btsec/BOOTMGR.bs
+APPEND -
+
+LABEL 7
+KERNEL vmlinuz
+APPEND root=/dev/ram0 initrd=initrd.gz loglevel=3 PMEDIA=usbflash PKEYS=uk
+
+LABEL 8
+KERNEL btsec/MSBOOT.bs
+APPEND -[/code]
+
+[b]menu.txt[/b]
+[code]1 - Damn Small Linux (KNOPPIX) - NTFS Read Only 
+2 - Memtest86+  V1.51
+3 - Floppy Image - MS-DOS
+4 - Floppy Image - FREEDOS
+5 - BartPE - MINI XP
+6 - Boot WinPE 2.0 - Run Vista Setup from HD 0 - Partition 1
+7 - Linux Puppy - NTFS Read / Write Support
+8 - MS-DOS  Direct Load io.sys[/code]
+It is worthwhile to note that also direct booting with MS-DOS from SYSLINUX Menu is possible in this way.
+
+SYSLINUX Menu requires a Drive Specific Install and is in general booting Faster than GRUB4DOS Menu, 
+but boot.ini Menu is the most versatile BootMenu from which all other Boot Options are available !
+Windows XP can be launched from any partition of any harddisk using the boot.ini Menu.
+Windows Vista can be launched from any partition of any harddisk using the menu.lst Menu of GRUB4DOS.
+
+================================================================================
+
+Previous Version: 
+Number of downloads: 
+275 + 284 + 6500 + 3896 + 1200 (3) + 2720 (4) + 10023 (5) + 3707 (6) + 1250 (7) + 8033 (8) + 7909 (9)
+
+Edit 8 jan 2008:  Added PeToUSB.exe
+Changed GO_WINTOOLS_MENU.BAT and Added nu2menu.exe in MULTI_CONTENT\wintools\Nu2Menu folder
+Double-click on GO_WINTOOLS_MENU.BAT provides WinTools Menu from GO button.
+Added FREEDOS + DOSDEV drivers, grldr and grub.exe, VC, some tools
+
+EDIT 5 feb 2008: 
+Removed %_mypath% in Making BootSector Files causing program crash when USB_MultiBoot2 folder was deep nested in Documents and Settings which results in a path with spaces.
+Added /r option in xcopy of $WIN_NT$.~LS Folder from usb_xpbt Folder to USB-Drive ,
+needed in some cases where presetup.cmd was Read Only.
+
+EDIT 14 feb 2008: Attachment Updated to USB_MultiBoot3.zip
+
+Edit 20 feb 2008: New Release USB_MultiBoot4.zip
+Possible DOSNET.INF Parsing Error (biosinfo.inf not found etc.) was removed.
+
+Edit 28 feb 2008: New Release USB_MultiBoot5.zip
+ren_fold.cmd was changed such that $OEM$\$1 and $OEM$\$$ folders are copied
+as usual to systemdrive (usually C:\) and systemroot (usually C:\WINDOWS) respectively.
+Format Menu was added allowing to use HP USB Format Tool 
+for making USB-sticks (greater than 2 GB) with NTFS Format allowing Install of XP in 16 minutes.
+USB_MultiBoot5.cmd has now Option for Adding BartPE instead of using PeToUSB.
+Possible source of Error in SOURCE Pathes is Detected e.g. when XPSOURCE path contains SPACES.
+
+Edit 14 mar 2008: New Release USB_MultiBoot6.zip
+DOSNET.INF Parsing Routine was simplified, necessary when adding Drivers with nLight
+For BartPE I386\WinSxS Folder is used as a marker instead of using as Tagfile winbom.ini
+winnt.sif file is tested for the needed presence of MsDosInitiated="1" and floppyless="1"
+Log filename was Changed to usb_log.txt
+
+Batch Program INSTALL_DRIVERS.CMD was Added to Folder INSTALL_DRIVERS:
+Supports Post XP Setup Install of Drivers with Device Manager by
+Unpacking DriverPacks or OEM Source Folder to Selected Target Drive
+And by Setting DevicePath to Selected Target Driver Folder
+
+Edit 28 mar 2008: New Release USB_MultiBoot7.zip
+Support for XP x64 using AMD64 Folder was added
+MULTI_CONTENT was optimised for FAT  Format and Direct Booting with MS-DOS from boot.ini Menu
+X_CONTENT     was optimised for NTFS Format and Supports Booting from DOS Floppy Images via GRUB4DOS Menu
+ntfs_menu_lst.txt was removed because X_CONTENT is now dedicated for NTFS Format
+For Link in Program Intro removed &st=6 causing Message st is unknown command
+Options B and W) have been changed for Vista which is not able to use VBS FileSelector
+
+Edit 04 apr 2008:  New Release USB_MultiBoot_8.zip
+Support for XP x64 changed txtsetup.sif entries 55 instead of 100
+OEM or nLite winnt.sif File is detected in XPSOURCE and Auto Changed for Install of XP from USB.
+In that case All Setup Parameters come from XPSOURCE and therefore Empty $OEM$_X Folder is Selected.
+$OEM$ Folder is made User Selectable from Main Menu.
+Making of BootSector Files was rewritten and internal organisation was changed and improved.
+SETUPLDR.BIN of XP was renamed to XPSTP for ALL Formats to avoid confusion, 
+because of the 5-letter limit of MakeBS3.cmd for NTFS Format.
+Direct Booting with FREEDOS from USB was Removed since there were too few cases successful.
+The MULTI_CONTENT Folder is recognised from [b]usbmulti[/b] TagFile 
+for making MS-DOS  Windows PE 2.0 and SYSLINUX BootSector Files for MultiBoot Support.
+
+Edit 08 May 2008: New Release USB_MultiBoot_9.zip
+
+- Display and [b]Edit[/b] of the [b]8[/b] required parameters for Unattended Setup is build in
+  where the Selected winnt.sif  file is first savely copied to the Current_winnt.sif file.
+  The Current_winnt.sif File is adjusted for Install from USB and then
+  copied by USB_MultiBoot.cmd to $WIN_NT$.~BT folder on USB-Drive.
+  The file useraccounts.cmd with UserName is made in the Currently Selected $OEM$ Folder.
+
+- For each XP Source the Program Supports now to launch Unattended or Attended Setup.
+  Therefore a second SetupLoader [b]XATSP[/b] for Attended Setup is made ,
+  where [b]winnt.sif [/b]is Patched  as [b]winat.sif [/b]using gsar.exe
+  So the extra Setup Option does not take extra space from the USB-stick.
+
+- Multiple XP Install from USB is now Supported (max 9 sources)
+  [url="http://www.msfn.org/board/SOLVED-Install-Multiple-XP-from-USB-t114543.html"]http://www.msfn.org/board/SOLVED-Install-M...SB-t114543.html[/url]
+  Run USB_MultiBoot.cmd again using New XP Source and Empty XX_CONTENT Source Folder
+
+- Windows XP Recovery Console from USB is now supported and launched via GRUB4DOS Menu
+
+- Multiple PE (BartPE and UBCD4Win) from USB is supported using Multi_Partition USB-Drives.
+  INSTALL_DUMMY.cmd was made for dummydisk, which you will find in the makebt Folder.
+  When dummy.sys is Installed in your OS, 
+  then you can make Multiple Partition USB-sticks with NTFS format,
+  allowing to combine BartPE and UBCD4WIN or different Vista Versions x86 and x64
+  [url="http://www.msfn.org/board/Multiple-PE-from-USB-t115156.html&st=11"]http://www.msfn.org/board/Multiple-PE-from....html&st=11[/url]
+  [url="http://www.911cd.net/forums//index.php?showtopic=20089&st=24"]http://www.911cd.net/forums//index.php?sho...20089&st=24[/url]
+  Run USB_MultiBoot.cmd again using New BartPE Source and 
+  using Empty XX_CONTENT Source Folder and No Copy of XP Source.
+
+- Install of Vista from USB is now supported and launched via GRUB4DOS Menu
+  [url="http://www.msfn.org/board/vista-t114092.html&st=6"]http://www.msfn.org/board/vista-t114092.html&st=6[/url]
+  [url="http://www.msfn.org/board/Install-Vista-from-USB-t111506.html&st=2"]http://www.msfn.org/board/Install-Vista-fr...6.html&st=2[/url]
+  For Vista Install from USB, Remove on first Restart your USB-stick.
+
+- Improvement of the Main Menu and the boot.ini Menu's
+
+- GRUB4DOS grldr and grub.exe Updated to grub4dos-0.4.3-2008-05-02
+
+
+Edit 06 June 2008: New Release USB_MultiBoot_10.zip
+
+- For the Option Edit UserData for XP Setup we have:
+
+  A. Unattended Install - UserName = YourName 
+     in winnt.sif file - unattendswitch="Yes" - UserName is used Automatically
+     useraccounts.cmd with UserName is created in $OEM$ Folder copied to USB-drive
+
+  B. Semi-Unattended Install - UserName = None
+     in winnt.sif file - unattendswitch="No" - UserNames are given Manually at Windows Welcome Screens
+     useraccounts.cmd in copied $OEM$ folder is Renamed to Inactive txt file
+
+  C. Undefined Install - UserName = Unknown
+     No Changes are made in winnt.sif file or $OEM$ folder
+     This is useful when Setup Parameters were defined externally e.g. by nLite
+
+  In all cases Selecting Cancel keeps winnt.sif file and $OEM$ folder Unchanged
+
+- In preparing the USB-drive, the file useraccounts.cmd with UserName is made now in the $OEM$ Folder 
+  located in the temporary folder usb_xpbt, so that the original $OEM$ Folder remains unchanged. 
+  The XP Setup Type and the given User Name are Displayed in the Main menu 
+  and in the Status Report Screen just before Copy to your USB-drive is Selected.
+
+- The winat.sif file for Attended Install is now derived from your Current_winnt.sif file
+  which is more logical than using the preconfigured Attended_winnt.sif file.
+  In the Attended Install all Setup Parameters are given Manually during the GUI Mode of Setup Windows XP.
+  Attended Install is always available as Extra Option in the boot.ini Menu. 
+
+- Computation of Estimated XP Folder Size to prevent overflow 
+  includes now $WIN_NT$.~BT + cmpnents + I386 + AMD64 + $OEM$ + OEM Folders instead of previously I386 only
+
+- REMOVE_DUMMY.cmd was made to remove dummydisk from the Registry, which you will find in the makebt Folder.
+  After removal of dummydisk all USB-sticks are seen again as Removable Devices.
+
+- GRUB4DOS grldr and grub.exe Updated to grub4dos-0.4.3-2008-05-07

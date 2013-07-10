@@ -1,0 +1,104 @@
+
+FROM: ilko_t in http://www.msfn.org/board/FAQs-t116766.html              06 June 2008
+
+FAQs:
+
+Q: Is there a guide with screenshots?
+A: http://www.911cd.net/forums//index.php?showtopic=20089&st=11
+You should also have a look at the Help files in \Help_Info folder.
+
+Q: I am getting BSOD, error 0x0000006F during Text mode Setup, what is wrong?
+A: When using Nlite to slim down your source do NOT select "Operating System Options-->Manual Install and Upgrade for removal". 
+   This option is crucial for installing from USB. 
+
+   http://www.msfn.org/board/redirect.php?url=http%3A%2F%2Fimg74.imageshack.us%2Fimg74%2F9124%2Fmagicalsnap200805030955tf0.jpg
+
+
+Q: I get BSOD 0x0000007B during text mode of Setup.
+A: On some motherboards USB booting is tricky, common example are many Dell systems. 
+   Try using a modified NTDETECT.COM as mentioned here:
+   http://www.msfn.org/board/0x0000007B-Blue-...009#entry738009
+   http://www.msfn.org/board/0x0000007B-Blue-Screen-Error-During-Text-t112630.html&st=3
+
+Q: I am getting HAL.DLL or NTOSKRNL.EXE not found error, why?
+A: You are installing Windows to a disk/partition other than first disk/first partition. 
+   Amend BOOT.INI on USB disk to reflect your setup. 
+   For example- if installing windows on SECOND disk/third partition, 
+   and FOLDER name is MYWIN, that line in BOOT.INI should look like:
+
+multi(0)disk(0)rdisk(2)partition(3)\MYWIN="2. GUI Mode Setup Windows XP, Continue Setup + Start XP from HD 1" /FASTDETECT
+
+   Please note that rdisk(0) means first hard disk. Because we are booting from USB disk it becomes first, 
+   hence the first internal hard disk (which is second when start counting from our USB disk) gets rdisk(1), second- rdisk(2) and so on.
+
+
+Q: What Windows versions can be used?
+A: The method works without issues using Windows XP SP2.
+   If using others than this (2000, 2003, XP x64, XP SP1...), 
+   some compressed files will be deleted from your USB disk when installation is completed. 
+   In order to preform a new installation you will have to 
+   syncronise I386 (and AMD64 for x64) folders in your source and USB disk.
+   You may want to use KillCopy for example and copy YourSource\I386(and AMD64 for x64)
+   to USB disk\$WIN_NT$.~LS\ telling it to skip all existing files.
+
+Q: How about installing multiple Windows from USB?
+A: Please read this guide:
+   http://www.msfn.org/board/SOLVED-Install-Multiple-XP-from-USB-t114543.html
+
+Q: How about adding multiple (Bart)PE on the same USB?
+A: Please look here:
+   http://www.msfn.org/board/Multiple-PE-from-USB-t115156.html
+
+Q: I got "Insert WinXP CD" Error, why?
+A: The correct value in WINNT.SIF is MsDosInitiated="1". This is done automatically by the script. 
+   You must have changed WINNT.SIF after prepared USB disk. 
+
+Q: I cannot start my freshly installed windows without the USB disk
+A: When installing you have to leave USB disk plugged in until after first normal windows desktop. 
+   This is because at first logon undoren.cmd is executed, 
+   which amends BOOT.INI on your new disk using binifix.cmd, 
+   and also renames 2 folders and txtsetup.sif back to their original names.
+   If you are in such situation and don't want to reinstall, 
+   manually start UNDOREN.CMD and BINIFIX4.CMD located in your \WINDOWS\SYSTEM32 folder with the USB disk connected.
+
+Q: I want to use [unattended] section in WINNT.SIF
+A: It shoudn't be used when installing from hard disk like media. Setup will not ask you where to install windows to.
+   Look here for workaraounds:
+   http://www.msfn.org/board/Issues-with-Setup-t111989.html&st=11
+   http://www.msfn.org/board/Issues-with-Setup-t111989.html&st=13
+
+   In recent versions $OEM$\$1 and $OEM$\$$ folders are copied by REN_FOLD.CMD, 
+   which is executed at T-9 by the Section [SetupParams] of winnt.sif file) as usual 
+   to systemdrive (usually C:\) and systemroot (usually C:\WINDOWS) respectively if found.
+
+Q: Will my Nlite add-ons install as if installing from a CD?
+A: Generally- yes.
+
+Q: Everything on USB disk was deleted after Setup, why?
+A: You have replaced WINNT.SIF after executed the script, 
+   there are number of lines added and removed by it. 
+   You should change it before launching the script, so it can add and remove the lines required.
+
+Q: My hard disk got letter F(G,E...), why?
+A: If you have a card reader or any other USB mass storage disable it or turn off prior to installation. 
+   If you cannot, then partition the hard disk and format it during Text mode Setup, 
+   then quit using F3, reboot and start Setup again. 
+   Once you have partitioned and formatted hard drive, it should get letters starting from C:.
+
+Q: What is RDUMMY.SYS used for?
+A: Look here for detailed answer:
+   http://www.msfn.org/board/How-to-boot-inst...697#entry705697 
+   http://www.msfn.org/board/How-to-boot-install-from-USB-key-t61384.html&st=417
+
+Q: I have a mixed SATA and IDE disks/CD/DVDs, any problem with that?
+A: If you are installing on SATA/SCSI disk, while having IDE present, 
+   preferred boot drive may become your USB disk, this is bad, 
+   Setup will overwrite MBR/bootsector and (re)place boot files on it.
+   If during TEXT MODE your usb disk is listed first when SETUP searches for disks , 
+   above SATA/SCSI disks, disable in BIOS IDE channels including the ones with CDROM/DVD attached 
+   or just disconnect them temporarily, this should fix the order. 
+   Do not continue install if USB disk is listed first, this will corrupt files and MBR on it. Details:
+   http://www.msfn.org/board/How-to-boot-inst...345#entry655345
+   http://www.msfn.org/board/How-to-boot-install-from-USB-key-t61384.html&st=154
+
+This post has been edited by ilko_t: May 4 2008, 08:29 PM 
